@@ -9,6 +9,7 @@ namespace Orien.PYS.Business.Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddBusinessServices(this IServiceCollection services)
         {
             services.AddScoped<ISlipTransactionService, SlipTransactionService>();
+            services.AddScoped<ICreditCardService, CreditCardService>();
             return services;
         }
     }

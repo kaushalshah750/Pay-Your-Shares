@@ -1,25 +1,75 @@
 <div>
-  <div>
+  <div class="my-5" *ngIf="showaddslip">
     <div>
-      <button class="btn btn-primary">Add New Slip</button>
+      <div class="my-2">
+        <label for="name">Name</label>
+        <input class="mx-3 px-2" type="text" [(ngModel)]="name">
+      </div>
+      <div class="my-2">
+        <label for="amount">Amount</label>
+        <input class="mx-3 px-2" type="text" [(ngModel)]="amount">
+      </div>
+      <div class="my-2">
+        <label for="PaidByUserId">PaidByUserId</label>
+        <input class="mx-3 px-2" type="text" [(ngModel)]="paidByUserId">
+      </div>
+      <div class="my-2">
+        <label for="TransactionDate">TransactionDate</label>
+        <input class="mx-3 px-2" type="date" [(ngModel)]="TransactionDate">
+      </div>
+      <div>
+        <div *ngFor="let data of users">
+          <label for="{{data.name}}">{{data.id}} {{data.name}}</label>
+          <input class="mx-3" type="radio" value="{{data.id}}" id="user" (click)="adduser($event)">
+        </div>
+      </div>
+    </div>
+    <div class="my-3">
+      <button class="btn btn-primary" (click)="createnewsliptransaction()">Submit</button>
+      <button class="btn btn-secondary mx-3" (click)="clearfields()">Clear</button>
     </div>
   </div>
 
-  <div class="my-3">
+  <div class="d-flex">
+    <div style="width: 220px;">
+      <button class="btn btn-primary" (click)="addslip()">Add New Slip</button>
+    </div>
+    <div class="d-flex justify-content-between w-100">
+      <div class="d-flex justify-content-between w-100">
+        <div class="w-100">
+            <h5>Kaushal Shah <- Mukesh Yadav : 
+              <span [ngClass]="{'red' : calculatetotaldebt(2,1) < 0 , 'green' : calculatetotaldebt(2,1) > 0}">{{calculatetotaldebt(2,1) | currency : 'INR'}}</span>
+            </h5>
+        </div>
+        <div class="w-100">
+          <h5>Kaushal Shah <- Suraj Pradhan : 
+            <span [ngClass]="{'red' : calculatetotaldebt(3,1) < 0 , 'green' : calculatetotaldebt(3,1) > 0}">{{calculatetotaldebt(3,1) | currency : 'INR'}}</span>
+            </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="my-3 table-responsive">
     <table class="table border">
       <thead>
         <tr>
           <th>Name</th>
+          <th>Paid By</th>
           <th>Amount</th>
+          <th>Transaction Date</th>
+          <th style="text-align: center;" colspan="3">Split In</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td></td>
-          <td></td>
+        <tr *ngFor="let data of slip">
+          <td>{{data.name}}</td>
+          <td>{{data.paid_By.name}}</td>
+          <td>{{data.amount}}</td>
+          <td>{{data.transactionDate | date : 'yyyy-MM-dd'}}</td>
+          <td *ngFor="let user of data.users">{{user.name}} ( {{data.amount / data.users.length | number:'1.0-0'}} )</td>
         </tr>
       </tbody>
     </table>
   </div>
-
 </div>

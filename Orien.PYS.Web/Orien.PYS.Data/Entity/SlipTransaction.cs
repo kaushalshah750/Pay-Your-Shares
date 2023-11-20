@@ -6,5 +6,8 @@
         public long Slip_Id { get; set; }
         public string Name { get; set; }
         public decimal Amount { get; set; }
+        public int PaidByUserId { get; set; }
+        public DateTime PaymentDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
     }
 }

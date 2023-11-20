@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Orien.PYS.Data;
 
@@ -11,9 +12,11 @@ using Orien.PYS.Data;
 namespace Orien.PYS.Data.Migrations
 {
     [DbContext(typeof(OrienPYSDbContext))]
-    partial class OrienPYSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231116035802_AmountAddingtoCreditCardTable")]
+    partial class AmountAddingtoCreditCardTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,79 +44,6 @@ namespace Orien.PYS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("CreditCards");
-                });
-
-            modelBuilder.Entity("Orien.PYS.Data.Entity.CreditCardSettlement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("AmountPaid")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("CreditCardId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PaidOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreditCardId");
-
-                    b.ToTable("CreditCardSettlements");
-                });
-
-            modelBuilder.Entity("Orien.PYS.Data.Entity.CreditCardStatement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("CreditCardId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("MinimumAmountDue")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("StatementDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreditCardId");
-
-                    b.ToTable("CreditCardStatements");
-                });
-
-            modelBuilder.Entity("Orien.PYS.Data.Entity.CreditCardSummary", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<long>("Available_Limit")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("CreditCardId")
-                        .HasColumnType("int");
-
                     b.Property<long>("Outstanding_Amount")
                         .HasColumnType("bigint");
 
@@ -122,9 +52,7 @@ namespace Orien.PYS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreditCardId");
-
-                    b.ToTable("CreditCardSummaries");
+                    b.ToTable("CreditCards");
                 });
 
             modelBuilder.Entity("Orien.PYS.Data.Entity.SlipTransaction", b =>
@@ -199,39 +127,6 @@ namespace Orien.PYS.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Orien.PYS.Data.Entity.CreditCardSettlement", b =>
-                {
-                    b.HasOne("Orien.PYS.Data.Entity.CreditCard", "CreditCard")
-                        .WithMany()
-                        .HasForeignKey("CreditCardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CreditCard");
-                });
-
-            modelBuilder.Entity("Orien.PYS.Data.Entity.CreditCardStatement", b =>
-                {
-                    b.HasOne("Orien.PYS.Data.Entity.CreditCard", "CreditCard")
-                        .WithMany()
-                        .HasForeignKey("CreditCardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CreditCard");
-                });
-
-            modelBuilder.Entity("Orien.PYS.Data.Entity.CreditCardSummary", b =>
-                {
-                    b.HasOne("Orien.PYS.Data.Entity.CreditCard", "CreditCard")
-                        .WithMany()
-                        .HasForeignKey("CreditCardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CreditCard");
                 });
 
             modelBuilder.Entity("Orien.PYS.Data.Entity.SplitRelation", b =>

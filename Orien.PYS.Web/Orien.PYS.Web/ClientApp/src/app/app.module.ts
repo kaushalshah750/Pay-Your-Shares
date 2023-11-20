@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { CreditCardComponent } from './shared/credit-card/credit-card.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
+    CreditCardComponent,
     FetchDataComponent
   ],
   imports: [
@@ -25,6 +27,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
+      { path: 'credit-card', component: CreditCardComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ])
   ],

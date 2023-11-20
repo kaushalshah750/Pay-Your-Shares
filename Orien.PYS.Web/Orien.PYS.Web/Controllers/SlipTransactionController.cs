@@ -22,17 +22,63 @@ namespace Orien.PYS.Web.Controllers
             this.orienPYSDbContext = orienPYSDbContext;
         }
 
-        [HttpGet]
-        public SlipTransactionVM GetallSlipTransaction()
+        [HttpGet("users")]
+        public List<User> GetUserList()
         {
-            var test = new SlipTransactionVM()
+            return this.orienPYSDbContext.Users.AsEnumerable().ToList();
+        }
+
+        [HttpPost("add-slip")]
+        public void AddSlip(AddSlip addSlip)
+        {
+            var slip = this.orienPYSDbContext.SlipTransactions.ToList();
+
+            SlipTransaction SlipTransaction = new SlipTransaction()
             {
-                Name = this.orienPYSDbContext.SlipTransactions.Where(x => x.Slip_Id == 2).Select(x => x.Name).AsEnumerable().First(),
-                Amount = this.orienPYSDbContext.SlipTransactions.Where(x => x.Slip_Id == 1).Select(x => x.Amount).AsEnumerable().First(),
-                Users = this.orienPYSDbContext.Users.Where(x => x.Id == this.orienPYSDbContext.SplitRelations.Where(sr => sr.UserId == x.Id).Select(sr => sr.UserId).FirstOrDefault()).AsEnumerable().ToList()
+                Name = addSlip.Name,
+                Amount = addSlip.Amount,
+                Slip_Id = slip.Count == 0 ? 1 : this.orienPYSDbContext.SlipTransactions.Select(x => x.Id).Max() + 1,
+                PaidByUserId = addSlip.PaidByUserId,
+                PaymentDate = addSlip.TransactionDate,
+                UpdatedDate = DateTime.Now
             };
 
-            return test;
+            this.orienPYSDbContext.SlipTransactions.Add(SlipTransaction);
+
+            for(var i = 0; i < addSlip.Users.Length; i++)
+            {
+                SplitRelation splitRelation = new SplitRelation()
+                {
+                    Slip_Id = SlipTransaction.Slip_Id,
+                    UserId = addSlip.Users[i]
+                };
+
+                this.orienPYSDbContext.SplitRelations.Add(splitRelation);
+            }
+
+            this.orienPYSDbContext.SaveChanges();
+        }
+
+        [HttpGet]
+        public List<SlipTransactionVM> GetallSlipTransaction()
+        {
+
+            List<SlipTransactionVM> sliptransaction = this.orienPYSDbContext.SlipTransactions.Select(x => new SlipTransactionVM()
+            {
+                Slip_Id = x.Slip_Id,
+                Name = x.Name,
+                Amount  = x.Amount,
+                Paid_By = this.orienPYSDbContext.Users.Where(u => u.Id == x.PaidByUserId).AsEnumerable().FirstOrDefault(),
+                TransactionDate = x.PaymentDate,
+                Users = this.orienPYSDbContext.SplitRelations.Where(sr => sr.Slip_Id  == x.Slip_Id).Select(sr => new User()
+                {
+                    Id = this.orienPYSDbContext.Users.Where(u => u.Id == sr.UserId).Select(u => u.Id).AsEnumerable().FirstOrDefault(),
+                    Name = this.orienPYSDbContext.Users.Where(u => u.Id == sr.UserId).Select(u => u.Name).AsEnumerable().FirstOrDefault(),
+                    Email = this.orienPYSDbContext.Users.Where(u => u.Id == sr.UserId).Select(u => u.Email).AsEnumerable().FirstOrDefault(),
+                }).ToList()
+            }).OrderByDescending(x => x.TransactionDate).ToList();
+
+            return sliptransaction;
         }
     }
 }
