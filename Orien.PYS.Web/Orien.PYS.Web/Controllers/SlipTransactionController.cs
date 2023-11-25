@@ -46,6 +46,7 @@ namespace Orien.PYS.Web.Controllers
                 //Slip_Id = slip.Count == 0 ? 1 : this.orienPYSDbContext.SlipTransactions.Select(x => x.Id).Max() + 1,
                 Slip_Id = this.orienPYSDbContext.SlipTransactions.Select(x => x.Id).Max() + 1,
                 PaidByUserId = addSlip.PaidByUserId,
+                AddedBy = this.orienPYSDbContext.Users.Where(u => u.AzureID == addSlip.AzureId).Select(u => u.Id).First(),
                 PaymentDate = addSlip.TransactionDate,
                 UpdatedDate = DateTime.Now
             };
@@ -69,7 +70,7 @@ namespace Orien.PYS.Web.Controllers
         [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         [Authorize]
         [HttpGet]
-        public List<SlipTransactionVM> GetallSlipTransaction()
+        public List<SlipTransactionVM> GetallSlipTransaction(string userid)
         {
 
             List<SlipTransactionVM> sliptransaction = this.orienPYSDbContext.SlipTransactions.Select(x => new SlipTransactionVM()

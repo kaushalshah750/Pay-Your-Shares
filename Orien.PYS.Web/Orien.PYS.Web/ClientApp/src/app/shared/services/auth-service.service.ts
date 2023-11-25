@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuthServiceService {
   private accessTokenKey = 'access_token';
+  private azureId = 'AzureID';
 
   constructor() {}
 
@@ -12,8 +13,16 @@ export class AuthServiceService {
     return localStorage.getItem(this.accessTokenKey);
   }
 
+  getAzureID(): string | null {
+    return localStorage.getItem(this.azureId);
+  }
+
   setAccessToken(token: string): void {
     localStorage.setItem(this.accessTokenKey, token);
+  }
+
+  setAzureID(id: string): void {
+    localStorage.setItem(this.azureId, id);
   }
 
   removeAccessToken(): void {
@@ -21,10 +30,11 @@ export class AuthServiceService {
   }
 
   getclaims(token:string | null){
-    let decodedJWT = ""
+    let decodedJWT:any = ""
     if(token){
       decodedJWT = JSON.parse(window.atob(token.split('.')[1]));
     }
     console.log(decodedJWT)
+    return decodedJWT
   }
 }

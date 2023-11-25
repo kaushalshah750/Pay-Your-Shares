@@ -15,20 +15,19 @@ export class SliptransactionsService {
   url = 'api/SlipTransaction'
   constructor(
     private http: HttpClient,
-    private authservice: AuthapiService
+    private authApiService: AuthapiService,
+    private authService: AuthServiceService
   ) { }
 
   getuserlist(){
-    return this.authservice.get<Users[]>(this.url + "/users");
-    // return this.http.get<Users[]>(this.url + "users");
+    return this.authApiService.get<Users[]>(this.url + "/users");
   }
 
   getslipayment(){
-    // return this.authservice.apiCall(this.url)
-    return this.authservice.get<SlipTransactionVM[]>(this.url);
+    return this.authApiService.get<SlipTransactionVM[]>(this.url + "?userid=" + this.authService.getAzureID());
   }
 
   Addslipayment(sliptransaction: AddSlip){
-    return this.authservice.post(this.url + '/add-slip', sliptransaction);
+    return this.authApiService.post(this.url + '/add-slip', sliptransaction);
   }
 }

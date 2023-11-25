@@ -4,6 +4,7 @@ import { AddSlip } from '../shared/Models/AddSlip';
 import { Users } from '../shared/Models/Users';
 import { SlipTransactionVM } from '../shared/Models/SlipTransactionVM';
 import { formatDate } from '@angular/common';
+import { AuthServiceService } from '../shared/services/auth-service.service';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +24,7 @@ export class HomeComponent {
 
   constructor(
     private sliptransactionService: SliptransactionsService,
+    private authservice: AuthServiceService,
   ){}
 
   async ngOnInit(){
@@ -31,6 +33,8 @@ export class HomeComponent {
     await this.getslippayment()
     await this.getuserslist()
     console.log(this.users)
+
+    console.log(this.authservice.getclaims(this.authservice.getAccessToken()))
 }
   
   async getuserslist(){
