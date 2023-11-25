@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CreditCardComponent } from './shared/credit-card/credit-card.component';
+import { PaymentSummaryComponent } from './shared/payments/payment-summary/payment-summary.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { CreditCardComponent } from './shared/credit-card/credit-card.component'
     HomeComponent,
     CounterComponent,
     CreditCardComponent,
+    PaymentSummaryComponent,
     FetchDataComponent
   ],
   imports: [
@@ -28,6 +30,7 @@ import { CreditCardComponent } from './shared/credit-card/credit-card.component'
       { path: '', component: AppComponent, pathMatch: 'full' },
       { path: 'home', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
+      { path: 'summary', component: PaymentSummaryComponent },
       { path: 'credit-card', component: CreditCardComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ])

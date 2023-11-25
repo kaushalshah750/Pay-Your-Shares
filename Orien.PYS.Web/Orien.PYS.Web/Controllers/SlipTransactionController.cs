@@ -34,6 +34,22 @@ namespace Orien.PYS.Web.Controllers
 
         [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
         [Authorize]
+        [HttpGet("user")]
+        public User GetUser([FromQuery] string azureId)
+        {
+            return this.orienPYSDbContext.Users.Where(u => u.AzureID == azureId).AsEnumerable().First();
+        }
+
+        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        [Authorize]
+        [HttpGet("other-users")]
+        public List<User> GetOtherUsersList([FromQuery] string azureId)
+        {
+            return this.orienPYSDbContext.Users.Where(u => u.AzureID != azureId).AsEnumerable().ToList();
+        }
+
+        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        [Authorize]
         [HttpPost("add-slip")]
         public void AddSlip(AddSlip addSlip)
         {
@@ -72,8 +88,11 @@ namespace Orien.PYS.Web.Controllers
         [HttpGet]
         public List<SlipTransactionVM> GetallSlipTransaction(string userid)
         {
+            var user = this.orienPYSDbContext.Users.Where(u => u.AzureID == userid).First();
 
-            List<SlipTransactionVM> sliptransaction = this.orienPYSDbContext.SlipTransactions.Select(x => new SlipTransactionVM()
+            List<SlipTransactionVM> sliptransaction = this.orienPYSDbContext.SlipTransactions
+                .Where(st => st.PaidByUserId == user.Id || st.AddedBy == user.Id || this.orienPYSDbContext.SplitRelations.Where(sr => sr.Slip_Id == st.Slip_Id).Select(sr => sr.UserId).ToList().Contains(user.Id))
+                .Select(x => new SlipTransactionVM()
             {
                 Slip_Id = x.Slip_Id,
                 Name = x.Name,

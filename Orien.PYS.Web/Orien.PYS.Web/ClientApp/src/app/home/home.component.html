@@ -31,11 +31,12 @@
   </div>
 
   <div class="d-flex">
-    <div style="width: 220px;">
+    <div>
       <button class="btn btn-primary" (click)="addslip()">Add New Slip</button>
     </div>
-    <div class="d-flex justify-content-between w-100">
-      <div class="d-flex justify-content-between w-100">
+    <div class="mx-3">
+      <button class="btn btn-primary" [routerLink]="['/summary']">Summary Payment</button>
+      <!-- <div class="d-flex justify-content-between w-100">
         <div class="w-100">
             <h5>Kaushal Shah <- Mukesh Yadav : 
               <span [ngClass]="{'red' : calculatetotaldebt(2,1) < 0 , 'green' : calculatetotaldebt(2,1) > 0}">{{calculatetotaldebt(2,1) | currency : 'INR'}}</span>
@@ -46,7 +47,7 @@
             <span [ngClass]="{'red' : calculatetotaldebt(3,1) < 0 , 'green' : calculatetotaldebt(3,1) > 0}">{{calculatetotaldebt(3,1) | currency : 'INR'}}</span>
             </h5>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 

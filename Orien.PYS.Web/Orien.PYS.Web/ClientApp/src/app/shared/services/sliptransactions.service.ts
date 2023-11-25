@@ -23,6 +23,14 @@ export class SliptransactionsService {
     return this.authApiService.get<Users[]>(this.url + "/users");
   }
 
+  getuser(azureId:string){
+    return this.authApiService.get<Users>(this.url + "/user?azureId=" + azureId);
+  }
+
+  getotheruserlist(){
+    return this.authApiService.get<Users[]>(this.url + "/other-users?azureId=" + this.authService.getAzureID());
+  }
+
   getslipayment(){
     return this.authApiService.get<SlipTransactionVM[]>(this.url + "?userid=" + this.authService.getAzureID());
   }

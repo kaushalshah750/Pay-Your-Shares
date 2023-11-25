@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthServiceService } from '../shared/services/auth-service.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -7,6 +8,15 @@ import { Component } from '@angular/core';
 })
 export class NavMenuComponent {
   isExpanded = false;
+  user:any = ""
+
+  constructor(private authservice: AuthServiceService){}
+
+  ngOnInit(){
+    this.user = this.authservice.getclaims(this.authservice.getAccessToken())
+    console.log("this.user")
+    console.log(this.user)
+  }
 
   collapse() {
     this.isExpanded = false;

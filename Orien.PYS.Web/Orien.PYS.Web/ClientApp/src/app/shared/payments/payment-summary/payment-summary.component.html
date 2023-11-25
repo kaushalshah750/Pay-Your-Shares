@@ -1,0 +1,25 @@
+<div>
+    <div>
+        <div class="table-responsive">
+            <table class="table border">
+                <thead class="table-secondary">
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of userslist">
+                    <td>{{user.name}}</td>
+                    <td [ngClass]="{'red' : calculatesingledebt(user.id,loggedinuser.id) < 0 , 'green' : calculatesingledebt(user.id,loggedinuser.id) > 0}">{{calculatesingledebt(user.id,loggedinuser.id) | currency : 'INR'}}</td>
+                  </tr>
+                  <!-- <tr>
+                    <td>Total</td> -->
+                    <!-- <td [ngClass]="{'red' : calculatesingledebt(user.id,loggedinuser.id) < 0 , 'green' : calculatesingledebt(user.id,loggedinuser.id) > 0}">{{calculatesingledebt(user.id,loggedinuser.id) | currency : 'INR'}}</td> -->
+                    <!-- <td>{{calculatetotaldebt(loggedinuser.id) | currency : 'INR'}}</td>
+                  </tr> -->
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
