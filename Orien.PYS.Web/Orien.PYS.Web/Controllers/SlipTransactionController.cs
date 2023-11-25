@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using Orien.PYS.Business.Models;
 using Orien.PYS.Business.Service;
 using Orien.PYS.Data;
@@ -22,22 +24,27 @@ namespace Orien.PYS.Web.Controllers
             this.orienPYSDbContext = orienPYSDbContext;
         }
 
+        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        [Authorize]
         [HttpGet("users")]
         public List<User> GetUserList()
         {
             return this.orienPYSDbContext.Users.AsEnumerable().ToList();
         }
 
+        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        [Authorize]
         [HttpPost("add-slip")]
         public void AddSlip(AddSlip addSlip)
         {
-            var slip = this.orienPYSDbContext.SlipTransactions.ToList();
+            //var slip = this.orienPYSDbContext.SlipTransactions.ToList();
 
             SlipTransaction SlipTransaction = new SlipTransaction()
             {
                 Name = addSlip.Name,
                 Amount = addSlip.Amount,
-                Slip_Id = slip.Count == 0 ? 1 : this.orienPYSDbContext.SlipTransactions.Select(x => x.Id).Max() + 1,
+                //Slip_Id = slip.Count == 0 ? 1 : this.orienPYSDbContext.SlipTransactions.Select(x => x.Id).Max() + 1,
+                Slip_Id = this.orienPYSDbContext.SlipTransactions.Select(x => x.Id).Max() + 1,
                 PaidByUserId = addSlip.PaidByUserId,
                 PaymentDate = addSlip.TransactionDate,
                 UpdatedDate = DateTime.Now
@@ -59,6 +66,8 @@ namespace Orien.PYS.Web.Controllers
             this.orienPYSDbContext.SaveChanges();
         }
 
+        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        [Authorize]
         [HttpGet]
         public List<SlipTransactionVM> GetallSlipTransaction()
         {

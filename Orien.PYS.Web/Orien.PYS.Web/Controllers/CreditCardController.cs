@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using Orien.PYS.Business.Models;
 using Orien.PYS.Business.Service;
 using Orien.PYS.Data.Entity;
@@ -16,12 +18,16 @@ namespace Orien.PYS.Web.Controllers
             this.creditCardService = creditCardService;
         }
 
+        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        [Authorize]
         [HttpGet]
         public List<Credit_Card> GetCreditCardList()
         {
             return this.creditCardService.GetCreditCardList();
         }
 
+        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        [Authorize]
         [HttpGet("Statement")]
         public List<CreditCardStatementVM> GetCreditCardStatementList()
         {

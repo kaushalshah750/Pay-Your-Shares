@@ -25,7 +25,8 @@ import { CreditCardComponent } from './shared/credit-card/credit-card.component'
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: AppComponent, pathMatch: 'full' },
+      { path: 'home', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'credit-card', component: CreditCardComponent },
       { path: 'fetch-data', component: FetchDataComponent },
