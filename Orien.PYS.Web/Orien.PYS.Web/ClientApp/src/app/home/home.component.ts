@@ -91,6 +91,7 @@ export class HomeComponent {
       Name: this.name,
       Amount: this.amount,
       PaidByUserId: Number(this.paidByUserId),
+      AzureId: this.authservice.getAzureID(),
       TransactionDate: this.TransactionDate,
       Users: this.userlist
     }
