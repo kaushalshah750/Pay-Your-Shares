@@ -5,6 +5,7 @@ import { Users } from '../shared/Models/Users';
 import { SlipTransactionVM } from '../shared/Models/SlipTransactionVM';
 import { formatDate } from '@angular/common';
 import { AuthServiceService } from '../shared/services/auth-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,7 @@ export class HomeComponent {
   constructor(
     private sliptransactionService: SliptransactionsService,
     private authservice: AuthServiceService,
+    private toastr: ToastrService
   ){}
 
   async ngOnInit(){
@@ -60,7 +62,20 @@ export class HomeComponent {
   }
 
   adduser(user:any){
-    this.userlist.push(Number(user.target.value))
+    if(this.userlist.find(u => u == Number(user.target.value))){
+      var test:number[] = []
+
+      this.userlist.forEach((element:number) => {
+        
+        if(element != Number(user.target.value)){
+          test.push(element)
+        }
+      });
+
+      this.userlist = test
+    }else{
+      this.userlist.push(Number(user.target.value))
+    }
     console.log(this.userlist)
   }
 
@@ -96,11 +111,15 @@ export class HomeComponent {
       Users: this.userlist
     }
 
-    this.sliptransactionService.Addslipayment(Slip).subscribe(() => {
-      this.getslippayment()
-      this.userlist = []
-      this.getuserslist()
-    })
+    if(Slip.Name != "" && Slip.Amount != 0 && Slip.AzureId != "" && Slip.PaidByUserId != 0 && this.userlist.length != 0){
+      this.sliptransactionService.Addslipayment(Slip).subscribe(() => {
+        this.getslippayment()
+        this.userlist = []
+        this.getuserslist()
+      })
+    }else{
+      this.toastr.info('The info is not correct', 'Success')
+    }
   }
 
   calculatetotal(from:string, to:string){

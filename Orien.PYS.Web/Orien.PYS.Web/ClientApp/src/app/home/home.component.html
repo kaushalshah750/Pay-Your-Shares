@@ -11,7 +11,10 @@
       </div>
       <div class="my-2">
         <label for="PaidByUserId">PaidByUserId</label>
-        <input class="mx-3 px-2" type="text" [(ngModel)]="paidByUserId">
+        <select class="mx-3 px-2" name="PaidByUserId" id="PaidByUserId" [(ngModel)]="paidByUserId">
+          <option value="{{user.id}}" *ngFor="let user of users">{{user.name}}</option>
+        </select>
+        <!-- <input class="mx-3 px-2" type="text" [(ngModel)]="paidByUserId"> -->
       </div>
       <div class="my-2">
         <label for="TransactionDate">TransactionDate</label>
@@ -20,7 +23,7 @@
       <div>
         <div *ngFor="let data of users">
           <label for="{{data.name}}">{{data.id}} {{data.name}}</label>
-          <input class="mx-3" type="radio" value="{{data.id}}" id="user" (click)="adduser($event)">
+          <input class="mx-3" type="checkbox" value="{{data.id}}" id="user" (click)="adduser($event)">
         </div>
       </div>
     </div>
