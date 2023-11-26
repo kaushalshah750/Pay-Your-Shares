@@ -1,3 +1,10 @@
+<ngx-spinner 
+  type="ball-scale-multiple" 
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff">
+</ngx-spinner>
+
 <div>
   <div class="my-5" *ngIf="showaddslip">
     <div>
@@ -39,18 +46,9 @@
     </div>
     <div class="mx-3">
       <button class="btn btn-primary" [routerLink]="['/summary']">Summary Payment</button>
-      <!-- <div class="d-flex justify-content-between w-100">
-        <div class="w-100">
-            <h5>Kaushal Shah <- Mukesh Yadav : 
-              <span [ngClass]="{'red' : calculatetotaldebt(2,1) < 0 , 'green' : calculatetotaldebt(2,1) > 0}">{{calculatetotaldebt(2,1) | currency : 'INR'}}</span>
-            </h5>
-        </div>
-        <div class="w-100">
-          <h5>Kaushal Shah <- Suraj Pradhan : 
-            <span [ngClass]="{'red' : calculatetotaldebt(3,1) < 0 , 'green' : calculatetotaldebt(3,1) > 0}">{{calculatetotaldebt(3,1) | currency : 'INR'}}</span>
-            </h5>
-        </div>
-      </div> -->
+    </div>
+    <div>
+      <button class="btn btn-primary" (click)="refresh()">Refresh</button>
     </div>
   </div>
 

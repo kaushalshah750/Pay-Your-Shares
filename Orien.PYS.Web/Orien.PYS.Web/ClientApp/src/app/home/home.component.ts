@@ -6,6 +6,7 @@ import { SlipTransactionVM } from '../shared/Models/SlipTransactionVM';
 import { formatDate } from '@angular/common';
 import { AuthServiceService } from '../shared/services/auth-service.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-home',
@@ -26,22 +27,23 @@ export class HomeComponent {
   constructor(
     private sliptransactionService: SliptransactionsService,
     private authservice: AuthServiceService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
   ){}
 
   async ngOnInit(){
+    this.spinner.show()
     this.TransactionDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
-    console.log(this.TransactionDate)
-    await this.getslippayment()
     await this.getuserslist()
-    console.log(this.users)
-
-    console.log(this.authservice.getclaims(this.authservice.getAccessToken()))
+    await this.getslippayment()
 }
   
   async getuserslist(){
+    this.spinner.show()
+
     await this.sliptransactionService.getuserlist().subscribe((res:Users[]) => {
       this.users = res
+      this.spinner.hide()
       // this.userdebtcalc = this.users
       // this.userdebtcalc.forEach((ele:any, index:number) =>{
       //   if(ele.id == 1){
@@ -52,8 +54,12 @@ export class HomeComponent {
   }
   
   async getslippayment(){
+    this.spinner.show()
+
     await this.sliptransactionService.getslipayment().subscribe((res:SlipTransactionVM[])=>{
       this.slip = res
+      this.spinner.hide()
+
     })
   }
 
@@ -83,7 +89,6 @@ export class HomeComponent {
     var paidbyfrom:any = 0
     var paidbyto:any = 0
     this.slip.forEach((ele:SlipTransactionVM) => {
-      // console.log(ele)
       if(ele.paid_By.id == from && ele.users.some((user) => user.id.toString().includes(to.toString()))){
         paidbyfrom = paidbyfrom + (ele.amount/ele.users.length)
       }
@@ -101,6 +106,13 @@ export class HomeComponent {
     this.userlist = []
   }
 
+  refresh(){
+    this.spinner.show()
+
+    this.slip = []
+    this.getslippayment()
+  }
+
   createnewsliptransaction(){
     var Slip:AddSlip = {
       Name: this.name,
@@ -110,7 +122,7 @@ export class HomeComponent {
       TransactionDate: this.TransactionDate,
       Users: this.userlist
     }
-
+    this.spinner.show()
     if(Slip.Name != "" && Slip.Amount != 0 && Slip.AzureId != "" && Slip.PaidByUserId != 0 && this.userlist.length != 0){
       this.sliptransactionService.Addslipayment(Slip).subscribe(() => {
         this.getslippayment()

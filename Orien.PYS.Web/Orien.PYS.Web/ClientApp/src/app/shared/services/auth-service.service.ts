@@ -34,7 +34,6 @@ export class AuthServiceService {
     if(token){
       decodedJWT = JSON.parse(window.atob(token.split('.')[1]));
     }
-    console.log(decodedJWT)
     return decodedJWT
   }
 }
