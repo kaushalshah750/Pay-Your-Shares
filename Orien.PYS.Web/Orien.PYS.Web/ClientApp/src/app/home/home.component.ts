@@ -3,10 +3,11 @@ import { SliptransactionsService } from '../shared/services/sliptransactions.ser
 import { AddSlip } from '../shared/Models/AddSlip';
 import { Users } from '../shared/Models/Users';
 import { SlipTransactionVM } from '../shared/Models/SlipTransactionVM';
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { AuthServiceService } from '../shared/services/auth-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -18,22 +19,27 @@ export class HomeComponent {
   name:any = ""
   amount:number = 0
   paidByUserId:number = 0
-  TransactionDate:any = new Date()
+  TransactionDate:any = new FormControl(new Date())
   users:Users[] = []
   userlist:number[] = []
   showaddslip:boolean = false
   userdebtcalc:Users[] = []
 
+  displayedColumns: string[] = ['Name', 'Paid By', 'Amount', 'Transaction Date'];
+  dataSource = this.slip;
+
   constructor(
     private sliptransactionService: SliptransactionsService,
     private authservice: AuthServiceService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private datePipe: DatePipe,
+
   ){}
 
   async ngOnInit(){
     this.spinner.show()
-    this.TransactionDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+    // this.TransactionDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     await this.getuserslist()
     await this.getslippayment()
 }
@@ -59,6 +65,7 @@ export class HomeComponent {
     await this.sliptransactionService.getslipayment().subscribe((res:SlipTransactionVM[])=>{
       this.slip = res
       this.spinner.hide()
+      this.dataSource = this.slip;
 
     })
   }
@@ -114,16 +121,19 @@ export class HomeComponent {
   }
 
   createnewsliptransaction(){
+    this.TransactionDate.value = this.datePipe.transform(this.TransactionDate.value, 'yyyy-MM-ddTHH:mm:ss', 'IST');
+
+    console.log(this.TransactionDate.value)
     var Slip:AddSlip = {
       Name: this.name,
       Amount: this.amount,
       PaidByUserId: Number(this.paidByUserId),
       AzureId: this.authservice.getAzureID(),
-      TransactionDate: this.TransactionDate,
+      TransactionDate: this.TransactionDate.value,
       Users: this.userlist
     }
-    this.spinner.show()
     if(Slip.Name != "" && Slip.Amount != 0 && Slip.AzureId != "" && Slip.PaidByUserId != 0 && this.userlist.length != 0){
+      this.spinner.show()
       this.sliptransactionService.Addslipayment(Slip).subscribe(() => {
         this.getslippayment()
         this.userlist = []
