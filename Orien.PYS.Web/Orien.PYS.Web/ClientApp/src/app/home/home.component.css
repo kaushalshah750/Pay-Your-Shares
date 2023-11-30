@@ -10,4 +10,12 @@ table{
     color: green;
 }
 
+.user-container{
+    word-wrap:break-word;
+    padding: 7px;
+    margin: 3px;
+    border-radius: 10px;
+    background-color: #00000030
+}
+
 

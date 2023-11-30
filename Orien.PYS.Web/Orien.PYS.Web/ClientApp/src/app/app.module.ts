@@ -22,6 +22,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { DatePipe } from '@angular/common';
+import { UsersComponent } from './shared/users/users.component';
 
 
 
@@ -33,7 +34,8 @@ import { DatePipe } from '@angular/common';
     CounterComponent,
     CreditCardComponent,
     PaymentSummaryComponent,
-    FetchDataComponent
+    FetchDataComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -57,6 +59,7 @@ import { DatePipe } from '@angular/common';
       { path: 'home', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'summary', component: PaymentSummaryComponent },
+      { path: 'users', component: UsersComponent },
       { path: 'credit-card', component: CreditCardComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ])

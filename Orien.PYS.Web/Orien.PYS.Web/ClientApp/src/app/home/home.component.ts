@@ -25,7 +25,7 @@ export class HomeComponent {
   showaddslip:boolean = false
   userdebtcalc:Users[] = []
 
-  displayedColumns: string[] = ['Name', 'Paid By', 'Amount', 'Transaction Date'];
+  displayedColumns: string[] = ['Name', 'Paid By', 'Amount', 'Transaction Date', 'Split In'];
   dataSource = this.slip;
 
   constructor(
@@ -42,7 +42,7 @@ export class HomeComponent {
     // this.TransactionDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     await this.getuserslist()
     await this.getslippayment()
-}
+  }
   
   async getuserslist(){
     this.spinner.show()
@@ -50,12 +50,6 @@ export class HomeComponent {
     await this.sliptransactionService.getuserlist().subscribe((res:Users[]) => {
       this.users = res
       this.spinner.hide()
-      // this.userdebtcalc = this.users
-      // this.userdebtcalc.forEach((ele:any, index:number) =>{
-      //   if(ele.id == 1){
-      //     this.userdebtcalc.splice(index,1)
-      //   }
-      // })
     })
   }
   
