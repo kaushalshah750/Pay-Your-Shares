@@ -47,6 +47,7 @@
 <mat-dialog-actions align="end">
     <!-- <button class="btn btn-primary" (click)="createnewsliptransaction()">Submit</button>
     <button class="btn btn-secondary mx-3" (click)="clearfields()">Clear</button> -->
-    <button mat-button color="secondary" (click)="clearfields()">Clear</button>
-    <button mat-button color="primary" cdkFocusInitial (click)="createnewsliptransaction()">Submit</button>
+    <button mat-raised-button color="secondary" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button color="secondary" (click)="clearfields()">Clear</button>
+    <button mat-raised-button color="primary" cdkFocusInitial (click)="createnewsliptransaction()">Submit</button>
 </mat-dialog-actions>

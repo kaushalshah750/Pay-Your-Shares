@@ -64,15 +64,13 @@ export class HomeComponent {
 
   addslip(){
     const dialogRef = this.dialog.open(CreateSlipComponent);
-    //   height: '70%',
-    //   width: '70%',
-    // });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result);
-      this.spinner.hide()
-      this.getslippayment()
+      if(result){
+        this.getslippayment()
+      }else{
+        this.spinner.hide()
+      }
     });
   }
 

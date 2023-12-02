@@ -23,7 +23,7 @@ export class CreateSlipComponent {
     amount: [0, [Validators.required, Validators.min(10)]],
     paidByUserId: [0, [Validators.required, Validators.min(1)]],
     TransactionDate: [new Date(), Validators.required],
-    Users: [this.users, [Validators.required]]
+    Users: [[], [Validators.required]]
   })
 
   constructor(
@@ -67,33 +67,30 @@ export class CreateSlipComponent {
   }
 
   createnewsliptransaction(){
-
-    console.log(this.createform.status)
-    // console.log(this.createform)
-    console.log(this.createform.value)
-    // if (this.createform.valid && this.userlist.length > 0){
-    //   var Slip:AddSlip = {
-    //     Name: this.createform.controls['name'].value,
-    //     Amount: this.createform.controls['amount'].value,
-    //     PaidByUserId: this.createform.controls['paidByUserId'].value,
-    //     AzureId: this.authservice.getAzureID(),
-    //     TransactionDate: this.createform.controls['TransactionDate'].value,
-    //     Users: this.userlist
-    //   }
-    //   this.spinner.show()
-    //   this.sliptransactionService.Addslipayment(Slip).subscribe(() => {
-    //     this.userlist = []
-    //     this.dialogRef.close();
-    //   })
-    // }else{
-    //   this.toastr.info('The info is not correct', 'Success')
-    // }
+    if (this.createform.valid){
+      var Slip:AddSlip = {
+        Name: this.createform.controls['name'].value,
+        Amount: this.createform.controls['amount'].value,
+        PaidByUserId: this.createform.controls['paidByUserId'].value,
+        AzureId: this.authservice.getAzureID(),
+        TransactionDate: this.createform.controls['TransactionDate'].value,
+        Users: this.createform.controls['Users'].value
+      }
+      this.spinner.show()
+      this.sliptransactionService.Addslipayment(Slip).subscribe(() => {
+        this.userlist = []
+        this.dialogRef.close(true);
+      })
+    }else{
+      this.toastr.info('The info is not correct', 'Success')
+    }
   }
 
   clearfields(){
-    this.createform.controls.name.setValue("")
+    this.createform.controls.name.setValue('')
     this.createform.controls.amount.setValue(0)
     this.createform.controls.paidByUserId.setValue(0)
+    // this.createform.controls.Users.setValue()
     this.userlist = []
   }
 
