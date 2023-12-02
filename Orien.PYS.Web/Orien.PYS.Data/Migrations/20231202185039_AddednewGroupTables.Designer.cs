@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Orien.PYS.Data;
 
@@ -11,9 +12,11 @@ using Orien.PYS.Data;
 namespace Orien.PYS.Data.Migrations
 {
     [DbContext(typeof(OrienPYSDbContext))]
-    partial class OrienPYSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231202185039_AddednewGroupTables")]
+    partial class AddednewGroupTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,7 +165,14 @@ namespace Orien.PYS.Data.Migrations
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
+                    b.Property<int>("UserId1")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("GroupMemberRelations");
                 });
@@ -282,6 +292,25 @@ namespace Orien.PYS.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("CreditCard");
+                });
+
+            modelBuilder.Entity("Orien.PYS.Data.Entity.GroupMemberRelation", b =>
+                {
+                    b.HasOne("Orien.PYS.Data.Entity.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Orien.PYS.Data.Entity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Orien.PYS.Data.Entity.SplitRelation", b =>

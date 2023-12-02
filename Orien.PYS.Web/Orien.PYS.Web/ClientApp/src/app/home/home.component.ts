@@ -10,6 +10,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateSlipComponent } from '../shared/Dialog/create-slip/create-slip.component';
+import { CreateGroupComponent } from '../shared/Dialog/create-group/create-group.component';
 
 @Component({
   selector: 'app-home',
@@ -60,6 +61,18 @@ export class HomeComponent {
       this.dataSource = this.slip;
 
     })
+  }
+
+  addgroup(){
+    const dialogRef = this.dialog.open(CreateGroupComponent);
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.getslippayment()
+      }else{
+        this.spinner.hide()
+      }
+    });
   }
 
   addslip(){

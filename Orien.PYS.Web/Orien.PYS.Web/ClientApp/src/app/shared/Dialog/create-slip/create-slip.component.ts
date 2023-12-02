@@ -1,13 +1,12 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SliptransactionsService } from '../../services/sliptransactions.service';
 import { Users } from '../../Models/Users';
-import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { AddSlip } from '../../Models/AddSlip';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-create-slip',

@@ -13,12 +13,10 @@ export class CreditCardService {
   url = 'api/CreditCard'
 
   constructor(
-    private http: HttpClient,
     private authservice: AuthapiService
   ) { }
 
   getcreditcardlist(){
-    // return this.authservice.apiCall(this.url)
     return this.authservice.get<CreditCardSummary[]>(this.url)
   }
 

@@ -6,6 +6,7 @@
 </ngx-spinner>
 
 <div>
+
   <div class="d-flex justify-content-between">
     <div class="d-flex">
       <div>
@@ -13,6 +14,9 @@
       </div>
       <div class="mx-3">
         <button mat-raised-button color="primary" [routerLink]="['/summary']">Summary Payment</button>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" (click)="addgroup()">Add Group</button>
       </div>
     </div>
     <div>
@@ -25,34 +29,26 @@
   <div class="my-4 table-responsive">    
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-      <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
-    
-      <!-- Position Column -->
       <ng-container matColumnDef="Name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
     
-      <!-- Name Column -->
       <ng-container matColumnDef="Paid By">
         <th mat-header-cell *matHeaderCellDef> Paid By </th>
         <td mat-cell *matCellDef="let element"> {{element.paid_By.name}} </td>
       </ng-container>
     
-      <!-- Weight Column -->
       <ng-container matColumnDef="Amount">
         <th mat-header-cell *matHeaderCellDef> Amount </th>
         <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
       </ng-container>
     
-      <!-- Symbol Column -->
       <ng-container matColumnDef="Transaction Date">
         <th mat-header-cell *matHeaderCellDef> Transaction Date </th>
         <td mat-cell *matCellDef="let element"> {{element.transactionDate | date:'yyyy-MM-dd' }} </td>
       </ng-container>
     
-      <!-- Symbol Column -->
       <ng-container matColumnDef="Split In">
         <th mat-header-cell *matHeaderCellDef> Split In </th>
         <td mat-cell *matCellDef="let element"> 
@@ -70,27 +66,4 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </div>
-
-  <!-- <div class="my-3 table-responsive">
-    <table class="table border">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Paid By</th>
-          <th>Amount</th>
-          <th>Transaction Date</th>
-          <th style="text-align: center;" colspan="3">Split In</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of slip">
-          <td>{{data.name}}</td>
-          <td>{{data.paid_By.name}}</td>
-          <td>{{data.amount}}</td>
-          <td>{{data.transactionDate | date : 'yyyy-MM-dd'}}</td>
-          <td *ngFor="let user of data.users">{{user.name}} ( {{data.amount / data.users.length | number:'1.0-0'}} )</td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
 </div>

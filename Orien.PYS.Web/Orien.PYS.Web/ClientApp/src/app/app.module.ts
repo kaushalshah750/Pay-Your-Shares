@@ -28,6 +28,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { CreateSlipComponent } from './shared/Dialog/create-slip/create-slip.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { CreateGroupComponent } from './shared/Dialog/create-group/create-group.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { MatSelectModule } from '@angular/material/select';
     PaymentSummaryComponent,
     FetchDataComponent,
     CreateSlipComponent,
+    CreateGroupComponent,
     UsersComponent
   ],
   imports: [

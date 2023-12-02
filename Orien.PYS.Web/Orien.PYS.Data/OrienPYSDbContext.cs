@@ -9,17 +9,50 @@ namespace Orien.PYS.Data
         {
         }
 
+        /// <summary>
+        /// Gets or Sets Users.
+        /// </summary>
         public DbSet<User> Users { get; set; }
 
+        /// <summary>
+        /// Gets or Sets Users.
+        /// </summary>
         public DbSet<SlipTransaction> SlipTransactions { get; set; }
 
+        /// <summary>
+        /// Gets or Sets Users.
+        /// </summary>
         public DbSet<SplitRelation> SplitRelations { get; set; }
 
-        public DbSet<CreditCard> CreditCards { get; set; } 
+        /// <summary>
+        /// Gets or Sets Users.
+        /// </summary>
+        public DbSet<CreditCard> CreditCards { get; set; }
 
+        /// <summary>
+        /// Gets or Sets Users.
+        /// </summary>
         public DbSet<CreditCardStatement> CreditCardStatements { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Users.
+        /// </summary>
         public DbSet<CreditCardSettlement> CreditCardSettlements { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Users.
+        /// </summary>
         public DbSet<CreditCardSummary> CreditCardSummaries { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Users.
+        /// </summary>
+        public DbSet<Group> Groups { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Users.
+        /// </summary>
+        public DbSet<GroupMemberRelation> GroupMemberRelations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
