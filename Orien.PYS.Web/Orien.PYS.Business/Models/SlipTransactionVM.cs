@@ -10,6 +10,7 @@ namespace Orien.PYS.Business.Models
         public DateTime TransactionDate { get; set; }
         public User Paid_By { get; set; }
         public List<User> Users { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 
     public class UserVM

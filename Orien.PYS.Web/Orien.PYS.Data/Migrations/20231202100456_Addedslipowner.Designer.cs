@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Orien.PYS.Data;
 
@@ -11,9 +12,11 @@ using Orien.PYS.Data;
 namespace Orien.PYS.Data.Migrations
 {
     [DbContext(typeof(OrienPYSDbContext))]
-    partial class OrienPYSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231202100456_Addedslipowner")]
+    partial class Addedslipowner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,6 +159,9 @@ namespace Orien.PYS.Data.Migrations
 
                     b.Property<long>("Slip_Id")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("Slip_Owner")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");

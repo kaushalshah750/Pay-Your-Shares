@@ -64,6 +64,7 @@ namespace Orien.PYS.Web.Controllers
                 PaidByUserId = addSlip.PaidByUserId,
                 AddedBy = this.orienPYSDbContext.Users.Where(u => u.AzureID == addSlip.AzureId).Select(u => u.Id).First(),
                 PaymentDate = addSlip.TransactionDate,
+                CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now
             };
 
@@ -99,13 +100,14 @@ namespace Orien.PYS.Web.Controllers
                 Amount  = x.Amount,
                 Paid_By = this.orienPYSDbContext.Users.Where(u => u.Id == x.PaidByUserId).AsEnumerable().FirstOrDefault(),
                 TransactionDate = x.PaymentDate,
+                CreatedDate = x.CreatedDate,
                 Users = this.orienPYSDbContext.SplitRelations.Where(sr => sr.Slip_Id  == x.Slip_Id).Select(sr => new User()
                 {
                     Id = this.orienPYSDbContext.Users.Where(u => u.Id == sr.UserId).Select(u => u.Id).AsEnumerable().FirstOrDefault(),
                     Name = this.orienPYSDbContext.Users.Where(u => u.Id == sr.UserId).Select(u => u.Name).AsEnumerable().FirstOrDefault(),
                     Email = this.orienPYSDbContext.Users.Where(u => u.Id == sr.UserId).Select(u => u.Email).AsEnumerable().FirstOrDefault(),
                 }).ToList()
-            }).OrderByDescending(x => x.TransactionDate).ToList();
+            }).OrderByDescending(x => x.CreatedDate).ToList();
 
             return sliptransaction;
         }

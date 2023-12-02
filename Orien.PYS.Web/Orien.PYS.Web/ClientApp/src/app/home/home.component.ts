@@ -8,6 +8,8 @@ import { AuthServiceService } from '../shared/services/auth-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateSlipComponent } from '../shared/Dialog/create-slip/create-slip.component';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +24,6 @@ export class HomeComponent {
   TransactionDate:any = new FormControl(new Date())
   users:Users[] = []
   userlist:number[] = []
-  showaddslip:boolean = false
   userdebtcalc:Users[] = []
 
   displayedColumns: string[] = ['Name', 'Paid By', 'Amount', 'Transaction Date', 'Split In'];
@@ -30,11 +31,8 @@ export class HomeComponent {
 
   constructor(
     private sliptransactionService: SliptransactionsService,
-    private authservice: AuthServiceService,
-    private toastr: ToastrService,
     private spinner: NgxSpinnerService,
-    private datePipe: DatePipe,
-
+    public dialog: MatDialog
   ){}
 
   async ngOnInit(){
@@ -65,25 +63,17 @@ export class HomeComponent {
   }
 
   addslip(){
-    this.showaddslip = !this.showaddslip
-  }
+    const dialogRef = this.dialog.open(CreateSlipComponent);
+    //   height: '70%',
+    //   width: '70%',
+    // });
 
-  adduser(user:any){
-    if(this.userlist.find(u => u == Number(user.target.value))){
-      var test:number[] = []
-
-      this.userlist.forEach((element:number) => {
-        
-        if(element != Number(user.target.value)){
-          test.push(element)
-        }
-      });
-
-      this.userlist = test
-    }else{
-      this.userlist.push(Number(user.target.value))
-    }
-    console.log(this.userlist)
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result);
+      this.spinner.hide()
+      this.getslippayment()
+    });
   }
 
   calculatetotaldebt(from:number, to:number){
@@ -100,42 +90,11 @@ export class HomeComponent {
     return Math.round(paidbyto - paidbyfrom)
   }
 
-  clearfields(){
-    this.name = ""
-    this.amount = 0
-    this.paidByUserId = 0
-    this.userlist = []
-  }
-
   refresh(){
     this.spinner.show()
 
     this.slip = []
     this.getslippayment()
-  }
-
-  createnewsliptransaction(){
-    this.TransactionDate.value = this.datePipe.transform(this.TransactionDate.value, 'yyyy-MM-ddTHH:mm:ss', 'IST');
-
-    console.log(this.TransactionDate.value)
-    var Slip:AddSlip = {
-      Name: this.name,
-      Amount: this.amount,
-      PaidByUserId: Number(this.paidByUserId),
-      AzureId: this.authservice.getAzureID(),
-      TransactionDate: this.TransactionDate.value,
-      Users: this.userlist
-    }
-    if(Slip.Name != "" && Slip.Amount != 0 && Slip.AzureId != "" && Slip.PaidByUserId != 0 && this.userlist.length != 0){
-      this.spinner.show()
-      this.sliptransactionService.Addslipayment(Slip).subscribe(() => {
-        this.getslippayment()
-        this.userlist = []
-        this.getuserslist()
-      })
-    }else{
-      this.toastr.info('The info is not correct', 'Success')
-    }
   }
 
   calculatetotal(from:string, to:string){

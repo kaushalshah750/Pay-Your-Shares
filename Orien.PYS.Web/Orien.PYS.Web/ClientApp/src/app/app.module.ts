@@ -18,13 +18,16 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { DatePipe } from '@angular/common';
 import { UsersComponent } from './shared/users/users.component';
-
-
+import {MatButtonModule} from '@angular/material/button';
+import { CreateSlipComponent } from './shared/Dialog/create-slip/create-slip.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,7 @@ import { UsersComponent } from './shared/users/users.component';
     CreditCardComponent,
     PaymentSummaryComponent,
     FetchDataComponent,
+    CreateSlipComponent,
     UsersComponent
   ],
   imports: [
@@ -48,8 +52,12 @@ import { UsersComponent } from './shared/users/users.component';
     MatPaginatorModule,
     MatFormFieldModule, 
     MatInputModule,
+    MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right'

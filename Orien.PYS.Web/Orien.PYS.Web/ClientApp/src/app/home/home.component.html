@@ -6,56 +6,19 @@
 </ngx-spinner>
 
 <div>
-  <div class="my-5" *ngIf="showaddslip">
-    <div>
-      <div class="my-2">
-        <label for="name">Name</label>
-        <input class="mx-3 px-2" type="text" [(ngModel)]="name">
-      </div>
-      <div class="my-2">
-        <label for="amount">Amount</label>
-        <input class="mx-3 px-2" type="text" [(ngModel)]="amount">
-      </div>
-      <div class="my-2">
-        <label for="PaidByUserId">PaidByUserId</label>
-        <select class="mx-3 px-2" name="PaidByUserId" id="PaidByUserId" [(ngModel)]="paidByUserId">
-          <option value="{{user.id}}" *ngFor="let user of users">{{user.name}}</option>
-        </select>
-        <!-- <input class="mx-3 px-2" type="text" [(ngModel)]="paidByUserId"> -->
-      </div>
-      <mat-form-field>
-        <mat-label>TransactionDate</mat-label>
-        <input matInput [matDatepicker]="picker1" [formControl]="TransactionDate">
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
-      </mat-form-field>
-      <!-- <div class="my-2">
-        <label for="TransactionDate">TransactionDate</label>
-        <input class="mx-3 px-2" type="date" [(ngModel)]="TransactionDate">
-      </div> -->
+  <div class="d-flex justify-content-between">
+    <div class="d-flex">
       <div>
-        <div *ngFor="let data of users">
-          <label for="{{data.name}}">{{data.id}} {{data.name}}</label>
-          <input class="mx-3" type="checkbox" value="{{data.id}}" id="user" (click)="adduser($event)">
-        </div>
+        <button class="btn btn-primary" (click)="addslip()">Add New Slip</button>
+      </div>
+      <div class="mx-3">
+        <button class="btn btn-primary" [routerLink]="['/summary']">Summary Payment</button>
       </div>
     </div>
-    <div class="my-3">
-      <button class="btn btn-primary" (click)="createnewsliptransaction()">Submit</button>
-      <button class="btn btn-secondary mx-3" (click)="clearfields()">Clear</button>
-    </div>
-  </div>
-
-  <div class="d-flex">
     <div>
-      <button class="btn btn-primary" (click)="addslip()">Add New Slip</button>
-    </div>
-    <div class="mx-3">
-      <button class="btn btn-primary" [routerLink]="['/summary']">Summary Payment</button>
-    </div>
-    <div>
-      <button class="btn btn-primary" (click)="refresh()">Refresh</button>
+      <button class="btn btn-secondary d-flex" (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+      </button>
     </div>
   </div>
 

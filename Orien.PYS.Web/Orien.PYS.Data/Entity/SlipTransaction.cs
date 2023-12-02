@@ -9,6 +9,7 @@
         public int PaidByUserId { get; set; }
         public int AddedBy { get; set; }
         public DateTime PaymentDate { get; set; }
+        public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
     }
 }
