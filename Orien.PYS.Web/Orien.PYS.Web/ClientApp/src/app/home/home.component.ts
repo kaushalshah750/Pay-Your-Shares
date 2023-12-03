@@ -20,6 +20,7 @@ import { CreateGroupComponent } from '../shared/Dialog/create-group/create-group
 export class HomeComponent {
   slip:SlipTransactionVM[] = []
   name:any = ""
+  user:any = ""
   amount:number = 0
   paidByUserId:number = 0
   TransactionDate:any = new FormControl(new Date())
@@ -33,11 +34,13 @@ export class HomeComponent {
   constructor(
     private sliptransactionService: SliptransactionsService,
     private spinner: NgxSpinnerService,
+    private authservice: AuthServiceService,
     public dialog: MatDialog
   ){}
 
   async ngOnInit(){
     this.spinner.show()
+    this.user = this.authservice.getclaims(this.authservice.getAccessToken())
     // this.TransactionDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     await this.getuserslist()
     await this.getslippayment()

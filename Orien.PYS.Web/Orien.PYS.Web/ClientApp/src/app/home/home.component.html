@@ -15,7 +15,7 @@
       <div class="mx-3">
         <button mat-raised-button color="primary" [routerLink]="['/summary']">Summary Payment</button>
       </div>
-      <div>
+      <div *ngIf="user.oid == '8677e173-0815-4bf6-b631-3529dc9bdb5e'">
         <button mat-raised-button color="primary" (click)="addgroup()">Add Group</button>
       </div>
     </div>
