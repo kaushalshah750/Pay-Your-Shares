@@ -35,6 +35,10 @@ export class SliptransactionsService {
     return this.authApiService.get<SlipTransactionVM[]>(this.url + "?userid=" + this.authService.getAzureID());
   }
 
+  deleteslipayment(slipid:number){
+    return this.authApiService.delete<boolean>(this.url + "/" + slipid);
+  }
+
   Addslipayment(sliptransaction: AddSlip){
     return this.authApiService.post(this.url + '/add-slip', sliptransaction);
   }

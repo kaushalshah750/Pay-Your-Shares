@@ -3,7 +3,6 @@ import { SliptransactionsService } from '../shared/services/sliptransactions.ser
 import { AddSlip } from '../shared/Models/AddSlip';
 import { Users } from '../shared/Models/Users';
 import { SlipTransactionVM } from '../shared/Models/SlipTransactionVM';
-import { DatePipe, formatDate } from '@angular/common';
 import { AuthServiceService } from '../shared/services/auth-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -28,13 +27,14 @@ export class HomeComponent {
   userlist:number[] = []
   userdebtcalc:Users[] = []
 
-  displayedColumns: string[] = ['Name', 'Paid By', 'Amount', 'Transaction Date', 'Split In'];
+  displayedColumns: string[] = ['Name', 'Paid By', 'Amount', 'Transaction Date', 'Split In', 'Action'];
   dataSource = this.slip;
 
   constructor(
     private sliptransactionService: SliptransactionsService,
     private spinner: NgxSpinnerService,
     private authservice: AuthServiceService,
+    private toastr: ToastrService,
     public dialog: MatDialog
   ){}
 
@@ -109,6 +109,20 @@ export class HomeComponent {
 
     this.slip = []
     this.getslippayment()
+  }
+
+  deletesliptransaction(slip:SlipTransactionVM){
+    this.spinner.show()
+    this.sliptransactionService.deleteslipayment(slip.slip_Id).subscribe((res:boolean)=>{
+      this.spinner.show()
+      if(res){
+        this.toastr.success('The Slip is Successfully deleted', 'Success')
+        this.getslippayment()
+      }else{
+        this.toastr.error('The Slip Failed to delete', 'Error')
+        this.spinner.hide()
+      }
+    })
   }
 
   calculatetotal(from:string, to:string){

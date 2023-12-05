@@ -60,7 +60,7 @@ namespace Orien.PYS.Web.Controllers
                 Name = addSlip.Name,
                 Amount = addSlip.Amount,
                 //Slip_Id = slip.Count == 0 ? 1 : this.orienPYSDbContext.SlipTransactions.Select(x => x.Id).Max() + 1,
-                Slip_Id = this.orienPYSDbContext.SlipTransactions.Select(x => x.Id).Max() + 1,
+                Slip_Id = 0,
                 PaidByUserId = addSlip.PaidByUserId,
                 AddedBy = this.orienPYSDbContext.Users.Where(u => u.AzureID == addSlip.AzureId).Select(u => u.Id).First(),
                 PaymentDate = addSlip.TransactionDate,
@@ -69,6 +69,10 @@ namespace Orien.PYS.Web.Controllers
             };
 
             this.orienPYSDbContext.SlipTransactions.Add(SlipTransaction);
+            this.orienPYSDbContext.SaveChanges();
+
+            SlipTransaction.Slip_Id = SlipTransaction.Id;
+            this.orienPYSDbContext.SaveChanges();
 
             for(var i = 0; i < addSlip.Users.Length; i++)
             {
@@ -110,6 +114,14 @@ namespace Orien.PYS.Web.Controllers
             }).OrderByDescending(x => x.CreatedDate).ToList();
 
             return sliptransaction;
+        }
+
+        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+        [Authorize]
+        [HttpDelete("{slipid}")]
+        public bool DeleteSlipPayment(int slipid)
+        {
+            return this.slipTransactionService.DeleteSlipTransaction(slipid);
         }
     }
 }

@@ -23,6 +23,11 @@ export class AuthapiService {
     return this.http.post<T>(`${this.apiUrl}${endpoint}`, data, { headers });
   }
 
+  delete<T>(endpoint: string): Observable<T> {
+    const headers = this.createHeaders();
+    return this.http.delete<T>(`${this.apiUrl}${endpoint}`, { headers });
+  }
+
   // Add more methods (post, put, delete) as needed
 
   private createHeaders(): HttpHeaders {

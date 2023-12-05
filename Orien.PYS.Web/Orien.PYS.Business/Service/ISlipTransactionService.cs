@@ -2,5 +2,6 @@
 {
     public interface ISlipTransactionService
     {
+        public bool DeleteSlipTransaction(int slipid);
     }
 }
