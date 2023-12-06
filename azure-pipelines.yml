@@ -24,7 +24,7 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
-    arguments: '--configurationn $(buildConfiguration)'
+    arguments: '--configuration $(buildConfiguration)'
   displayName: Build Code
   enabled: false
 
@@ -33,7 +33,7 @@ steps:
     command: 'publish'
     publishWebProjects: true
     projects: '**/Orien.PWS.Web.csproj'
-    arguments: '--configurationn $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)'
+    arguments: '--configuration $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)'
   displayName: Publish Web App
 
 - task: PublishBuildArtifacts@1
