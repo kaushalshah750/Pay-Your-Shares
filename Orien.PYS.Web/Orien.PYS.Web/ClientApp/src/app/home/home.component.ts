@@ -125,7 +125,4 @@ export class HomeComponent {
     })
   }
 
-  calculatetotal(from:string, to:string){
-
-  }
 }
