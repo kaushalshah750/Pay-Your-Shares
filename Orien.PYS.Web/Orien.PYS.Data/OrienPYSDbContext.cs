@@ -45,9 +45,14 @@ namespace Orien.PYS.Data
         public DbSet<CreditCardSummary> CreditCardSummaries { get; set; }
 
         /// <summary>
-        /// Gets or Sets Users.
+        /// Gets or Sets Groups.
         /// </summary>
         public DbSet<Group> Groups { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Email Sent.
+        /// </summary>
+        public DbSet<EmailSent> EmailSent { get; set; }
 
         /// <summary>
         /// Gets or Sets Users.

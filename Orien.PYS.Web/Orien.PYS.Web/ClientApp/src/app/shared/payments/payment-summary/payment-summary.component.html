@@ -19,11 +19,6 @@
                     <td>{{user.name}}</td>
                     <td [ngClass]="{'red' : calculatesingledebt(user.id,loggedinuser.id) < 0 , 'green' : calculatesingledebt(user.id,loggedinuser.id) > 0}">{{calculatesingledebt(user.id,loggedinuser.id) | currency : 'INR'}}</td>
                   </tr>
-                  <!-- <tr>
-                    <td>Total</td> -->
-                    <!-- <td [ngClass]="{'red' : calculatesingledebt(user.id,loggedinuser.id) < 0 , 'green' : calculatesingledebt(user.id,loggedinuser.id) > 0}">{{calculatesingledebt(user.id,loggedinuser.id) | currency : 'INR'}}</td> -->
-                    <!-- <td>{{calculatetotaldebt(loggedinuser.id) | currency : 'INR'}}</td>
-                  </tr> -->
                 </tbody>
               </table>
         </div>

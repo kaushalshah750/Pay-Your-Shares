@@ -16,7 +16,8 @@ export class PaymentSummaryComponent {
   loggedinuser:Users = {
     id: 0,
     name: "",
-    email: ""
+    email: "",
+    azureID: ""
   }
 
   constructor(
@@ -69,6 +70,7 @@ export class PaymentSummaryComponent {
     });
     return Math.round(paidbyto - paidbyfrom)
   }
+  
   calculatesingledebt(from:number, to:number){
     var paidbyfrom:any = 0
     var paidbyto:any = 0
