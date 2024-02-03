@@ -6,26 +6,32 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end" [ngClass]="{ show: isExpanded }">
-        <ul class="navbar-nav flex-grow">
-          <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
+        <div class="d-flex align-items-center">
+          <div class="mr-1" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-dark" [routerLink]="['/home']">Home</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']" *ngIf="user.oid == '8677e173-0815-4bf6-b631-3529dc9bdb5e'">
+          </div>
+          <div class="mx-2" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/credit-card']">Credit Card</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']" *ngIf="user.oid == '8677e173-0815-4bf6-b631-3529dc9bdb5e'">
+          </div>
+          <div class="mx-2" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/users']">Users</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark"><b>LoggedIn: {{user.name}}</b></a>
-          </li>
+          </div>
+          <div class="mx-2 d-flex align-items-center">
+              <b class="mr-3 ">Welcome {{user.name}}</b>
+              <div class="br50">
+                <img [src]="userinfo.picture" class="br50" width="40px" alt="">
+              </div>
+          </div>
+          <div class="ml-1">
+            <button mat-raised-button color="primary" (click)="signOut()">Sign out</button>
+          </div>
           <!-- <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/counter']">Counter</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/fetch-data']">Fetch data</a>
           </li> -->
-        </ul>
+        </div>
       </div>
     </div>
   </nav>

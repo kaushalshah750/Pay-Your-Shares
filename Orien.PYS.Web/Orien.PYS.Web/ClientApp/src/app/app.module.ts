@@ -30,6 +30,8 @@ import { CreateSlipComponent } from './shared/Dialog/create-slip/create-slip.com
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { CreateGroupComponent } from './shared/Dialog/create-group/create-group.component';
+import { LoginComponent } from './shared/login/login.component';
+import { SplitPaymentComponent } from './shared/split-payment/split-payment.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { CreateGroupComponent } from './shared/Dialog/create-group/create-group.
     FetchDataComponent,
     CreateSlipComponent,
     CreateGroupComponent,
+    LoginComponent,
+    SplitPaymentComponent,
     UsersComponent
   ],
   imports: [
@@ -66,13 +70,40 @@ import { CreateGroupComponent } from './shared/Dialog/create-group/create-group.
       positionClass: 'toast-top-right'
     }),
     RouterModule.forRoot([
-      { path: '', component: AppComponent, pathMatch: 'full' },
-      { path: 'home', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'summary', component: PaymentSummaryComponent },
-      { path: 'users', component: UsersComponent },
-      { path: 'credit-card', component: CreditCardComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
+      {
+        path: 'login',
+        component: LoginComponent
+      },
+      { 
+        path: '',
+        component: HomeComponent,
+        children:[
+          { 
+            path: '',
+            component: SplitPaymentComponent 
+          },
+          { 
+            path: 'counter',
+            component: CounterComponent 
+          },
+          { 
+            path: 'summary',
+            component: PaymentSummaryComponent 
+          },
+          { 
+            path: 'users',
+            component: UsersComponent 
+          },
+          { 
+            path: 'credit-card',
+            component: CreditCardComponent 
+          },
+          { 
+            path: 'fetch-data',
+            component: FetchDataComponent 
+          }
+        ]
+      },
     ])
   ],
   providers: [

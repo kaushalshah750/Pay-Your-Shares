@@ -1,0 +1,54 @@
+<div>
+    <div>
+        <div class="d-grid grid-11">
+            <div class="bg-primary">
+                <div class="d-flex align-items-center justify-content-center vh-100">
+                    <div>
+                        <img src="../../../../assets/logo/Orien Logo.jpeg" width="400px" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="bg-light">
+                <div>
+                    <div class="bg-white">
+                        <div class="vh-100 container w-50 d-flex align-items-center justify-content-center">
+                            <form class="example-form">
+                                <mat-form-field class="example-full-width w-100 mb-1">
+                                    <mat-label>Email</mat-label>
+                                    <input type="email" matInput [formControl]="createform.controls['email']" placeholder="Ex. pat@example.com">
+                                    <mat-error *ngIf="createform.controls['email'].hasError('email') && !createform.controls['email'].hasError('required')">Please enter a valid email address</mat-error>
+                                    <mat-error *ngIf="createform.controls['email'].hasError('required')">Email is <strong>required</strong></mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width w-100 mb-1">
+                                    <mat-label>Password</mat-label>
+                                    <input type="password" matInput [formControl]="createform.controls['password']" placeholder="Abcd!@#123">
+                                    <mat-error *ngIf="createform.controls['password'].hasError('required')">Password is <strong>required</strong></mat-error>
+                                </mat-form-field>
+                                <div class="d-flex">
+                                    <div id="google-btn" class="w-100"></div>
+                                    <button mat-raised-button color="primary" class="w-100" (click)="login()">Login</button>
+                                    <!-- <div id="g_id_onload"
+                                        data-client_id="156985885803-62ok5adedqmmg3nr0vj24b9sh5jjtvih.apps.googleusercontent.com"
+                                        data-context="signin"
+                                        data-ux_mode="popup"
+                                        data-login_uri="https://localhost:44470/"
+                                        data-itp_support="true">
+                                    </div>
+        
+                                    <div class="g_id_signin"
+                                        data-type="standard"
+                                        data-shape="rectangular"
+                                        data-theme="filled_black"
+                                        data-text="signin_with"
+                                        data-size="large"
+                                        data-logo_alignment="left">
+                                    </div> -->
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

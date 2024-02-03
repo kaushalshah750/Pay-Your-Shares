@@ -22,7 +22,7 @@ namespace Orien.PYS.Business.Service.Implementation
         {
             try
             {
-                User user = this.dbContext.Users.Where(u => u.AzureID == sMSBody.ToAzureId).First();
+                User user = this.dbContext.Users.Where(u => u.UId == sMSBody.ToUId).First();
 
                 var accountSid = "ACaea047a6f165550e3f4aac151864dd3f";
                 var authToken = "5ccb35d9bfa6702be70efc4bc0aaea49";

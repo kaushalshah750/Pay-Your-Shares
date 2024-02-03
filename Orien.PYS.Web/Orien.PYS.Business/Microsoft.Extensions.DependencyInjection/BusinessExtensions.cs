@@ -13,6 +13,7 @@ namespace Orien.PYS.Business.Microsoft.Extensions.DependencyInjection
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ISMSService, SMSService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             return services;
         }
     }

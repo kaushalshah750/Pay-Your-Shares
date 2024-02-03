@@ -1,4 +1,8 @@
+declare var google:any;
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthapiService } from './authapi.service';
+import { UserDetails } from '../Models/UserDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +11,14 @@ export class AuthServiceService {
   private accessTokenKey = 'access_token';
   private azureId = 'AzureID';
 
-  constructor() {}
+  constructor(
+    private router: Router
+  ) {}
+
+  signOut(){
+    google.accounts.id.disableAutoSelect();
+    this.router.navigate(['/login'])
+  }
 
   getAccessToken(): string | null {
     return localStorage.getItem(this.accessTokenKey);
@@ -15,6 +26,10 @@ export class AuthServiceService {
 
   getAzureID(): string | null {
     return localStorage.getItem(this.azureId);
+  }
+
+  getUserInfo():string | null{
+    return sessionStorage.getItem("UserInfo");
   }
 
   setAccessToken(token: string): void {

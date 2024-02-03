@@ -2,7 +2,7 @@
 {
     public class SMSBody
     {
-        public string ToAzureId { get; set; }
+        public string ToUId { get; set; }
         public string Body { get; set; }
     }
 }

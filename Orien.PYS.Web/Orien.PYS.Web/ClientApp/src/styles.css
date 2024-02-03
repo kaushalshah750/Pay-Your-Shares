@@ -23,6 +23,17 @@ code {
   cursor: pointer !important;
 }
 
+.d-grid{
+  display: grid !important;
+}
+
+.grid-11{
+  grid-template-columns: 1fr 1fr !important;
+}
+
+.bg-primary{
+  background-color: #001226 !important;
+}
 
 table, th, td {
   border: 1px solid #00000020;
@@ -30,6 +41,14 @@ table, th, td {
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.br20{
+  border-radius: 20px !important;
+}
+
+.br50{
+  border-radius: 50% !important;
+}
 
 .mt-0{
   margin-top: 0rem !important;

@@ -1,5 +1,5 @@
 export interface EmailBody{
-    AzureID: string
+    UId: string
     Subject: string
     Body: string
     isHtml:boolean

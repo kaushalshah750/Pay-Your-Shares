@@ -9,11 +9,16 @@ import { AuthServiceService } from '../shared/services/auth-service.service';
 export class NavMenuComponent {
   isExpanded = false;
   user:any = ""
+  userinfo:any = ""
 
-  constructor(private authservice: AuthServiceService){}
+  constructor(
+    private authservice: AuthServiceService
+  ){}
 
   ngOnInit(){
     this.user = this.authservice.getclaims(this.authservice.getAccessToken())
+    this.userinfo = JSON.parse(this.authservice.getUserInfo()!)
+    console.log(this.userinfo)
   }
 
   collapse() {
@@ -22,5 +27,9 @@ export class NavMenuComponent {
 
   toggle() {
     this.isExpanded = !this.isExpanded;
+  }
+
+  signOut(){
+    this.authservice.signOut()
   }
 }

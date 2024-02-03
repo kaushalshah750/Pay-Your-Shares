@@ -1,4 +1,4 @@
 export interface SMSBody{
-    ToAzureId: string
+    ToUId: string
     Body: string
 }
