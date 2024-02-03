@@ -12,6 +12,7 @@ import { EmailService } from '../../services/email.service';
 import { SlipTransactionVM } from '../../Models/SlipTransactionVM';
 import { SMSBody } from '../../Models/SMSBody';
 import { CurrencyPipe } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create-slip',
@@ -135,7 +136,9 @@ export class CreateSlipComponent {
           isHtml: true
         }
         this.emailService.sendEmail(emailBody).subscribe((res:boolean) => {
-          this.sendSMS(owner, splitUser.azureID, slip.Amount, slip.Name, own);
+          if(environment.sendSMS){
+            this.sendSMS(owner, splitUser.azureID, slip.Amount, slip.Name, own);
+          }
         })
       // }
     });
