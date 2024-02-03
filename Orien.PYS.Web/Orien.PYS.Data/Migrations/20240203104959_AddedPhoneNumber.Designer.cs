@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Orien.PYS.Data;
 
@@ -11,9 +12,11 @@ using Orien.PYS.Data;
 namespace Orien.PYS.Data.Migrations
 {
     [DbContext(typeof(OrienPYSDbContext))]
-    partial class OrienPYSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240203104959_AddedPhoneNumber")]
+    partial class AddedPhoneNumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,9 +145,6 @@ namespace Orien.PYS.Data.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsHTML")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

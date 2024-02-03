@@ -10,6 +10,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateSlipComponent } from '../shared/Dialog/create-slip/create-slip.component';
 import { CreateGroupComponent } from '../shared/Dialog/create-group/create-group.component';
+import { EmailService } from '../shared/services/email.service';
 
 @Component({
   selector: 'app-home',

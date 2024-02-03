@@ -42,7 +42,7 @@ namespace Orien.PYS.Business.Service.Implementation
                     message.To.Add(new MailboxAddress(user.Name, user.Email));
                     message.Subject = emailBody.Subject;
 
-                    var textPart = new TextPart("plain")
+                    var textPart = new TextPart(emailBody.isHtml ? "html" : "plain")
                     {
                         Text = emailBody.Body
                     };
@@ -68,7 +68,8 @@ namespace Orien.PYS.Business.Service.Implementation
                             Name = user.Name,
                             Email = user.Email,
                             Subject = emailBody.Subject,
-                            Body = emailBody.Body
+                            Body = emailBody.Body,
+                            IsHTML = emailBody.isHtml
                         };
 
                         this.dbContext.EmailSent.Add(email);

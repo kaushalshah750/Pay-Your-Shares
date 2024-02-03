@@ -10,6 +10,7 @@
     <PackageReference Include="EPPlus" Version="7.0.8" />
     <PackageReference Include="MailKit" Version="4.3.0" />
     <PackageReference Include="MimeKit" Version="4.3.0" />
+    <PackageReference Include="Twilio" Version="6.16.1" />
   </ItemGroup>
 
   <ItemGroup>
