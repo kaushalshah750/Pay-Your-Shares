@@ -45,7 +45,6 @@ export class CreateSlipComponent {
   ){}
 
   async ngOnInit(){
-    console.log(this.currency.transform(100,'INR'))
     await this.getuserslist()
     await this.getslippayment()
   }
@@ -55,7 +54,6 @@ export class CreateSlipComponent {
 
     await this.sliptransactionService.getuserlist().subscribe((res:Users[]) => {
       this.users = res
-      console.log(this.users.find(u => u.UId == "8677e173-0815-4bf6-b631-3529dc9bdb5e"))
       this.spinner.hide()
     })
   }
@@ -75,7 +73,6 @@ export class CreateSlipComponent {
     }else{
       this.userlist.push(Number(user.target.value))
     }
-    console.log(this.userlist)
   }
 
   createnewsliptransaction(){
@@ -159,7 +156,6 @@ export class CreateSlipComponent {
     await this.sliptransactionService.getslipayment().subscribe((res:SlipTransactionVM[])=>{
       this.slip = res
       this.spinner.hide()
-      console.log(this.calculatesingledebt(1,2))
     })
   }
 

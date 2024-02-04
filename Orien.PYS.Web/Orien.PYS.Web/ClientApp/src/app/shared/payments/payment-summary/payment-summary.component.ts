@@ -4,6 +4,7 @@ import { Users } from '../../Models/Users';
 import { SlipTransactionVM } from '../../Models/SlipTransactionVM';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { GlobalVarService } from '../../services/global-var.service';
 
 @Component({
   selector: 'app-payment-summary',
@@ -23,19 +24,21 @@ export class PaymentSummaryComponent {
   constructor(
     private slipTransactionService: SliptransactionsService,
     private authService: AuthServiceService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private globalVar: GlobalVarService
   ){}
 
   async ngOnInit(){
     this.spinner.show()
+    this.globalVar.createUser()
     await this.getotheruserlist()
     await this.getuser()
     await this.getslippayment()
   }
-  
+
   async getuser(){
     this.spinner.show()
-    await this.slipTransactionService.getuser(this.authService.getclaims(this.authService.getAccessToken()).oid).subscribe((res:Users)=>{
+    await this.slipTransactionService.getuser(this.globalVar.user.uid).subscribe((res:Users)=>{
       this.loggedinuser = res
       this.spinner.hide()
     })

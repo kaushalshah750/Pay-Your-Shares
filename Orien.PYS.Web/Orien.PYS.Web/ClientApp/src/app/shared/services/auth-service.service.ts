@@ -3,16 +3,16 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthapiService } from './authapi.service';
 import { UserDetails } from '../Models/UserDetails';
+import { GlobalVarService } from './global-var.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthServiceService {
-  private accessTokenKey = 'access_token';
-  private azureId = 'AzureID';
 
   constructor(
-    private router: Router
+    private router: Router,
+    private globalVar: GlobalVarService
   ) {}
 
   signOut(){
@@ -21,27 +21,27 @@ export class AuthServiceService {
   }
 
   getAccessToken(): string | null {
-    return localStorage.getItem(this.accessTokenKey);
+    return localStorage.getItem(this.globalVar.accessTokenKey);
   }
 
   getAzureID(): string | null {
-    return localStorage.getItem(this.azureId);
+    return localStorage.getItem(this.globalVar.Uid);
   }
 
   getUserInfo():string | null{
-    return sessionStorage.getItem("UserInfo");
+    return JSON.parse(sessionStorage.getItem("UserInfo")!);
   }
 
   setAccessToken(token: string): void {
-    localStorage.setItem(this.accessTokenKey, token);
+    localStorage.setItem(this.globalVar.accessTokenKey, token);
   }
 
   setAzureID(id: string): void {
-    localStorage.setItem(this.azureId, id);
+    localStorage.setItem(this.globalVar.Uid, id);
   }
 
   removeAccessToken(): void {
-    localStorage.removeItem(this.accessTokenKey);
+    localStorage.removeItem(this.globalVar.accessTokenKey);
   }
 
   getclaims(token:string | null){

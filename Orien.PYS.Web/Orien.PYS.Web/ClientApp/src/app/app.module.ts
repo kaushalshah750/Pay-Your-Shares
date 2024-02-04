@@ -74,12 +74,17 @@ import { SplitPaymentComponent } from './shared/split-payment/split-payment.comp
         path: 'login',
         component: LoginComponent
       },
-      { 
+      {
+        path: '',
+        pathMatch: 'prefix',
+        redirectTo: 'home',
+      },
+      {
         path: '',
         component: HomeComponent,
         children:[
           { 
-            path: '',
+            path: 'home',
             component: SplitPaymentComponent 
           },
           { 

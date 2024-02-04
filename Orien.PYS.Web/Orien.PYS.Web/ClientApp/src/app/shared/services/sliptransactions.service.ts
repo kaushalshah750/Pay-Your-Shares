@@ -13,8 +13,8 @@ import { AuthapiService } from './authapi.service';
 })
 export class SliptransactionsService {
   url = 'api/SlipTransaction'
+  
   constructor(
-    private http: HttpClient,
     private authApiService: AuthapiService,
     private authService: AuthServiceService
   ) { }

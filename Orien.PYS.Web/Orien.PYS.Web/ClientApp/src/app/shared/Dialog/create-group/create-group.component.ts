@@ -49,8 +49,6 @@ export class CreateGroupComponent {
       description: this.createGroupform.controls['Description'].value
     }
 
-    console.log(group)
-
     this.groupService.createGroup(group).subscribe((group:Group) => {
       if(group){
         var addmember:AddGroupMember = {
@@ -58,7 +56,6 @@ export class CreateGroupComponent {
           Users: this.createGroupform.controls['Users'].value
         }
         this.groupService.createGroupMember(addmember).subscribe((res:boolean) =>{
-          console.log(res)
         })
       }
     })

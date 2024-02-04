@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthapiService } from '../services/authapi.service';
 import { UserDetails } from '../Models/UserDetails';
+import { GlobalVarService } from '../services/global-var.service';
 
 @Component({
   selector: 'app-login',
@@ -23,28 +24,25 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthServiceService,
-    private authAPIService: AuthapiService
+    private authAPIService: AuthapiService,
+    private globalVar: GlobalVarService
   ){}
 
   ngOnInit(){
     google.accounts.id.initialize({
       client_id: '156985885803-62ok5adedqmmg3nr0vj24b9sh5jjtvih.apps.googleusercontent.com',
       callback: (res:any) =>{
-        console.log(res)
         this.authService.setAccessToken(res.credential)
         this.userInfo = this.decodeToken(res.credential);
-
+        this.globalVar.createUser()
         sessionStorage.setItem('UserInfo', JSON.stringify(this.userInfo))
+
         var user:UserDetails = {
           uid: this.userInfo.sub,
           name: this.userInfo.name,
           email: this.userInfo.email
         }
-
-        console.log(user)
-
         this.authAPIService.checkUser(user).subscribe((res) => {
-
         })
 
         this.router.navigate(['/'])

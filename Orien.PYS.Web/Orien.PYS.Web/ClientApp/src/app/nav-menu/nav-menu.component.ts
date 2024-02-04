@@ -17,8 +17,7 @@ export class NavMenuComponent {
 
   ngOnInit(){
     this.user = this.authservice.getclaims(this.authservice.getAccessToken())
-    this.userinfo = JSON.parse(this.authservice.getUserInfo()!)
-    console.log(this.userinfo)
+    this.userinfo = this.authservice.getUserInfo()
   }
 
   collapse() {
