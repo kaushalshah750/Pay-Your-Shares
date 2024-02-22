@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { SlipTransactionVM } from '../Models/SlipTransactionVM';
 import { Users } from '../Models/Users';
 import { SliptransactionsService } from '../services/sliptransactions.service';
@@ -9,6 +9,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateGroupComponent } from '../Dialog/create-group/create-group.component';
 import { CreateSlipComponent } from '../Dialog/create-slip/create-slip.component';
 import { FormControl } from '@angular/forms';
+import { GlobalVarService } from '../services/global-var.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-split-payment',
@@ -16,6 +19,8 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./split-payment.component.css']
 })
 export class SplitPaymentComponent {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   slip:SlipTransactionVM[] = []
   name:any = ""
   user:any = ""
@@ -27,19 +32,26 @@ export class SplitPaymentComponent {
   userdebtcalc:Users[] = []
 
   displayedColumns: string[] = ['Name', 'Paid By', 'Amount', 'Transaction Date', 'Split In', 'Action'];
-  dataSource = this.slip;
+  dataSource = new MatTableDataSource<SlipTransactionVM>(this.slip);
 
   constructor(
     private sliptransactionService: SliptransactionsService,
     private spinner: NgxSpinnerService,
     private authservice: AuthServiceService,
     private toastr: ToastrService,
+    public globalVar: GlobalVarService,
     public dialog: MatDialog
   ){}
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
   async ngOnInit(){
     this.spinner.show()
-    this.user = this.authservice.getclaims(this.authservice.getAccessToken())
+    console.log("this.globalVar.user")
+    console.log(this.globalVar.user)
+    this.user = this.globalVar.user
     // this.TransactionDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     await this.getuserslist()
     await this.getslippayment()
@@ -60,7 +72,7 @@ export class SplitPaymentComponent {
     await this.sliptransactionService.getslipayment().subscribe((res:SlipTransactionVM[])=>{
       this.slip = res
       this.spinner.hide()
-      this.dataSource = this.slip;
+      this.dataSource.data = this.slip;
 
     })
   }

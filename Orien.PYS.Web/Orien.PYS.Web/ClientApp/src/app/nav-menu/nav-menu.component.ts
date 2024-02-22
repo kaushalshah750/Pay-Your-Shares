@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthServiceService } from '../shared/services/auth-service.service';
+import { GlobalVarService } from '../shared/services/global-var.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -12,10 +13,15 @@ export class NavMenuComponent {
   userinfo:any = ""
 
   constructor(
-    private authservice: AuthServiceService
-  ){}
+    private authservice: AuthServiceService,
+    public globalUser: GlobalVarService
+  ){
+    this.globalUser.createUser()
 
+  }
+  
   ngOnInit(){
+    console.log(this.globalUser.user)
     this.user = this.authservice.getclaims(this.authservice.getAccessToken())
     this.userinfo = this.authservice.getUserInfo()
   }

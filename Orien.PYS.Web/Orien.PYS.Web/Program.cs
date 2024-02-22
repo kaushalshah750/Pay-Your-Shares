@@ -4,17 +4,25 @@ using Orien.PYS.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"))
-        .EnableTokenAcquisitionToCallDownstreamApi()
-            .AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
-            .AddInMemoryTokenCaches();
+builder.Services.AddAuthentication(options =>
+    {
+        // Set the default authentication scheme and challenge scheme
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+    })
+    .AddCookie()
+    .AddGoogle(googleOptions =>
+    {
+        googleOptions.ClientId = builder.Configuration.GetSection("Authentication:ClientId").Value;
+        googleOptions.ClientSecret = builder.Configuration.GetSection("Authentication:ClientSecret").Value;
+    });
 
 // Add services to the container.
-
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<OrienPYSDbContext>(options =>

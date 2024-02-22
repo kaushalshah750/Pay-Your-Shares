@@ -34,18 +34,22 @@ export class LoginComponent {
       callback: (res:any) =>{
         this.authService.setAccessToken(res.credential)
         this.userInfo = this.decodeToken(res.credential);
-        this.globalVar.createUser()
-        sessionStorage.setItem('UserInfo', JSON.stringify(this.userInfo))
+        if(this.userInfo){
 
-        var user:UserDetails = {
-          uid: this.userInfo.sub,
-          name: this.userInfo.name,
-          email: this.userInfo.email
+          sessionStorage.setItem('UserInfo', JSON.stringify(this.userInfo))
+          sessionStorage.setItem('UId', this.userInfo.sub)
+          this.globalVar.createUser()
+          
+          var user:UserDetails = {
+            uid: this.userInfo.sub,
+            name: this.userInfo.name,
+            email: this.userInfo.email
+          }
+          this.authAPIService.checkUser(user).subscribe((res) => {
+          })
+          
+          this.router.navigate(['/'])
         }
-        this.authAPIService.checkUser(user).subscribe((res) => {
-        })
-
-        this.router.navigate(['/'])
       }
     });
 
@@ -53,7 +57,7 @@ export class LoginComponent {
       theme: 'filled-blue',
       size: 'large',
       shape: 'rectangle',
-      width: 100
+      width: 900
     })
   }
 

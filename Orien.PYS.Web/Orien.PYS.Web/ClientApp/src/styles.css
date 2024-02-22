@@ -31,8 +31,16 @@ code {
   grid-template-columns: 1fr 1fr !important;
 }
 
+.grid-21{
+  grid-template-columns: 2fr 1fr !important;
+}
+
+.grid-35{
+  grid-template-columns: 3fr 5fr !important;
+}
+
 .bg-primary{
-  background-color: #001226 !important;
+  background-color: #BEE5FA !important;
 }
 
 table, th, td {

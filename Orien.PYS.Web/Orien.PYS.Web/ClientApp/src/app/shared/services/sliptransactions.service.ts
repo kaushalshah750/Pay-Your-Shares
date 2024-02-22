@@ -7,6 +7,7 @@ import { SlipTransactionVM } from '../Models/SlipTransactionVM';
 import { environment } from 'src/environments/environment';
 import { AuthServiceService } from './auth-service.service';
 import { AuthapiService } from './authapi.service';
+import { GlobalVarService } from './global-var.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class SliptransactionsService {
   
   constructor(
     private authApiService: AuthapiService,
-    private authService: AuthServiceService
+    private authService: AuthServiceService,
+    private globalVar: GlobalVarService
   ) { }
 
   getuserlist(){
@@ -28,11 +30,11 @@ export class SliptransactionsService {
   }
 
   getotheruserlist(){
-    return this.authApiService.get<Users[]>(this.url + "/other-users?azureId=" + this.authService.getAzureID());
+    return this.authApiService.get<Users[]>(this.url + "/other-users?azureId=" + this.globalVar.user.uid);
   }
 
   getslipayment(){
-    return this.authApiService.get<SlipTransactionVM[]>(this.url + "?userid=" + this.authService.getAzureID());
+    return this.authApiService.get<SlipTransactionVM[]>(this.url + "?userid=" + this.globalVar.user.uid);
   }
 
   deleteslipayment(slipid:number){

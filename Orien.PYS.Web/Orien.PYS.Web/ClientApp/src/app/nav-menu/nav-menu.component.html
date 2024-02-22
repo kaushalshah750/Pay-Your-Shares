@@ -1,7 +1,10 @@
 <header>
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/home']">Pay Your Share</a>
+      <div>
+        <img src="../../assets/logo/logo-nobg.png" class="mr-4" width="70px" alt="">
+        <a class="navbar-brand" [routerLink]="['/home']">Pay Your Share</a>
+      </div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -10,12 +13,12 @@
           <div class="mr-1" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-dark" [routerLink]="['/home']">Home</a>
           </div>
-          <div class="mx-2" [routerLinkActive]="['link-active']">
+          <!-- <div class="mx-2" [routerLinkActive]="['link-active']" *ngIf="globalUser.user.uid == '105832569567590837538'">
             <a class="nav-link text-dark" [routerLink]="['/credit-card']">Credit Card</a>
           </div>
-          <div class="mx-2" [routerLinkActive]="['link-active']">
+          <div class="mx-2" [routerLinkActive]="['link-active']" *ngIf="globalUser.user.uid == '105832569567590837538'">
             <a class="nav-link text-dark" [routerLink]="['/users']">Users</a>
-          </div>
+          </div> -->
           <div class="mx-2 d-flex align-items-center">
               <b class="mr-3 ">Welcome {{user.name}}</b>
               <div class="br50">

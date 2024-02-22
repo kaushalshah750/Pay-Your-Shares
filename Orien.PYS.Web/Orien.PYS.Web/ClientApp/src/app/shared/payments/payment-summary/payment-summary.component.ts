@@ -18,7 +18,7 @@ export class PaymentSummaryComponent {
     id: 0,
     name: "",
     email: "",
-    UId: ""
+    uId: ""
   }
 
   constructor(

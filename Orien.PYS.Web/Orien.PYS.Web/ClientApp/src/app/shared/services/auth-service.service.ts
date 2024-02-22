@@ -25,7 +25,7 @@ export class AuthServiceService {
   }
 
   getAzureID(): string | null {
-    return localStorage.getItem(this.globalVar.Uid);
+    return sessionStorage.getItem(this.globalVar.Uid);
   }
 
   getUserInfo():string | null{

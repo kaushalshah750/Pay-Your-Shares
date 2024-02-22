@@ -15,9 +15,9 @@
       <div class="mx-3">
         <button mat-raised-button color="primary" [routerLink]="['/summary']">Summary Payment</button>
       </div>
-      <div *ngIf="user.oid == '8677e173-0815-4bf6-b631-3529dc9bdb5e'">
+      <!-- <div *ngIf="globalVar.user.uid == '105832569567590837538'">
         <button mat-raised-button color="primary" (click)="addgroup()">Add Group</button>
-      </div>
+      </div> -->
       <!-- <div class="mx-3">
         <button mat-raised-button color="primary" (click)="sendSMS()">Send SMS</button>
       </div> -->
@@ -73,5 +73,6 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
   </div>
 </div>

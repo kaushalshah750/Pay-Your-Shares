@@ -14,23 +14,19 @@ export class GlobalVarService {
     email: "",
     picture: ""
   }
-  constructor() { }
+  constructor() { 
+    this.createUser()
+  }
 
   createUser(){
-    var token = this.getAccessToken()
-    var userinfo:any = this.decodeToken(token!)
-    this.user.uid = userinfo.sub
-    this.user.name = userinfo.name
-    this.user.email = userinfo.email
-    this.user.picture = userinfo.picture
-  }
+    var userinfo:any = JSON.parse(sessionStorage.getItem("UserInfo")!)
 
-  decodeToken(token:string){
-    return JSON.parse(atob(token.split(".")[1]))
-  }
-
-  getAccessToken(): string | null {
-    return localStorage.getItem(this.accessTokenKey);
+    if(userinfo){
+      this.user.uid = userinfo.sub
+      this.user.name = userinfo.name
+      this.user.email = userinfo.email
+      this.user.picture = userinfo.picture
+    }
   }
 
 }
