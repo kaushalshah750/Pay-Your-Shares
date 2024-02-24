@@ -57,7 +57,7 @@ export class LoginComponent {
       theme: 'filled-blue',
       size: 'large',
       shape: 'rectangle',
-      width: 900
+      width: 100
     })
   }
 

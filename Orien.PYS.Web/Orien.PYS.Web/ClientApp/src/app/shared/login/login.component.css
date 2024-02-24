@@ -1,6 +1,30 @@
 .login-box{
-    width: 70vw;
-    height: 70vh;
+    width: 25vw;
+    min-width: 290px;
+    height: 50vh;
     border: 0.2px solid #00000010;
 }
 
+/* .google-web{
+    width: 900px;
+}
+
+.google-mob{
+    width: 400px;
+    display: none;
+} */
+
+@media (max-width: 768px) {
+    /* .google-web{
+        display: none;
+    }
+    
+    .google-mob{
+        display: block;
+    } */
+    
+    .login-left{
+        display: none;
+    }
+}
+  

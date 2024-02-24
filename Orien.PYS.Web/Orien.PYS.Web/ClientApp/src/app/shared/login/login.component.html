@@ -1,45 +1,36 @@
 <div>
-    <div>
-        <div class="d-flex align-items-center justify-content-center vh-100">
-            <div class="login-box br20">
-                <div class="d-grid grid-21 h-100">
-                    <div class="bg-primary" style="border-radius: 20px 0px 0px 20px;">
-                        <div class="d-flex align-items-center justify-content-center h-100">
-                            <div>
-                                <img src="../../../assets/logo/logo-nobg.png" width="200px" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white br20">
-                        <div class="h-100 d-flex justify-content-center">
-                            <div class="h-100 w-100 w-50 d-flex align-items-center justify-content-center" style="max-width: 70%;">
-                                <form class="example-form">
-                                    <mat-form-field class="example-full-width w-100 mb-1">
-                                        <mat-label>Email</mat-label>
-                                        <input type="email" matInput [formControl]="createform.controls['email']" placeholder="Ex. pat@example.com">
-                                        <mat-error *ngIf="createform.controls['email'].hasError('email') && !createform.controls['email'].hasError('required')">Please enter a valid email address</mat-error>
-                                        <mat-error *ngIf="createform.controls['email'].hasError('required')">Email is <strong>required</strong></mat-error>
-                                    </mat-form-field>
-                                    <mat-form-field class="example-full-width w-100 mb-1">
-                                        <mat-label>Password</mat-label>
-                                        <input type="password" matInput [formControl]="createform.controls['password']" placeholder="Abcd!@#123">
-                                        <mat-error *ngIf="createform.controls['password'].hasError('required')">Password is <strong>required</strong></mat-error>
-                                    </mat-form-field>
-                                    <div>
-                                        <button mat-raised-button color="primary" class="w-100" (click)="login()">Login</button>
-                                    </div>
-                                    <div class="d-flex justify-content-center my-4">
-                                        <h3 class="mb-0">Or</h3>
-                                    </div>
-                                    <div class="w-100">
-                                        <div id="google-btn" class="w-100"></div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+    <div class="d-flex align-items-center justify-content-center vh-100">
+        <div class="login-box br20">
+            <div class="bg-primary br20 h-100 d-flex justify-content-center flex-column align-items-center">
+                <div class="h-100 d-flex align-items-center" style="padding-top: 50px;">
+                    <img src="../../../assets/logo/logo-nobg.png" width="200px" alt="">
                 </div>
-            </div>            
-        </div>
+                <div class="h-100 w-100 w-50 d-flex align-items-center justify-content-center" style="max-width: 70%;">
+                    <form class="example-form">
+                        <!-- <mat-form-field class="example-full-width w-100 mb-1">
+                            <mat-label>Email</mat-label>
+                            <input type="email" matInput [formControl]="createform.controls['email']" placeholder="Ex. pat@example.com">
+                            <mat-error *ngIf="createform.controls['email'].hasError('email') && !createform.controls['email'].hasError('required')">Please enter a valid email address</mat-error>
+                            <mat-error *ngIf="createform.controls['email'].hasError('required')">Email is <strong>required</strong></mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width w-100 mb-1">
+                            <mat-label>Password</mat-label>
+                            <input type="password" matInput [formControl]="createform.controls['password']" placeholder="Abcd!@#123">
+                            <mat-error *ngIf="createform.controls['password'].hasError('required')">Password is <strong>required</strong></mat-error>
+                        </mat-form-field>
+                        <div>
+                            <button mat-raised-button color="primary" class="w-100" (click)="login()">Login</button>
+                        </div>
+                        <div class="d-flex justify-content-center my-4">
+                            <h3 class="mb-0">Or</h3>
+                        </div> -->
+                        <div class="w-100">
+                            <div id="google-btn" class="w-100 google-web"></div>
+                            <div id="google-btn" class="w-100 google-mob"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>            
     </div>
 </div>

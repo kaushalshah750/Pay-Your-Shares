@@ -31,6 +31,7 @@ export class PaymentSummaryComponent {
   async ngOnInit(){
     this.spinner.show()
     this.globalVar.createUser()
+    this.globalVar.checkToken()
     await this.getotheruserlist()
     await this.getuser()
     await this.getslippayment()

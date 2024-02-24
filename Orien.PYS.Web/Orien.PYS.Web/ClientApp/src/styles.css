@@ -39,6 +39,12 @@ code {
   grid-template-columns: 3fr 5fr !important;
 }
 
+@media (max-width: 768px) {
+  .grid-21{
+    grid-template-columns: 1fr !important;
+  }
+}
+
 .bg-primary{
   background-color: #BEE5FA !important;
 }

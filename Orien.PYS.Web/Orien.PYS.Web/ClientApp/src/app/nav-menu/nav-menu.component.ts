@@ -21,7 +21,6 @@ export class NavMenuComponent {
   }
   
   ngOnInit(){
-    console.log(this.globalUser.user)
     this.user = this.authservice.getclaims(this.authservice.getAccessToken())
     this.userinfo = this.authservice.getUserInfo()
   }

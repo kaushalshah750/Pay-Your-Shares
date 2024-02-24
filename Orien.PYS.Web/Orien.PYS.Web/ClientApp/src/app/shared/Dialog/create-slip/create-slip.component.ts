@@ -105,8 +105,6 @@ export class CreateSlipComponent {
   }
 
   sendEmail(slip:AddSlip){
-    console.log("slip")
-    console.log(slip)
     var owner:Users = this.getUserDataByAzureId(slip.AzureId!)    
     var own = slip.Amount / slip.Users.length
     
@@ -134,10 +132,6 @@ export class CreateSlipComponent {
           Body: body,
           isHtml: true
         }
-        console.log(splitUser)
-        console.log(splitUser.uId)
-        console.log(emailBody)
-        console.log(emailBody.UId)
         this.emailService.sendEmail(emailBody).subscribe((res:boolean) => {
           if(environment.sendSMS){
             this.sendSMS(owner, splitUser.uId, slip.Amount, slip.Name, own);

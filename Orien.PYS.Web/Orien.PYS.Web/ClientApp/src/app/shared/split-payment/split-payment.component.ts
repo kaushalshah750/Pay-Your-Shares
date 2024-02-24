@@ -49,10 +49,8 @@ export class SplitPaymentComponent {
 
   async ngOnInit(){
     this.spinner.show()
-    console.log("this.globalVar.user")
-    console.log(this.globalVar.user)
     this.user = this.globalVar.user
-    // this.TransactionDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+    this.globalVar.checkToken()
     await this.getuserslist()
     await this.getslippayment()
   }
