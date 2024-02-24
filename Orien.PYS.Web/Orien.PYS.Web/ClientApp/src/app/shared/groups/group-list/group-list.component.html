@@ -1,0 +1,45 @@
+<div class="my-3">
+    <div class="my-3 d-flex justify-content-between">
+        <div class="d-flex">
+          <div>
+            <button mat-raised-button color="primary" [routerLink]="['/summary']">Summary Payment</button>
+          </div>
+          <div class="mx-3">
+            <button mat-raised-button color="primary" (click)="addgroup()">Create Group</button>
+          </div>
+        </div>
+      </div>
+    
+    <div class="border shadow-sm p-4 rounded my-3" *ngFor="let group of groups">
+        <div class="d-grid grid-11">
+            <div>
+                <div>
+                    <h2><b>Group Name:</b> {{group.name}}</h2>
+                </div>
+                <div>
+                    <h3 class="mb-0"><b>Description:</b> {{group.description}}</h3>
+                </div>
+                <div style="margin-top: 20px;">
+                    <h3><b>Members in the Group</b></h3>
+                    <div class="d-flex">
+                        <div *ngFor="let user of group.members">
+                            <img class="rounded-circle" style="width: 40px;" [src]="user.picture" alt="">
+                        </div>
+                        <div *ngIf="group.members.length == 0">No Member added to the group</div>
+                    </div>
+                </div>
+            </div>
+            <div class="actionbtn text-end d-flex flex-column">
+                <div>
+                    <button mat-raised-button color="primary" style="min-width: 120px;">Members</button>
+                </div>
+                <div class="my-3">
+                    <button mat-raised-button color="primary" style="min-width: 120px;" [routerLink]="[group.uId,'payment']">Transaction</button>
+                </div>
+                <!-- <div>
+                    <button mat-raised-button color="primary" class="">Delete Group</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>

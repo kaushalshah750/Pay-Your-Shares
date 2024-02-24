@@ -38,9 +38,32 @@ code {
 .grid-35{
   grid-template-columns: 3fr 5fr !important;
 }
+.nophone{
+  display: block;
+}
 
+.notab{
+  display: block;
+}
+
+/* Responsive design for phone */
+@media (max-width: 425px) {
+  .nophone{
+    display: none !important;
+  }
+}
+
+/* Responsive design for Tablet */
 @media (max-width: 768px) {
+  .notab{
+    display: none !important;
+  }
+
   .grid-21{
+    grid-template-columns: 1fr !important;
+  }
+
+  .grid-11{
     grid-template-columns: 1fr !important;
   }
 }

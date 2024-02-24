@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthapiService } from './authapi.service';
 import { Group } from '../Models/Group';
 import { AddGroupMember } from '../Models/AddGroupMember';
+import { CreateGroup } from '../Models/CreateGroup';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,16 @@ export class GroupService {
     private authservice: AuthapiService
   ) { }
 
-  createGroup(group:Group){
-    return this.authservice.post<Group>(this.url + "/Add", group)
+  getGroupByGroupId(groupId:string){
+    return this.authservice.get<Group>(this.url + "/" + groupId)
+  }
+
+  getGroups(){
+    return this.authservice.get<Group[]>(this.url)
+  }
+
+  createGroup(group:CreateGroup){
+    return this.authservice.post<boolean>(this.url + "/Create", group)
   }
 
   createGroupMember(group:AddGroupMember){

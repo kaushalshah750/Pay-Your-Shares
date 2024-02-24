@@ -6,7 +6,9 @@ namespace Orien.PYS.Business.Service
 {
     public interface IGroupService
     {
-        public Group AddGroup(Group group);
+        public GroupDetail GetGroupInfo(string groupId);
+        public List<GroupDetail> GetGroup();
+        public bool AddGroup(CreateGroup group, string userid);
         public bool AddMemberinGroup(AddGroupMember addGroupMember);
     }
 }

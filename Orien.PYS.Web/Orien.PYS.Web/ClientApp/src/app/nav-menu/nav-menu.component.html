@@ -3,7 +3,7 @@
     <div class="container">
       <div>
         <img src="../../assets/logo/logo-nobg.png" class="mr-4" width="70px" alt="">
-        <a class="navbar-brand" [routerLink]="['/home']">Pay Your Share</a>
+        <a class="navbar-brand" [routerLink]="['/group']">Pay Your Share</a>
       </div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
         <span class="navbar-toggler-icon"></span>
@@ -11,7 +11,7 @@
       <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end" [ngClass]="{ show: isExpanded }">
         <div class="d-flex align-items-center">
           <div class="mr-1" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/home']">Home</a>
+            <a class="nav-link text-dark" [routerLink]="['/group']">Home</a>
           </div>
           <!-- <div class="mx-2" [routerLinkActive]="['link-active']" *ngIf="globalUser.user.uid == '105832569567590837538'">
             <a class="nav-link text-dark" [routerLink]="['/credit-card']">Credit Card</a>

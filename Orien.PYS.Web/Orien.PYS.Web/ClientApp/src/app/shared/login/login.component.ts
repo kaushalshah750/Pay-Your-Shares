@@ -43,7 +43,8 @@ export class LoginComponent {
           var user:UserDetails = {
             uid: this.userInfo.sub,
             name: this.userInfo.name,
-            email: this.userInfo.email
+            email: this.userInfo.email,
+            picture: this.userInfo.picture
           }
           this.authAPIService.checkUser(user).subscribe((res) => {
           })

@@ -25,16 +25,16 @@ export class SliptransactionsService {
     return this.authApiService.get<Users[]>(this.url + "/users");
   }
 
-  getuser(azureId:string){
-    return this.authApiService.get<Users>(this.url + "/user?azureId=" + azureId);
+  getuser(){
+    return this.authApiService.get<Users>(this.url + "/user");
   }
 
   getotheruserlist(){
-    return this.authApiService.get<Users[]>(this.url + "/other-users?azureId=" + this.globalVar.user.uid);
+    return this.authApiService.get<Users[]>(this.url + "/other-users");
   }
 
-  getslipayment(){
-    return this.authApiService.get<SlipTransactionVM[]>(this.url + "?userid=" + this.globalVar.user.uid);
+  getslipayment(groupId:string){
+    return this.authApiService.get<SlipTransactionVM[]>(this.url + "?groupId=" + groupId);
   }
 
   deleteslipayment(slipid:number){

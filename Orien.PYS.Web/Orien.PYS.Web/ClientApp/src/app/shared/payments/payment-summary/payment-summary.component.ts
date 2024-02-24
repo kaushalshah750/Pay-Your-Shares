@@ -5,6 +5,7 @@ import { SlipTransactionVM } from '../../Models/SlipTransactionVM';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { GlobalVarService } from '../../services/global-var.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-payment-summary',
@@ -18,6 +19,8 @@ export class PaymentSummaryComponent {
     id: 0,
     name: "",
     email: "",
+    picture: "",
+    phone: "",
     uId: ""
   }
 
@@ -25,7 +28,8 @@ export class PaymentSummaryComponent {
     private slipTransactionService: SliptransactionsService,
     private authService: AuthServiceService,
     private spinner: NgxSpinnerService,
-    private globalVar: GlobalVarService
+    private globalVar: GlobalVarService,
+    private route: ActivatedRoute,
   ){}
 
   async ngOnInit(){
@@ -39,7 +43,7 @@ export class PaymentSummaryComponent {
 
   async getuser(){
     this.spinner.show()
-    await this.slipTransactionService.getuser(this.globalVar.user.uid).subscribe((res:Users)=>{
+    await this.slipTransactionService.getuser().subscribe((res:Users)=>{
       this.loggedinuser = res
       this.spinner.hide()
     })
@@ -55,7 +59,9 @@ export class PaymentSummaryComponent {
 
   async getslippayment(){
     this.spinner.show()
-    await this.slipTransactionService.getslipayment().subscribe((res:SlipTransactionVM[])=>{
+    
+    var group_Uid = this.route.snapshot.paramMap.get('groupid')!
+    await this.slipTransactionService.getslipayment(group_Uid).subscribe((res:SlipTransactionVM[])=>{
       this.slip = res
       this.spinner.hide()
     })

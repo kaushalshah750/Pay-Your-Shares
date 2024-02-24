@@ -57,7 +57,7 @@ namespace Orien.PYS.Data
         /// <summary>
         /// Gets or Sets Users.
         /// </summary>
-        public DbSet<GroupMemberRelation> GroupMemberRelations { get; set; }
+        public DbSet<GroupMemberRelation> Group_User { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

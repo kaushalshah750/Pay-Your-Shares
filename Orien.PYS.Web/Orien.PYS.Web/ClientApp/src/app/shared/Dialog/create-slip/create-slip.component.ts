@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SliptransactionsService } from '../../services/sliptransactions.service';
 import { Users } from '../../Models/Users';
@@ -13,6 +13,8 @@ import { SlipTransactionVM } from '../../Models/SlipTransactionVM';
 import { SMSBody } from '../../Models/SMSBody';
 import { CurrencyPipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-create-slip',
@@ -34,62 +36,71 @@ export class CreateSlipComponent {
   })
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: string,
     public dialogRef: MatDialogRef<CreateSlipComponent>,
     private sliptransactionService: SliptransactionsService,
+    private userService: UserService,
     private spinner: NgxSpinnerService,
     private authservice: AuthServiceService,
     private toastr: ToastrService,
     private emailService: EmailService,
     private currency: CurrencyPipe,
+    private route: ActivatedRoute,
     private formBuilder: FormBuilder
-  ){}
+  ){
+  }
 
   async ngOnInit(){
     await this.getuserslist()
     await this.getslippayment()
+    console.log(this.data)
   }
 
   async getuserslist(){
     this.spinner.show()
+    console.log(this.data)
 
-    await this.sliptransactionService.getuserlist().subscribe((res:Users[]) => {
+    await this.userService.getUserByGroupId(this.data).subscribe((res:Users[]) => {
       this.users = res
       this.spinner.hide()
     })
   }
 
-  adduser(user:any){
-    if(this.userlist.find(u => u == Number(user.target.value))){
-      var test:number[] = []
+  // adduser(user:any){
+  //   if(this.userlist.find(u => u == Number(user.target.value))){
+  //     var test:number[] = []
 
-      this.userlist.forEach((element:number) => {
+  //     this.userlist.forEach((element:number) => {
         
-        if(element != Number(user.target.value)){
-          test.push(element)
-        }
-      });
+  //       if(element != Number(user.target.value)){
+  //         test.push(element)
+  //       }
+  //     });
 
-      this.userlist = test
-    }else{
-      this.userlist.push(Number(user.target.value))
-    }
-  }
+  //     this.userlist = test
+  //   }else{
+  //     this.userlist.push(Number(user.target.value))
+  //   }
+  // }
 
-  createnewsliptransaction(){
+  createnewspliptransaction(){
     if (this.createform.valid){
       var Slip:AddSlip = {
         Name: this.createform.controls['name'].value,
         Amount: this.createform.controls['amount'].value,
-        PaidByUserId: this.createform.controls['paidByUserId'].value,
-        AzureId: this.authservice.getAzureID(),
+        PaidByUser_UId: this.createform.controls['paidByUserId'].value,
+        Group_UId: this.data,
         TransactionDate: this.createform.controls['TransactionDate'].value,
         Users: this.createform.controls['Users'].value
       }
-      this.sendEmail(Slip)
+      // this.sendEmail(Slip)
       this.spinner.show()
       this.sliptransactionService.Addslipayment(Slip).subscribe(() => {
+        this.spinner.hide()
         this.userlist = []
         this.dialogRef.close(true);
+      }, error => {
+        this.toastr.error(error.error.title, 'Error')
       })
     }else{
       this.toastr.info('The info is not correct', 'Success')
@@ -105,7 +116,7 @@ export class CreateSlipComponent {
   }
 
   sendEmail(slip:AddSlip){
-    var owner:Users = this.getUserDataByAzureId(slip.AzureId!)    
+    var owner:Users = this.getUserDataByAzureId("slip.User_UId!")    
     var own = slip.Amount / slip.Users.length
     
     slip.Users.forEach((element:number) => {
@@ -153,7 +164,7 @@ export class CreateSlipComponent {
 
   async getslippayment(){
     this.spinner.show()
-    await this.sliptransactionService.getslipayment().subscribe((res:SlipTransactionVM[])=>{
+    await this.sliptransactionService.getslipayment(this.data).subscribe((res:SlipTransactionVM[])=>{
       this.slip = res
       this.spinner.hide()
     })

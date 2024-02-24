@@ -19,12 +19,14 @@
             <mat-form-field class="w-100">
                 <mat-label>Who Paid?</mat-label>
                 <mat-select formControlName="paidByUserId">
-                  <mat-option value="{{user.id}}" *ngFor="let user of users">{{user.name}}</mat-option>
+                  <mat-option value="{{user.uId}}" *ngFor="let user of users">
+                    <img [src]="user.picture" class="rounded-circle" style="width: 40px;" alt=""> <span style="margin-left: 20px;">{{user.name}}</span>
+                </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
         <div class="mb-2">
-            <mat-form-field>
+            <mat-form-field class="w-100">
                 <mat-label>TransactionDate</mat-label>
                 <input matInput [matDatepicker]="picker1" formControlName="TransactionDate">
                 <mat-hint>MM/DD/YYYY</mat-hint>
@@ -36,8 +38,8 @@
             <mat-form-field [formGroup]='createform' class="w-100">
                 <mat-label>Slip In</mat-label>
                 <mat-select multiple formControlName="Users" placeholder="Slip In">
-                  <mat-option *ngFor="let data of users" [value]="data.id">
-                    {{ data.name }}
+                  <mat-option *ngFor="let user of users" [value]="user.uId">
+                    <img [src]="user.picture" class="rounded-circle" style="width: 40px;" alt=""> <span style="margin-left: 20px;">{{ user.name }}</span>
                   </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -45,9 +47,7 @@
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
-    <!-- <button class="btn btn-primary" (click)="createnewsliptransaction()">Submit</button>
-    <button class="btn btn-secondary mx-3" (click)="clearfields()">Clear</button> -->
     <button mat-raised-button color="secondary" [mat-dialog-close]="false">Cancel</button>
     <button mat-raised-button color="secondary" (click)="clearfields()">Clear</button>
-    <button mat-raised-button color="primary" cdkFocusInitial (click)="createnewsliptransaction()">Submit</button>
+    <button mat-raised-button color="primary" cdkFocusInitial (click)="createnewspliptransaction()">Submit</button>
 </mat-dialog-actions>

@@ -10,11 +10,16 @@
         /// <summary>
         /// Gets or Sets GroupId.
         /// </summary>
-        public long GroupId { get; set; }
+        public string Group_UId { get; set; }
 
         /// <summary>
         /// Gets or Sets UserId.
         /// </summary>
-        public long UserId { get; set; }
+        public string User_UId { get; set; }
+
+        /// <summary>
+        /// Gets or Sets User Added.
+        /// </summary>
+        public DateTime Added_on { get; set; }
     }
 }

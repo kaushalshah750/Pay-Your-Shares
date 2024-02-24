@@ -1,0 +1,13 @@
+@media (max-width: 768px) {
+    .actionbtn{
+        margin-top: 20px;
+        flex-direction: initial !important;
+        text-align: left;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .actionbtn > div.my-3{
+        margin: 0px;
+    }
+}

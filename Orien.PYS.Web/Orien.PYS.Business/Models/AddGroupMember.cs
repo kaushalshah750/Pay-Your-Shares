@@ -2,8 +2,7 @@
 {
     public class AddGroupMember
     {
-        public long Id { get; set; }
-
-        public int[] Users { get; set; }
+        public string Group_Uid { get; set; }
+        public string Email { get; set; }
     }
 }

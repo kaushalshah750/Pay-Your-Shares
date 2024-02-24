@@ -32,6 +32,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { CreateGroupComponent } from './shared/Dialog/create-group/create-group.component';
 import { LoginComponent } from './shared/login/login.component';
 import { SplitPaymentComponent } from './shared/split-payment/split-payment.component';
+import { GroupListComponent } from './shared/groups/group-list/group-list.component';
+import { PaymentSlipComponent } from './shared/payments/payment-slip/payment-slip.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import { SplitPaymentComponent } from './shared/split-payment/split-payment.comp
     CreateGroupComponent,
     LoginComponent,
     SplitPaymentComponent,
+    PaymentSlipComponent,
+    GroupListComponent,
     UsersComponent
   ],
   imports: [
@@ -77,15 +81,23 @@ import { SplitPaymentComponent } from './shared/split-payment/split-payment.comp
       {
         path: '',
         pathMatch: 'prefix',
-        redirectTo: 'home',
+        redirectTo: 'group',
       },
       {
         path: '',
         component: HomeComponent,
         children:[
-          { 
-            path: 'home',
-            component: SplitPaymentComponent 
+          {
+            path: 'group',
+            component: GroupListComponent
+          },
+          {
+            path: 'group/:groupid/payment',
+            component: PaymentSlipComponent    
+          },
+          {
+            path: 'group/:groupid/payment/summary',
+            component: PaymentSummaryComponent    
           },
           { 
             path: 'counter',

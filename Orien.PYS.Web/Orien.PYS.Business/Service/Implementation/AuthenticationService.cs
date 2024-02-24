@@ -23,6 +23,10 @@ namespace Orien.PYS.Business.Service.Implementation
 
                 if(userExists != null)
                 {
+                    userExists.Name = userDetail.name;
+                    userExists.Picture = userDetail.picture;
+                    this.dbContext.SaveChanges();
+
                     return "User Already Exists";
                 }
                 else
@@ -33,6 +37,7 @@ namespace Orien.PYS.Business.Service.Implementation
                         Name = userDetail.name,
                         Email = userDetail.email,
                         Phone = "",
+                        Picture = userDetail.picture,
                         UId = userDetail.uid
                     };
 

@@ -23,9 +23,9 @@ namespace Orien.PYS.Business.Models
     {
         public string Name { get; set; }
         public decimal Amount { get; set; }
-        public int PaidByUserId { get; set; }
-        public string AzureId { get; set; }
+        public string PaidByUser_UId { get; set; }
+        public string Group_UId { get; set; }
         public DateTime TransactionDate { get; set; }
-        public int[] Users { get; set; }
+        public string[] Users { get; set; }
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace Orien.PYS.Data.Entity
+﻿using Orien.PYS.Data.Entity;
+
+namespace Orien.PYS.Business.Models
 {
-    public class Group
+    public class GroupDetail
     {
         /// <summary>
         /// Gets or Sets Id.
@@ -25,7 +27,12 @@
         /// <summary>
         /// Gets or Sets Admin.
         /// </summary>
-        public string Admin { get; set; }
+        public User Admin { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Admin.
+        /// </summary>
+        public List<User> Members { get; set; }
 
         /// <summary>
         /// Gets or Sets Created On.

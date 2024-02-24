@@ -6,6 +6,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { GroupService } from '../../services/group.service';
 import { Group } from '../../Models/Group';
 import { AddGroupMember } from '../../Models/AddGroupMember';
+import { CreateGroup } from '../../Models/CreateGroup';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create-group',
@@ -13,50 +15,43 @@ import { AddGroupMember } from '../../Models/AddGroupMember';
   styleUrls: ['./create-group.component.css']
 })
 export class CreateGroupComponent {
-  users:Users[] = []
-  userlist:number[] = []
+  // users:Users[] = []
+  // userlist:number[] = []
 
   createGroupform = this.formBuilder.nonNullable.group({
-    Name: ['', [Validators.required, Validators.minLength(5)]],
-    Description: ['', [Validators.required, Validators.minLength(5)]],
-    Users: [[], [Validators.required]]
+    Name: ['Bhalchandra Upvan', [Validators.required, Validators.minLength(5)]],
+    Description: ['This group will have keep track of expenses', [Validators.required, Validators.minLength(5)]]
   })
 
   constructor(
-    private sliptransactionService: SliptransactionsService,
+    public dialogRef: MatDialogRef<CreateGroupComponent>,
     private spinner: NgxSpinnerService,
     private groupService: GroupService,
     private formBuilder: FormBuilder
   ){}
 
-  ngOnInit(){
-    this.getuserslist()
-  }
+  // ngOnInit(){
+  //   this.getuserslist()
+  // }
 
-  async getuserslist(){
-    this.spinner.show()
+  // async getuserslist(){
+  //   this.spinner.show()
 
-    await this.sliptransactionService.getuserlist().subscribe((res:Users[]) => {
-      this.users = res
-      this.spinner.hide()
-    })
-  }
+  //   await this.sliptransactionService.getuserlist().subscribe((res:Users[]) => {
+  //     this.users = res
+  //     this.spinner.hide()
+  //   })
+  // }
 
-  createGroupWithMember(){
-    var group:Group = {
-      id: 0,
-      name: this.createGroupform.controls['Name'].value,
-      description: this.createGroupform.controls['Description'].value
+  createGroup(){
+    var group:CreateGroup = {
+      Name: this.createGroupform.controls['Name'].value,
+      Description: this.createGroupform.controls['Description'].value,
     }
 
-    this.groupService.createGroup(group).subscribe((group:Group) => {
+    this.groupService.createGroup(group).subscribe((group:boolean) => {
       if(group){
-        var addmember:AddGroupMember = {
-          Id: group.id,
-          Users: this.createGroupform.controls['Users'].value
-        }
-        this.groupService.createGroupMember(addmember).subscribe((res:boolean) =>{
-        })
+        this.dialogRef.close(true);
       }
     })
   }

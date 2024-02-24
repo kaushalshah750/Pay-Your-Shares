@@ -2,6 +2,7 @@
 using Orien.PYS.Business.Models;
 using Orien.PYS.Business.Service;
 using Orien.PYS.Data.Entity;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Orien.PYS.Web.Controllers
 {
@@ -18,10 +19,26 @@ namespace Orien.PYS.Web.Controllers
             this.groupService = groupService;
         }
 
-        [HttpPost("Add")]
-        public Group AddGroup(Group group)
+        [HttpGet]
+        public List<GroupDetail> GetGroup()
         {
-            return this.groupService.AddGroup(group);
+            return this.groupService.GetGroup();
+        }
+
+        [HttpGet("{groupId}")]
+        public GroupDetail GetGroupInfo(string groupId)
+        {
+            return this.groupService.GetGroupInfo(groupId);
+        }
+
+        [HttpPost("Create")]
+        public bool CreateGroup(CreateGroup group)
+        {
+            string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var userid = handler.Claims.First(x => x.Type == "sub").Value;
+
+            return this.groupService.AddGroup(group, userid);
         }
 
         [HttpPost("add-member")]

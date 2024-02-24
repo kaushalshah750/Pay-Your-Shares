@@ -1,8 +1,8 @@
 export interface AddSlip {
     Name: string
     Amount: number
-    PaidByUserId: number
-    AzureId: string | null
+    PaidByUser_UId: number
+    Group_UId: string
     TransactionDate: Date
     Users: number[]
 }
