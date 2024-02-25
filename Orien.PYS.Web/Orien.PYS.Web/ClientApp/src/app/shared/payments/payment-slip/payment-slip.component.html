@@ -1,14 +1,21 @@
+<ngx-spinner 
+  type="ball-scale-multiple" 
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff">
+</ngx-spinner>
+
 <div class="my-3">
   <div class="my-3 d-flex justify-content-between">
-    <div class="d-flex align-items-center">
+    <div>
       <div>
-        <h2 class="mb-0">Group Name: {{groupInfo.name}}</h2>
+        <h3 class="poppins-medium mb-0"><span class="mr-2">Group Name:</span> {{groupInfo.name}}</h3>
       </div>
-      <div class="mx-3">
-        <h2 class="mb-0">Members: {{groupInfo.members.length}}</h2>
-      </div>
-      <div class="mx-3 nophone">
-        <h2 class="mb-0">Admin: <img [src]="groupInfo.admin.picture" style="width: 40px;" class="rounded-circle" alt=""> {{groupInfo.admin.name}}</h2>
+      <!-- <div>
+        <h3 class="poppins-medium mb-0"><span class="mr-2">Members:</span> {{groupInfo.members.length}}</h3>
+      </div> -->
+      <div class="nophone">
+        <h3 class="poppins-medium mb-0"><span class="mr-2">Admin:</span> <img [src]="groupInfo.admin.picture" style="width: 40px;" class="rounded-circle mr-2" alt=""> {{groupInfo.admin.name}}</h3>
       </div>
     </div>
     <div class="d-flex">

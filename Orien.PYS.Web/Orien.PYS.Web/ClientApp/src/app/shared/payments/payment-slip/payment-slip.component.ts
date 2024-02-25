@@ -65,13 +65,13 @@ export class PaymentSlipComponent {
     this.user = this.globalVar.user
     this.globalVar.checkToken()
     this.getGroupDetail()
+    this.spinner.show()
     await this.getuserslist()
+    this.spinner.show()
     await this.getslippayment()
   }
   
   async getuserslist(){
-    this.spinner.show()
-
     await this.sliptransactionService.getuserlist().subscribe((res:Users[]) => {
       this.users = res
       this.spinner.hide()
@@ -85,7 +85,6 @@ export class PaymentSlipComponent {
   }
   
   async getslippayment(){
-    this.spinner.show()
     await this.sliptransactionService.getslipayment(this.group_Uid).subscribe((res:SlipTransactionVM[])=>{
       this.slip = res
       this.spinner.hide()
@@ -111,7 +110,6 @@ export class PaymentSlipComponent {
 
   refresh(){
     this.spinner.show()
-
     this.slip = []
     this.getslippayment()
   }

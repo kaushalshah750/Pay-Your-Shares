@@ -19,36 +19,70 @@ namespace Orien.PYS.Business.Service.Implementation
         {
             try
             {
-                var userExists = this.dbContext.Users.Where(u => u.UId == userDetail.uid).FirstOrDefault();
-
-                if(userExists != null)
+                if (userDetail.Group_UId != "" && userDetail.Invite_UId != "")
                 {
-                    userExists.Name = userDetail.name;
-                    userExists.Picture = userDetail.picture;
-                    this.dbContext.SaveChanges();
+                    var ValidInvite = this.dbContext.Group_Invitation
+                        .Where(i => i.Group_UId == userDetail.Group_UId && i.Invite_UId == userDetail.Invite_UId && i.Email == userDetail.Email)
+                        .FirstOrDefault();
 
-                    return "User Already Exists";
+                    if (ValidInvite != null)
+                    {
+                        GroupMemberRelation groupMember = new GroupMemberRelation()
+                        {
+                            Added_on = DateTime.Now,
+                            Group_UId = userDetail.Group_UId,
+                            User_UId = userDetail.UId
+                        };
+
+                        this.dbContext.Group_User.Add(groupMember);
+                        this.dbContext.SaveChanges();
+
+                        return ValidateUser(userDetail);
+                    }
+                    else
+                    {
+                        return "Invite is InValid";
+                    }
                 }
                 else
                 {
-                    User user = new User()
-                    {
-                        Id = 0,
-                        Name = userDetail.name,
-                        Email = userDetail.email,
-                        Phone = "",
-                        Picture = userDetail.picture,
-                        UId = userDetail.uid
-                    };
-
-                    this.dbContext.Users.Add(user);
-                    this.dbContext.SaveChanges();
-                    return "New User Created";
+                    return ValidateUser(userDetail);
                 }
+
             }
             catch
             {
                 return "There is some issue with the service.";
+            }
+        }
+
+        public string ValidateUser(UserDetail userDetail)
+        {
+            var userExists = this.dbContext.Users.Where(u => u.UId == userDetail.UId).FirstOrDefault();
+
+            if (userExists != null)
+            {
+                userExists.Name = userDetail.Name;
+                userExists.Picture = userDetail.Picture;
+                this.dbContext.SaveChanges();
+
+                return "User Already Exists";
+            }
+            else
+            {
+                User user = new User()
+                {
+                    Id = 0,
+                    Name = userDetail.Name,
+                    Email = userDetail.Email,
+                    Phone = "",
+                    Picture = userDetail.Picture,
+                    UId = userDetail.UId
+                };
+
+                this.dbContext.Users.Add(user);
+                this.dbContext.SaveChanges();
+                return "New User Created";
             }
         }
     }

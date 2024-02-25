@@ -1,6 +1,8 @@
 export interface UserDetails{
-    uid: string
+    uId: string
     name: string
     email: string
     picture: string
+    group_UId: string
+    invite_UId: string
 }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthapiService } from './authapi.service';
 import { UserDetails } from '../Models/UserDetails';
 import { GlobalVarService } from './global-var.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,16 @@ export class AuthServiceService {
 
   constructor(
     private router: Router,
-    private globalVar: GlobalVarService
+    private globalVar: GlobalVarService,
+    private toastr: ToastrService,
+
   ) {}
 
   signOut(){
     google.accounts.id.disableAutoSelect();
-    this.router.navigate(['/login'])
+    this.router.navigate(['/login']).then(() =>{
+      this.toastr.success('You have been successfully Logged Out', 'Success')
+    })
   }
 
   getAccessToken(): string | null {

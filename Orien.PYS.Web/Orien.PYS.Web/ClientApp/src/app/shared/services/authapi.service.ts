@@ -33,8 +33,10 @@ export class AuthapiService {
     return this.http.delete<T>(`${this.apiUrl}${endpoint}`, { headers });
   }
 
-  checkUser(user:UserDetails){
-    return this.http.post<string>(`${this.apiUrl}${this.url}` + "check-user", user);
+  checkUser(user:UserDetails): Observable<string> {
+    return this.http.post(`${this.apiUrl}${this.url}` + "check-user", user, {
+      responseType: 'text'
+    });
   }
 
   // Add more methods (post, put, delete) as needed

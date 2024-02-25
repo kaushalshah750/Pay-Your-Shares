@@ -1,11 +1,13 @@
 declare var google:any;
 import { Component } from '@angular/core';
 import { AuthServiceService } from '../services/auth-service.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthapiService } from '../services/authapi.service';
 import { UserDetails } from '../Models/UserDetails';
 import { GlobalVarService } from '../services/global-var.service';
+import { ToastrService } from 'ngx-toastr';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +27,9 @@ export class LoginComponent {
     private router: Router,
     private authService: AuthServiceService,
     private authAPIService: AuthapiService,
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
+    private snackBar: MatSnackBar,
     private globalVar: GlobalVarService
   ){}
 
@@ -39,17 +44,28 @@ export class LoginComponent {
           sessionStorage.setItem('UserInfo', JSON.stringify(this.userInfo))
           sessionStorage.setItem('UId', this.userInfo.sub)
           this.globalVar.createUser()
-          
+          var groupId = this.route.snapshot.paramMap.get('groupid')!
+          var inviteId = this.route.snapshot.paramMap.get('invite')!
           var user:UserDetails = {
-            uid: this.userInfo.sub,
+            uId: this.userInfo.sub,
             name: this.userInfo.name,
             email: this.userInfo.email,
-            picture: this.userInfo.picture
+            picture: this.userInfo.picture,
+            group_UId: groupId == null ? "" : groupId,
+            invite_UId: inviteId == null ? "" : inviteId
           }
-          this.authAPIService.checkUser(user).subscribe((res) => {
+
+          this.authAPIService.checkUser(user).subscribe((res:string) => {
+            console.log(res)
+            if(res != "Invite is InValid"){
+              this.router.navigate(['/group'])
+            }else{
+              this.snackBar.open(res)
+            }
+          }, (error) => {
+            console.error('Error occurred:', error);
           })
           
-          this.router.navigate(['/'])
         }
       }
     });

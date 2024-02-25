@@ -17,12 +17,13 @@ namespace Orien.PYS.Business.Service.Implementation
         {
 
             List<SlipTransactionVM> sliptransaction = this.orienPYSDbContext.SlipTransactions
-                .Where(st => (st.PaidUser_UId == userid || st.AddedBy_UId == userid) && 
+                .Where(st => (st.PaidUser_UId == userid || st.AddedBy_UId == userid ||
                     this.orienPYSDbContext.SplitRelations
-                        .Where(sr => sr.Slip_Id == st.Slip_Id && sr.Group_UId == groupId)
-                        .Select(sr => sr.User_UId)
-                        .ToList()
-                        .Contains(userid))
+                        .Where(sr => sr.Slip_Id == st.Slip_Id)
+                        .Select(sr => sr.User_UId).ToList().Contains(userid)) && 
+                        (this.orienPYSDbContext.SplitRelations
+                        .Where(sr => sr.Group_UId == groupId)
+                        .Select(sr => sr.User_UId).ToList().Contains(userid)))
                 .Select(x => new SlipTransactionVM()
                 {
                     Slip_Id = x.Slip_Id,
@@ -37,6 +38,7 @@ namespace Orien.PYS.Business.Service.Implementation
                         Name = this.orienPYSDbContext.Users.Where(u => u.UId == sr.User_UId).Select(u => u.Name).AsEnumerable().FirstOrDefault()!,
                         Email = this.orienPYSDbContext.Users.Where(u => u.UId == sr.User_UId).Select(u => u.Email).AsEnumerable().FirstOrDefault()!,
                         Picture = this.orienPYSDbContext.Users.Where(u => u.UId == sr.User_UId).Select(u => u.Picture).AsEnumerable().FirstOrDefault()!,
+                        UId = this.orienPYSDbContext.Users.Where(u => u.UId == sr.User_UId).Select(u => u.UId).AsEnumerable().FirstOrDefault()!,
                     }).ToList()
                 }).OrderByDescending(x => x.CreatedDate).ToList();
 

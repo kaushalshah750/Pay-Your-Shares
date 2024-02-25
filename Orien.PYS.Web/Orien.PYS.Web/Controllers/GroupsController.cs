@@ -22,7 +22,27 @@ namespace Orien.PYS.Web.Controllers
         [HttpGet]
         public List<GroupDetail> GetGroup()
         {
-            return this.groupService.GetGroup();
+            string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var userId = handler.Claims.First(x => x.Type == "sub").Value;
+
+            return this.groupService.GetGroup(userId);
+        }
+
+        [HttpGet("users/all/{groupId}")]
+        public List<User> GetAllUserInfoByGroup(string groupId)
+        {
+            return this.groupService.GetAllUserInfoByGroup(groupId);
+        }
+
+        [HttpGet("users/{groupId}")]
+        public List<User> GetUserInfoByGroup(string groupId)
+        {
+            string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var userId = handler.Claims.First(x => x.Type == "sub").Value;
+
+            return this.groupService.GetUserInfoByGroup(groupId, userId);
         }
 
         [HttpGet("{groupId}")]
@@ -45,6 +65,18 @@ namespace Orien.PYS.Web.Controllers
         public bool AddMemberinGroup(AddGroupMember addGroupMember)
         {
             return this.groupService.AddMemberinGroup(addGroupMember);
+        }
+
+        [HttpPost("user/delete")]
+        public bool RemoveMemberinGroup(RemoveGroupMember groupMember)
+        {
+            return this.groupService.RemoveMemberinGroup(groupMember);
+        }
+
+        [HttpPost("invite")]
+        public async Task<ResponseData> SendInvitationOfGroup(SendGroupInvite sendGroupInvite)
+        {
+            return await this.groupService.SendInvitationOfGroup(sendGroupInvite);
         }
     }
 }

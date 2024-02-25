@@ -2,9 +2,11 @@
 {
     public class UserDetail
     {
-        public string uid { get; set; }
-        public string name { get; set; }
-        public string email { get; set; }
-        public string picture { get; set; }
+        public string UId { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Picture { get; set; }
+        public string Group_UId { get; set; }
+        public string Invite_UId { get; set; }
     }
 }

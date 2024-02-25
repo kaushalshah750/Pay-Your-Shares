@@ -55,6 +55,11 @@ namespace Orien.PYS.Data
         public DbSet<EmailSent> EmailSent { get; set; }
 
         /// <summary>
+        /// Gets or Sets Group Invitation.
+        /// </summary>
+        public DbSet<GroupInvitation> Group_Invitation { get; set; }
+
+        /// <summary>
         /// Gets or Sets Users.
         /// </summary>
         public DbSet<GroupMemberRelation> Group_User { get; set; }

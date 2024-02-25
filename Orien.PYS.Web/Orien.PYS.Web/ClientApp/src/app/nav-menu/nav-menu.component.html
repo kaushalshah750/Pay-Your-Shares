@@ -1,41 +1,50 @@
 <header>
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
-      <div>
+      <div class="d-flex align-items-center">
         <img src="../../assets/logo/logo-nobg.png" class="mr-4" width="70px" alt="">
-        <a class="navbar-brand" [routerLink]="['/group']">Pay Your Share</a>
+        <h2 class="mb-0 pointer navbar-brand" [routerLink]="['/group']">Pay Your Share</h2>
       </div>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end" [ngClass]="{ show: isExpanded }">
-        <div class="d-flex align-items-center">
-          <div class="mr-1" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/group']">Home</a>
+      <div class="d-flex align-items-center">
+        <!-- <h3 class="mb-0 mx-3">{{currentDate | date: 'hh:mm:ss dd/mm/yyyy'}}</h3> -->
+        <img [src]="userinfo.picture" [matMenuTriggerFor]="menu" class="rounded-circle" width="40px" alt="">
+        <!-- <button mat-button>Menu</button> -->
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item disabled>
+            <b class="mr-3 ">Hello {{user.name}}</b>
+          </button>
+          <button mat-menu-item [routerLink]="['group']">
+            <h3 class="mb-0">Home</h3>
+          </button>
+          <button mat-menu-item (click)="createGroup()">
+            <h3 class="mb-0">Create Group</h3>
+          </button>
+          <button mat-menu-item (click)="signOut()">
+            <h3 class="mb-0">Log out</h3>
+          </button>
+        </mat-menu>  
+      </div>
+      <!-- <div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end" [ngClass]="{ show: isExpanded }">
+          <div class="d-flex align-items-center">
+            <div class="mr-1" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
+              <a class="nav-link text-dark" [routerLink]="['/group']">Home</a>
+            </div>
+            <div class="mx-2 d-flex align-items-center">
+                <b class="mr-3 ">Welcome {{user.name}}</b>
+                <div class="br50">
+                  <img [src]="userinfo.picture" class="br50" width="40px" alt="">
+                </div>
+            </div>
+            <div class="ml-1">
+              <button mat-raised-button color="primary" (click)="signOut()">Sign out</button>
+            </div>
           </div>
-          <!-- <div class="mx-2" [routerLinkActive]="['link-active']" *ngIf="globalUser.user.uid == '105832569567590837538'">
-            <a class="nav-link text-dark" [routerLink]="['/credit-card']">Credit Card</a>
-          </div>
-          <div class="mx-2" [routerLinkActive]="['link-active']" *ngIf="globalUser.user.uid == '105832569567590837538'">
-            <a class="nav-link text-dark" [routerLink]="['/users']">Users</a>
-          </div> -->
-          <div class="mx-2 d-flex align-items-center">
-              <b class="mr-3 ">Welcome {{user.name}}</b>
-              <div class="br50">
-                <img [src]="userinfo.picture" class="br50" width="40px" alt="">
-              </div>
-          </div>
-          <div class="ml-1">
-            <button mat-raised-button color="primary" (click)="signOut()">Sign out</button>
-          </div>
-          <!-- <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']">Counter</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']">Fetch data</a>
-          </li> -->
         </div>
-      </div>
+      </div> -->
     </div>
   </nav>
 </header>

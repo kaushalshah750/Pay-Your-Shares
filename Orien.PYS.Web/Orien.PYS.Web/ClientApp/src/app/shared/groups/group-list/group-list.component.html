@@ -5,7 +5,7 @@
             <button mat-raised-button color="primary" [routerLink]="['/summary']">Summary Payment</button>
           </div>
           <div class="mx-3">
-            <button mat-raised-button color="primary" (click)="addgroup()">Create Group</button>
+            <button mat-raised-button color="primary" (click)="createGroup()">Create Group</button>
           </div>
         </div>
       </div>
@@ -21,11 +21,16 @@
                 </div>
                 <div style="margin-top: 20px;">
                     <h3><b>Members in the Group</b></h3>
-                    <div class="d-flex">
-                        <div *ngFor="let user of group.members">
+                    <div class="d-flex align-items-center">
+                        <div *ngFor="let user of group.members" class="mx-1">
                             <img class="rounded-circle" style="width: 40px;" [src]="user.picture" alt="">
                         </div>
-                        <div *ngIf="group.members.length == 0">No Member added to the group</div>
+                        <div class="d-flex align-items-center pointer" (click)="addGroupMember(group)">
+                            <div class="d-flex bg-light shadow-sm border rounded-circle p-2">
+                                <mat-icon>add</mat-icon>
+                            </div>
+                        </div>
+                        <div class="ml-3" *ngIf="group.members.length == 0">No Member added to the group</div>
                     </div>
                 </div>
             </div>

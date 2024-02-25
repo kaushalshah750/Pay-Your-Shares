@@ -5,6 +5,7 @@ import { GlobalVarService } from '../../services/global-var.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateGroupComponent } from '../../Dialog/create-group/create-group.component';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AddGroupMemberComponent } from '../../Dialog/add-group-member/add-group-member.component';
 
 @Component({
   selector: 'app-group-list',
@@ -26,8 +27,23 @@ export class GroupListComponent {
     this.getGroups()
   }
 
-  addgroup(){
+  createGroup(){
     const dialogRef = this.dialog.open(CreateGroupComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.getGroups()
+      }else{
+        this.spinner.hide()
+      }
+    });
+  }
+
+  addGroupMember(group:Group){
+    const dialogRef = this.dialog.open(AddGroupMemberComponent, {
+      data: group.uId,
+      width: '400px'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){

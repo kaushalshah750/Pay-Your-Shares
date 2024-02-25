@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Add Member to Group</h2>
+
+<div class="px-3">
+    <div>
+        <mat-card *ngFor="let user of users" class="my-2">
+            <mat-card-content>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <img [src]="user.picture" width="40px" class="rounded-circle" alt="">
+                        <h3 class="mb-0 ml-2">{{user.name}}</h3>
+                    </div>
+                    <div class="d-flex">
+                        <mat-icon *ngIf="globalVar.user.uid != user.uId" (click)="removeGroupMemberbyGroupId(user.uId)">delete</mat-icon>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<mat-dialog-content>
+    <form [formGroup]="addGroupMemberform">
+        <div class="d-flex justify-content-between">
+            <mat-form-field class="mb-0 w-100">
+                <mat-label>Email</mat-label>
+                <input type="email" matInput formControlName="Email">
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="secondary" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button color="primary" cdkFocusInitial (click)="inviteMember()">Invite</button>
+</mat-dialog-actions>

@@ -5,5 +5,6 @@ namespace Orien.PYS.Business.Service
     public interface IEmailService
     {
         public Task<bool> SendEmail(EmailBody emailBody);
+        public Task<bool> SendInviteEmail(InviteEmailBody emailBody);
     }
 }

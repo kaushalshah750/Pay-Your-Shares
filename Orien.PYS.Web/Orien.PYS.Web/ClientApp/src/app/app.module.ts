@@ -20,6 +20,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatCardModule } from '@angular/material/card';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -34,6 +37,7 @@ import { LoginComponent } from './shared/login/login.component';
 import { SplitPaymentComponent } from './shared/split-payment/split-payment.component';
 import { GroupListComponent } from './shared/groups/group-list/group-list.component';
 import { PaymentSlipComponent } from './shared/payments/payment-slip/payment-slip.component';
+import { AddGroupMemberComponent } from './shared/Dialog/add-group-member/add-group-member.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +54,7 @@ import { PaymentSlipComponent } from './shared/payments/payment-slip/payment-sli
     SplitPaymentComponent,
     PaymentSlipComponent,
     GroupListComponent,
+    AddGroupMemberComponent,
     UsersComponent
   ],
   imports: [
@@ -68,12 +73,19 @@ import { PaymentSlipComponent } from './shared/payments/payment-slip/payment-sli
     MatNativeDateModule,
     MatIconModule,
     MatButtonModule,
+    MatCardModule,
+    MatSnackBarModule,
     MatDialogModule,
+    MatMenuModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right'
     }),
     RouterModule.forRoot([
+      {
+        path: ':invite/:groupid/login',
+        component: LoginComponent
+      },
       {
         path: 'login',
         component: LoginComponent
@@ -125,7 +137,8 @@ import { PaymentSlipComponent } from './shared/payments/payment-slip/payment-sli
   ],
   providers: [
       DatePipe,
-      CurrencyPipe
+      CurrencyPipe,
+      {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500, verticalPosition: "top", horizontalPosition: "right"}}
     ],
   bootstrap: [AppComponent]
 })
