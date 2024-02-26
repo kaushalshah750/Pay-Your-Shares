@@ -38,6 +38,7 @@ import { SplitPaymentComponent } from './shared/split-payment/split-payment.comp
 import { GroupListComponent } from './shared/groups/group-list/group-list.component';
 import { PaymentSlipComponent } from './shared/payments/payment-slip/payment-slip.component';
 import { AddGroupMemberComponent } from './shared/Dialog/add-group-member/add-group-member.component';
+import { GiveFeedbackComponent } from './shared/Dialog/give-feedback/give-feedback.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { AddGroupMemberComponent } from './shared/Dialog/add-group-member/add-gr
     PaymentSlipComponent,
     GroupListComponent,
     AddGroupMemberComponent,
+    GiveFeedbackComponent,
     UsersComponent
   ],
   imports: [

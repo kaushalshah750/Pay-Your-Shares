@@ -1,14 +1,19 @@
 <div class="my-3">
-    <!-- <div class="my-3 d-flex justify-content-between">
+    <div class="my-3 d-flex justify-content-between">
         <div class="d-flex">
-          <div>
+          <!-- <div>
             <button mat-raised-button color="primary" [routerLink]="['/summary']">Summary Payment</button>
-          </div>
-          <div class="mx-3">
+          </div> -->
+          <div>
             <button mat-raised-button color="primary" (click)="createGroup()">Create Group</button>
           </div>
         </div>
-    </div> -->
+    </div>
+    <div class="my-5" *ngIf="groups.length == 0">
+        <div class="d-flex align-items-center justify-content-center text-center">
+            <h2>This is no Group to create a split. Please create a Group First.</h2>
+        </div>
+    </div>
     
     <div class="border shadow-sm p-4 rounded my-3" *ngFor="let group of groups">
         <div class="d-grid grid-11">

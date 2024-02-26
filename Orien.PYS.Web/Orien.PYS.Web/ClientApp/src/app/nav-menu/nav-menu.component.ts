@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CreateGroupComponent } from '../shared/Dialog/create-group/create-group.component';
 import { Router } from '@angular/router';
+import { GiveFeedbackComponent } from '../shared/Dialog/give-feedback/give-feedback.component';
 
 @Component({
   selector: 'app-nav-menu',
@@ -31,7 +32,6 @@ export class NavMenuComponent {
   ngOnInit(){
     this.user = this.authservice.getclaims(this.authservice.getAccessToken())
     this.userinfo = this.authservice.getUserInfo()
-    console.log(this.userinfo.picture)
   }
 
   createGroup(){
@@ -43,6 +43,16 @@ export class NavMenuComponent {
       }else{
         this.spinner.hide()
       }
+    });
+  }
+
+  giveFeedback(){
+    const dialogRef = this.dialog.open(GiveFeedbackComponent, {
+      width: "400px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.spinner.hide()
     });
   }
 

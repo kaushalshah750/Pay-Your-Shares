@@ -27,6 +27,12 @@ export class GroupListComponent {
     this.getGroups()
   }
 
+  getGroups(){
+    this.groupService.getGroups().subscribe((res:Group[])=>{
+      this.groups = res
+    })
+  }
+
   createGroup(){
     const dialogRef = this.dialog.open(CreateGroupComponent);
 
@@ -52,11 +58,5 @@ export class GroupListComponent {
         this.spinner.hide()
       }
     });
-  }
-
-  getGroups(){
-    this.groupService.getGroups().subscribe((res:Group[])=>{
-      this.groups = res
-    })
   }
 }

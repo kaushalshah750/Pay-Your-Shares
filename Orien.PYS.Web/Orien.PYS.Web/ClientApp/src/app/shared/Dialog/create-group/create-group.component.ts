@@ -11,9 +11,6 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./create-group.component.css']
 })
 export class CreateGroupComponent {
-  // users:Users[] = []
-  // userlist:number[] = []
-
   createGroupform = this.formBuilder.nonNullable.group({
     Name: ['', [Validators.required, Validators.minLength(5)]],
     Description: ['', [Validators.required, Validators.minLength(5)]]
@@ -21,23 +18,9 @@ export class CreateGroupComponent {
 
   constructor(
     public dialogRef: MatDialogRef<CreateGroupComponent>,
-    private spinner: NgxSpinnerService,
     private groupService: GroupService,
     private formBuilder: FormBuilder
   ){}
-
-  // ngOnInit(){
-  //   this.getuserslist()
-  // }
-
-  // async getuserslist(){
-  //   this.spinner.show()
-
-  //   await this.sliptransactionService.getuserlist().subscribe((res:Users[]) => {
-  //     this.users = res
-  //     this.spinner.hide()
-  //   })
-  // }
 
   createGroup(){
     var group:CreateGroup = {
@@ -56,6 +39,4 @@ export class CreateGroupComponent {
     this.createGroupform.controls.Name.setValue('')
     this.createGroupform.controls.Description.setValue('')
   }
-
-
 }

@@ -12,6 +12,7 @@ namespace Orien.PYS.Business.Microsoft.Extensions.DependencyInjection
             services.AddScoped<ICommonService, CommonService>();
             services.AddScoped<ICreditCardService, CreditCardService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<ISlipTransactionService, SlipTransactionService>();
             services.AddScoped<ISMSService, SMSService>();

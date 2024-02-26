@@ -60,9 +60,14 @@ namespace Orien.PYS.Data
         public DbSet<GroupInvitation> Group_Invitation { get; set; }
 
         /// <summary>
-        /// Gets or Sets Users.
+        /// Gets or Sets Group Users.
         /// </summary>
         public DbSet<GroupMemberRelation> Group_User { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Feedback.
+        /// </summary>
+        public DbSet<Feedback> Feedbacks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

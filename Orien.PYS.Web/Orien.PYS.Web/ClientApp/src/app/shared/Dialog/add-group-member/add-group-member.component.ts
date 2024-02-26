@@ -103,6 +103,7 @@ export class AddGroupMemberComponent {
 
     this.groupService.removeMemberinGroup(groupMember).subscribe((res:boolean) => {
       if(res){
+        this.getAllUserInfoByGroup()
         this.toastr.success("The Member is removed from the Group", "Success")
       }else{
         this.toastr.error("The Member is not removed from the Group", "Error")

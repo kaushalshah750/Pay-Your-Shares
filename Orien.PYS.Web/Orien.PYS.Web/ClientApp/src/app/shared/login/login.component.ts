@@ -7,7 +7,6 @@ import { AuthapiService } from '../services/authapi.service';
 import { UserDetails } from '../Models/UserDetails';
 import { GlobalVarService } from '../services/global-var.service';
 import { ToastrService } from 'ngx-toastr';
-import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +28,6 @@ export class LoginComponent {
     private authAPIService: AuthapiService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private snackBar: MatSnackBar,
     private globalVar: GlobalVarService
   ){}
 
@@ -56,13 +54,13 @@ export class LoginComponent {
           }
 
           this.authAPIService.checkUser(user).subscribe((res:string) => {
-            console.log(res)
             if(res != "Invite is InValid"){
               this.router.navigate(['/group'])
             }else{
-              this.snackBar.open(res)
+              this.toastr.error(res, "Error")
             }
           }, (error) => {
+            this.toastr.error(error.error.title, "Error")
             console.error('Error occurred:', error);
           })
           
