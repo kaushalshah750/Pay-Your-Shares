@@ -26,6 +26,7 @@ export class CreateSlipComponent {
   users:Users[] = []
   userlist:number[] = []
   slip:SlipTransactionVM[] = []
+  maxDate:Date = new Date()
 
   createform = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(5)]],
@@ -65,23 +66,6 @@ export class CreateSlipComponent {
       this.spinner.hide()
     })
   }
-
-  // adduser(user:any){
-  //   if(this.userlist.find(u => u == Number(user.target.value))){
-  //     var test:number[] = []
-
-  //     this.userlist.forEach((element:number) => {
-        
-  //       if(element != Number(user.target.value)){
-  //         test.push(element)
-  //       }
-  //     });
-
-  //     this.userlist = test
-  //   }else{
-  //     this.userlist.push(Number(user.target.value))
-  //   }
-  // }
 
   createnewspliptransaction(){
     if (this.createform.valid){

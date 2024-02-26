@@ -82,7 +82,7 @@ export class AddGroupMemberComponent {
     }
     
     this.groupService.sendInvitation(groupInvite).subscribe((res:ResponseData) => {
-      if(res.response = "Invitation Link Already Sent"){
+      if(res.response == "Invitation Link Already Sent"){
         this.toastr.info(res.response, "Info")
       }else if(res.response != "Invitation Not Sent, Contact Administrator"){
         this.toastr.success(res.response, "Success")
