@@ -1,5 +1,5 @@
 <div class="my-3">
-    <div class="my-3 d-flex justify-content-between">
+    <!-- <div class="my-3 d-flex justify-content-between">
         <div class="d-flex">
           <div>
             <button mat-raised-button color="primary" [routerLink]="['/summary']">Summary Payment</button>
@@ -8,7 +8,7 @@
             <button mat-raised-button color="primary" (click)="createGroup()">Create Group</button>
           </div>
         </div>
-      </div>
+    </div> -->
     
     <div class="border shadow-sm p-4 rounded my-3" *ngFor="let group of groups">
         <div class="d-grid grid-11">
@@ -36,7 +36,7 @@
             </div>
             <div class="actionbtn text-end d-flex flex-column">
                 <div>
-                    <button mat-raised-button color="primary" style="min-width: 120px;">Members</button>
+                    <button mat-raised-button color="primary" style="min-width: 120px;" (click)="addGroupMember(group)">Members</button>
                 </div>
                 <div class="my-3">
                     <button mat-raised-button color="primary" style="min-width: 120px;" [routerLink]="[group.uId,'payment']">Transaction</button>

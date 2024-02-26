@@ -17,3 +17,25 @@ table{
     border-radius: 10px;
     background-color: #00000030
 }
+
+.group-sum-container{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+/* Responsive design for phone */
+@media (max-width: 425px) {
+    /* .group-sum-container{
+        display: flex;
+        justify-content: end;
+        align-items: center;
+    } */
+}
+
+/* Responsive design for Tablet */
+@media (max-width: 768px) {
+    .group-sum-container{
+        justify-content: start;
+    }
+}

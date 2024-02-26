@@ -15,8 +15,8 @@ export class CreateGroupComponent {
   // userlist:number[] = []
 
   createGroupform = this.formBuilder.nonNullable.group({
-    Name: ['Bhalchandra Upvan', [Validators.required, Validators.minLength(5)]],
-    Description: ['This group will have keep track of expenses', [Validators.required, Validators.minLength(5)]]
+    Name: ['', [Validators.required, Validators.minLength(5)]],
+    Description: ['', [Validators.required, Validators.minLength(5)]]
   })
 
   constructor(

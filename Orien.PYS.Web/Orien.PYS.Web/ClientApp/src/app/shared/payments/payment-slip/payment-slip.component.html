@@ -6,19 +6,16 @@
 </ngx-spinner>
 
 <div class="my-3">
-  <div class="my-3 d-flex justify-content-between">
-    <div>
+  <div class="my-2 d-grid grid-11 group-container">
+    <div class="my-1">
       <div>
         <h3 class="poppins-medium mb-0"><span class="mr-2">Group Name:</span> {{groupInfo.name}}</h3>
       </div>
-      <!-- <div>
-        <h3 class="poppins-medium mb-0"><span class="mr-2">Members:</span> {{groupInfo.members.length}}</h3>
-      </div> -->
       <div class="nophone">
         <h3 class="poppins-medium mb-0"><span class="mr-2">Admin:</span> <img [src]="groupInfo.admin.picture" style="width: 40px;" class="rounded-circle mr-2" alt=""> {{groupInfo.admin.name}}</h3>
       </div>
     </div>
-    <div class="d-flex">
+    <div class="my-1 group-sum-container">
       <div>
         <button mat-raised-button color="primary" [routerLink]="['summary']">Summary</button>
       </div>
