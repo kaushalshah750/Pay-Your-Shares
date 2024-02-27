@@ -3,14 +3,8 @@ using Orien.PYS.Business.Microsoft.Extensions.DependencyInjection;
 using Orien.PYS.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-var config = builder.Configuration;
-
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(config).CreateLogger();
-builder.Logging.AddSerilog(Log.Logger);
 
 builder.Services.AddAuthentication(options =>
     {
