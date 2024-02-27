@@ -8,6 +8,7 @@ import { UserDetails } from '../Models/UserDetails';
 import { GlobalVarService } from '../services/global-var.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,7 @@ export class LoginComponent {
   ngOnInit(){
     this.spinner.show()
     google.accounts.id.initialize({
-      client_id: '156985885803-62ok5adedqmmg3nr0vj24b9sh5jjtvih.apps.googleusercontent.com',
+      client_id: environment.google.client_id,
       callback: (res:any) =>{
         this.authService.setAccessToken(res.credential)
         this.userInfo = this.decodeToken(res.credential);

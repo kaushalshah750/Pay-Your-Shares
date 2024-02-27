@@ -54,6 +54,7 @@ export class AddGroupMemberComponent {
   ){}
 
   ngOnInit(){
+    this.globalVar.checkToken()
     this.spinner.show()
     this.getGroupInfo()
     this.getAllUserInfoByGroup()

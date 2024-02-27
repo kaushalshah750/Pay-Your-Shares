@@ -23,9 +23,10 @@ export class NavMenuComponent {
     private spinner: NgxSpinnerService,
     private authservice: AuthServiceService,
     private router: Router,
-    public globalUser: GlobalVarService
+    public globalVar: GlobalVarService
   ){
-    this.globalUser.createUser()
+    // this.globalVar.checkToken()
+    this.globalVar.createUser()
 
   }
   

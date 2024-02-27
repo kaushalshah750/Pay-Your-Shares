@@ -4,6 +4,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { GroupService } from '../../services/group.service';
 import { CreateGroup } from '../../Models/CreateGroup';
 import { MatDialogRef } from '@angular/material/dialog';
+import { GlobalVarService } from '../../services/global-var.service';
 
 @Component({
   selector: 'app-create-group',
@@ -19,8 +20,13 @@ export class CreateGroupComponent {
   constructor(
     public dialogRef: MatDialogRef<CreateGroupComponent>,
     private groupService: GroupService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private globalVar: GlobalVarService
   ){}
+
+  ngOnInit(){
+    this.globalVar.checkToken()
+  }
 
   createGroup(){
     var group:CreateGroup = {

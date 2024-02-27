@@ -54,7 +54,9 @@ export class PaymentSlipComponent {
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private groupService: GroupService,
-  ){}
+  ){
+    this.globalVar.checkToken()
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -63,7 +65,6 @@ export class PaymentSlipComponent {
   async ngOnInit(){
     this.spinner.show()
     this.user = this.globalVar.user
-    this.globalVar.checkToken()
     this.getGroupDetail()
     this.spinner.show()
     await this.getuserslist()

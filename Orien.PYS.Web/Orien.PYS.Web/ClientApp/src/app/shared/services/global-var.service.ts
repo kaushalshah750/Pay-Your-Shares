@@ -35,13 +35,22 @@ export class GlobalVarService {
     }
   }
 
+  decodeToken(token:string){
+    return JSON.parse(atob(token.split(".")[1]))
+  }
+
   checkToken(){
     var isValid = this.isTokenExpired(localStorage.getItem(this.accessTokenKey)!)
-    var UserInfo = sessionStorage.getItem('UserInfo')
-    var UId = sessionStorage.getItem('UId')
-
-    if(!isValid || (UserInfo == null || UserInfo == "") || (UId == null || UId == "")){
-      this.toastr.info('You are not Authorized', 'Info')
+    
+    if(isValid == "Token Not Found"){
+      this.toastr.error('You are not Authorized', 'Error')
+      this.router.navigate(['/login'])
+    }else if (isValid == "Token is Valid"){
+      var userInfo = this.decodeToken(localStorage.getItem(this.accessTokenKey)!);
+      sessionStorage.setItem('UserInfo', JSON.stringify(userInfo))
+      sessionStorage.setItem('UId', userInfo.sub)
+    }else if (isValid == "Token is InValid"){
+      this.toastr.info('You Session is Expired. Please SignIn Again', 'Info')
       this.router.navigate(['/login'])
     }
   }
@@ -52,18 +61,17 @@ export class GlobalVarService {
     return secondsSinceEpoch
   }
 
-  isTokenExpired(token: string): boolean {
+  isTokenExpired(token: string): string {
     if(token != null){
       const decodedToken = jwt_decode.jwtDecode(token);
       if (decodedToken.exp === undefined) {
-        return false;
+        return "Expiry is Undefined";
       }
       const currentDate = this.getcurrentdate()
       const expirationDate = decodedToken.exp
-      return expirationDate > currentDate;
+      return expirationDate > currentDate ? "Token is Valid" : "Token is InValid";
     }else{
-      return false
+      return "Token Not Found"
     }
   }
-
 }

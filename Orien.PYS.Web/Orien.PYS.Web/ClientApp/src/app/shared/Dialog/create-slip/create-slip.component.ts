@@ -15,6 +15,7 @@ import { CurrencyPipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { GlobalVarService } from '../../services/global-var.service';
 
 @Component({
   selector: 'app-create-slip',
@@ -42,16 +43,16 @@ export class CreateSlipComponent {
     private sliptransactionService: SliptransactionsService,
     private userService: UserService,
     private spinner: NgxSpinnerService,
-    private authservice: AuthServiceService,
+    private globalVar: GlobalVarService,
     private toastr: ToastrService,
     private emailService: EmailService,
     private currency: CurrencyPipe,
-    private route: ActivatedRoute,
     private formBuilder: FormBuilder
   ){
   }
 
   async ngOnInit(){
+    this.globalVar.checkToken()
     await this.getuserslist()
     await this.getslippayment()
     console.log(this.data)
@@ -67,27 +68,44 @@ export class CreateSlipComponent {
     })
   }
 
+  checkPayerandSplitIsSame(payer:number, split:number){
+    if(payer == split){
+      return false
+    }else{
+      return true
+    }
+  }
+
   createnewspliptransaction(){
     if (this.createform.valid){
-      var Slip:AddSlip = {
-        Name: this.createform.controls['name'].value,
-        Amount: this.createform.controls['amount'].value,
-        PaidByUser_UId: this.createform.controls['paidByUserId'].value,
-        Group_UId: this.data,
-        TransactionDate: this.createform.controls['TransactionDate'].value,
-        Users: this.createform.controls['Users'].value
+      var spliusers:number[] = this.createform.controls['Users'].value
+      var isValid:boolean = false
+      if(spliusers.length == 1){
+        isValid = this.checkPayerandSplitIsSame(this.createform.controls['paidByUserId'].value, spliusers[0])
+      }else{
+        isValid = true
       }
-      // this.sendEmail(Slip)
-      this.spinner.show()
-      this.sliptransactionService.Addslipayment(Slip).subscribe(() => {
-        this.spinner.hide()
-        this.userlist = []
-        this.dialogRef.close(true);
-      }, error => {
-        this.toastr.error(error.error.title, 'Error')
-      })
-    }else{
-      this.toastr.info('The info is not correct', 'Success')
+      if(isValid){
+        var Slip:AddSlip = {
+          Name: this.createform.controls['name'].value,
+          Amount: this.createform.controls['amount'].value,
+          PaidByUser_UId: this.createform.controls['paidByUserId'].value,
+          Group_UId: this.data,
+          TransactionDate: this.createform.controls['TransactionDate'].value,
+          Users: spliusers
+        }
+        // this.sendEmail(Slip)
+        this.spinner.show()
+        this.sliptransactionService.Addslipayment(Slip).subscribe(() => {
+          this.spinner.hide()
+          this.userlist = []
+          this.dialogRef.close(true);
+        }, error => {
+          this.toastr.error(error.error.title, 'Error')
+        })
+      }else{
+        this.toastr.info('The info is not correct', 'Success')
+      }
     }
   }
 

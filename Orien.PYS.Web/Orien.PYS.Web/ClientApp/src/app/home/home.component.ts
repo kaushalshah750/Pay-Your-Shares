@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GlobalVarService } from '../shared/services/global-var.service';
 
 @Component({
   selector: 'app-home',
@@ -6,4 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+  constructor(
+    public globalVar: GlobalVarService
+  ){
+    this.globalVar.checkToken()
+  }
 }

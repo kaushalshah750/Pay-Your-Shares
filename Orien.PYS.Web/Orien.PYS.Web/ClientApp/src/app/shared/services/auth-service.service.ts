@@ -22,6 +22,7 @@ export class AuthServiceService {
     google.accounts.id.disableAutoSelect();
     this.router.navigate(['/login']).then(() =>{
       this.toastr.success('You have been successfully Logged Out', 'Success')
+      localStorage.removeItem(this.globalVar.accessTokenKey)
     })
   }
 

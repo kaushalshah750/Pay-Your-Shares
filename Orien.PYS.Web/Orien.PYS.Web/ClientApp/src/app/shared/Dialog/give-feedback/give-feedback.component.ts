@@ -7,6 +7,7 @@ import { FeedBack } from '../../Models/FeedBack';
 import { FeedbackService } from '../../services/feedback.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { GlobalVarService } from '../../services/global-var.service';
 
 @Component({
   selector: 'app-give-feedback',
@@ -22,9 +23,14 @@ export class GiveFeedbackComponent {
     private spinner: NgxSpinnerService,
     public dialogRef: MatDialogRef<GiveFeedbackComponent>,
     private toastr: ToastrService,
+    private globalVar: GlobalVarService,
     private feedbackService: FeedbackService,
     private formBuilder: FormBuilder
   ){}
+
+  ngOnInit(){
+    this.globalVar.checkToken()
+  }
 
   createFeedback(){
     this.spinner.show()

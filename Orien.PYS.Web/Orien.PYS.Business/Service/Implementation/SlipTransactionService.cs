@@ -30,13 +30,9 @@ namespace Orien.PYS.Business.Service.Implementation
 
 
                 List<SlipTransactionVM> sliptransaction = this.orienPYSDbContext.SlipTransactions
-                    .Where(st => (st.PaidUser_UId == userid || st.AddedBy_UId == userid ||
-                        this.orienPYSDbContext.SplitRelations
-                            .Where(sr => sr.Slip_Id == st.Slip_Id)
-                            .Select(sr => sr.User_UId).ToList().Contains(userid)) &&
-                            (this.orienPYSDbContext.SplitRelations
-                            .Where(sr => sr.Group_UId == groupId)
-                            .Select(sr => sr.User_UId).ToList().Contains(userid)))
+                    .Where(st => (st.PaidUser_UId == userid || st.AddedBy_UId == userid) &&
+                        this.orienPYSDbContext.SplitRelations.Where(sr => sr.Slip_Id == st.Slip_Id && sr.Group_UId == groupId)
+                            .Select(sr => sr.User_UId).ToList().Contains(userid))
                     .Select(x => new SlipTransactionVM()
                     {
                         Slip_Id = x.Slip_Id,
