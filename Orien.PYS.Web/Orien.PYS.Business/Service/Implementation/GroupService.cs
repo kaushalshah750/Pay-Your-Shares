@@ -1,9 +1,11 @@
-﻿using Orien.PYS.Business.Models;
+﻿using Microsoft.Extensions.Logging;
+using Orien.PYS.Business.Models;
 using Orien.PYS.Data;
 using Orien.PYS.Data.Entity;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text.Json;
 
 namespace Orien.PYS.Business.Service.Implementation
 {
@@ -11,64 +13,104 @@ namespace Orien.PYS.Business.Service.Implementation
     {
         private readonly OrienPYSDbContext orienPYSDbContext;
         private readonly ICommonService commonService;
+        private readonly ILogger<GroupService> logger;
         private readonly IEmailService emailService;
 
         public GroupService(
             OrienPYSDbContext orienPYSDbContext,
             ICommonService commonService,
+            ILogger<GroupService> logger,
             IEmailService emailService
             )
         {
             this.orienPYSDbContext = orienPYSDbContext;
             this.commonService = commonService;
+            this.logger = logger;
             this.emailService = emailService;
         }
 
         public List<User> GetUserInfoByGroup(string groupId, string userId)
         {
-            List<User> users = this.orienPYSDbContext.Users.Where(u => this.orienPYSDbContext.Group_User
-                .Where(gu => gu.Group_UId == groupId)
-                .Select(gu => gu.User_UId)
-                .ToList().Contains(u.UId) && u.UId != userId).ToList();
+            try
+            {
+                this.logger.LogInformation("Start of GetUserInfoByGroup");
+                this.logger.LogInformation($"GetUserInfoByGroup - groupId - {groupId}");
+                this.logger.LogInformation($"GetUserInfoByGroup - userId - {userId}");
 
-            return users;
+                List<User> users = this.orienPYSDbContext.Users.Where(u => this.orienPYSDbContext.Group_User
+                    .Where(gu => gu.Group_UId == groupId)
+                    .Select(gu => gu.User_UId)
+                    .ToList().Contains(u.UId) && u.UId != userId).ToList();
+
+                return users;
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex.Message);
+                throw ex;
+            }
         }
 
         public List<User> GetAllUserInfoByGroup(string groupId)
         {
-            List<User> users = this.orienPYSDbContext.Users.Where(u => this.orienPYSDbContext.Group_User
-                .Where(gu => gu.Group_UId == groupId)
-                .Select(gu => gu.User_UId)
-                .ToList().Contains(u.UId)).ToList();
+            try
+            {
+                this.logger.LogInformation("Start of GetUserInfoByGroup");
+                this.logger.LogInformation($"GetUserInfoByGroup - groupId - {groupId}");
 
-            return users;
+                List<User> users = this.orienPYSDbContext.Users.Where(u => this.orienPYSDbContext.Group_User
+                    .Where(gu => gu.Group_UId == groupId)
+                    .Select(gu => gu.User_UId)
+                    .ToList().Contains(u.UId)).ToList();
+
+                return users;
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex.Message);
+                throw ex;
+            }
         }
 
         public GroupDetail GetGroupInfo(string groupId)
         {
-            GroupDetail group = this.orienPYSDbContext.Groups.Where(g => g.UId == groupId).Select(x => new GroupDetail()
+            try
             {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                UId = x.UId,
-                Admin = this.orienPYSDbContext.Users.Where(u => u.UId == x.Admin).First(),
-                Members = this.orienPYSDbContext.Users.Where(u => this.orienPYSDbContext.Group_User
-                .Where(g => g.Group_UId == x.UId)
-                .Select(g => g.User_UId)
-                .ToList()
-                .Contains(u.UId)).ToList(),
-                Created_on = x.Created_on,
-                Updated_on = x.Updated_on
-            }).First();
+                this.logger.LogInformation("Start of GetGroupInfo");
+                this.logger.LogInformation($"GetGroupInfo - groupId - {groupId}");
 
-            return group;
+                GroupDetail group = this.orienPYSDbContext.Groups.Where(g => g.UId == groupId).Select(x => new GroupDetail()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    UId = x.UId,
+                    Admin = this.orienPYSDbContext.Users.Where(u => u.UId == x.Admin).First(),
+                    Members = this.orienPYSDbContext.Users.Where(u => this.orienPYSDbContext.Group_User
+                    .Where(g => g.Group_UId == x.UId)
+                    .Select(g => g.User_UId)
+                    .ToList()
+                    .Contains(u.UId)).ToList(),
+                    Created_on = x.Created_on,
+                    Updated_on = x.Updated_on
+                }).First();
+
+                return group;
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex.Message);
+                return null;
+            }
         }
 
         public List<GroupDetail> GetGroup(string userId)
         {
             try
             {
+                this.logger.LogInformation("Start of GetGroup");
+                this.logger.LogInformation($"GetGroup - userId - {userId}");
+
                 List<GroupDetail> groups = this.orienPYSDbContext.Groups
                     .Where(g => this.orienPYSDbContext.Group_User
                                     .Where(gu => gu.Group_UId == g.UId)
@@ -91,9 +133,10 @@ namespace Orien.PYS.Business.Service.Implementation
 
                 return groups;
             }
-            catch
+            catch (Exception ex)
             {
-                return null;
+                this.logger.LogError(ex.Message);
+                throw ex;
             }
         }
 
@@ -101,7 +144,13 @@ namespace Orien.PYS.Business.Service.Implementation
         {
             try
             {
+                this.logger.LogInformation("Start of AddGroup");
+                this.logger.LogInformation($"AddGroup - userid - {userid}");
+                var groupJson = JsonSerializer.Serialize(group);
+                this.logger.LogInformation($"AddGroup - group - {groupJson}");
+
                 var uid = this.commonService.GenerateUniqueRandomNumber();
+                this.logger.LogInformation($"AddGroup - uid - {uid}");
 
                 Group newGroup = new Group()
                 {
@@ -127,8 +176,9 @@ namespace Orien.PYS.Business.Service.Implementation
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                this.logger.LogError(ex.Message);
                 return false;
             }
         }
@@ -137,6 +187,10 @@ namespace Orien.PYS.Business.Service.Implementation
         {
             try
             {
+                this.logger.LogInformation("Start of AddMemberinGroup");
+                var groupmemjson = JsonSerializer.Serialize(addGroupMember);
+                this.logger.LogInformation($"AddMemberinGroup - addGroupMember - {groupmemjson}");
+
                 var user = this.orienPYSDbContext.Users.First(x => x.Email == addGroupMember.Email);
                 GroupMemberRelation groupmember = new GroupMemberRelation()
                 {
@@ -148,8 +202,9 @@ namespace Orien.PYS.Business.Service.Implementation
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                this.logger.LogError(ex.Message);
                 return false;
             }
         }
@@ -158,6 +213,10 @@ namespace Orien.PYS.Business.Service.Implementation
         {
             try
             {
+                this.logger.LogInformation("Start of RemoveMemberinGroup");
+                var groupMemberjson = JsonSerializer.Serialize(groupMember);
+                this.logger.LogInformation($"RemoveMemberinGroup - groupMember - {groupMemberjson}");
+
                 GroupMemberRelation groupUser = this.orienPYSDbContext.Group_User
                     .Where(gu => gu.Group_UId == groupMember.GroupId && gu.User_UId == groupMember.UserId)
                     .FirstOrDefault()!;
@@ -166,8 +225,9 @@ namespace Orien.PYS.Business.Service.Implementation
                 this.orienPYSDbContext.SaveChanges();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                this.logger.LogError(ex.Message);
                 return false;
             }
         }
@@ -181,6 +241,10 @@ namespace Orien.PYS.Business.Service.Implementation
 
             try
             {
+                this.logger.LogInformation($"Start of SendInvitationOfGroup");
+                var sendGroupInvitejson = JsonSerializer.Serialize(sendGroupInvite);
+                this.logger.LogInformation($"Email Body: {sendGroupInvitejson}");
+
                 var CheckExists = this.orienPYSDbContext.Group_Invitation
                     .Where(i => i.Group_UId == sendGroupInvite.Group_UId && i.Email == sendGroupInvite.Email).FirstOrDefault();
 
@@ -205,7 +269,7 @@ namespace Orien.PYS.Business.Service.Implementation
 
                     var EmailSent = await this.emailService.SendInviteEmail(emailBody);
 
-                    if (EmailSent)
+                    if (EmailSent == "Email Sent")
                     {
                         GroupInvitation groupInvitation = new GroupInvitation()
                         {
@@ -225,19 +289,22 @@ namespace Orien.PYS.Business.Service.Implementation
                     else
                     {
                         response.Response = "Invitation Failed to Send";
-
+                        response.Error = EmailSent;
                     }
-
+                    this.logger.LogInformation(response.Response);
+                    this.logger.LogInformation(response.Error);
                     return response;
                 }
                 else
                 {
                     response.Response = "Invitation Link Already Sent";
+                    this.logger.LogInformation(response.Response);
                     return response;
                 }
             }
             catch (Exception ex)
             {
+                this.logger.LogError(ex.Message);
                 response.Response = "Invitation Not Sent, Contact Administrator";
                 response.Error = ex.Message;
                 return response;

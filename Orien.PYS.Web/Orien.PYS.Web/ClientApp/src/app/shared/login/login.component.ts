@@ -7,6 +7,7 @@ import { AuthapiService } from '../services/authapi.service';
 import { UserDetails } from '../Models/UserDetails';
 import { GlobalVarService } from '../services/global-var.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,7 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthServiceService,
+    private spinner: NgxSpinnerService,
     private authAPIService: AuthapiService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
@@ -32,6 +34,7 @@ export class LoginComponent {
   ){}
 
   ngOnInit(){
+    this.spinner.show()
     google.accounts.id.initialize({
       client_id: '156985885803-62ok5adedqmmg3nr0vj24b9sh5jjtvih.apps.googleusercontent.com',
       callback: (res:any) =>{
@@ -54,6 +57,7 @@ export class LoginComponent {
           }
 
           this.authAPIService.checkUser(user).subscribe((res:string) => {
+            this.spinner.hide()
             if(res != "Invite is InValid"){
               this.router.navigate(['/group'])
             }else{
@@ -69,7 +73,7 @@ export class LoginComponent {
     });
 
     google.accounts.id.renderButton(document.getElementById("google-btn"),{
-      theme: 'filled-blue',
+      theme: 'outline',
       size: 'large',
       shape: 'rectangle',
       width: 100

@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MimeKit;
 using Orien.PYS.Business.Models;
 using Orien.PYS.Data;
 using Orien.PYS.Data.Entity;
+using System.Text.Json;
 
 namespace Orien.PYS.Business.Service.Implementation
 {
@@ -10,14 +12,17 @@ namespace Orien.PYS.Business.Service.Implementation
     {
         private readonly IConfiguration configuration;
         private readonly OrienPYSDbContext dbContext;
+        private readonly ILogger<EmailService> logger;
 
         public EmailService(
             IConfiguration configuration,
-            OrienPYSDbContext dbContext
+            OrienPYSDbContext dbContext,
+            ILogger<EmailService> logger
             )
         {
             this.configuration = configuration;
             this.dbContext = dbContext;
+            this.logger = logger;
         }
 
         public async Task<bool> SendEmail(EmailBody emailBody)
@@ -79,10 +84,14 @@ namespace Orien.PYS.Business.Service.Implementation
             }
         }
 
-        public async Task<bool> SendInviteEmail(InviteEmailBody emailBody)
+        public async Task<string> SendInviteEmail(InviteEmailBody emailBody)
         {
             try
             {
+                this.logger.LogInformation($"Start of Email Body:");
+                var emailjson = JsonSerializer.Serialize(emailBody);
+                this.logger.LogInformation($"Email Body: {emailjson}");
+
                 string[] emailParts = emailBody.Email.Split('@');
                 string initials = new string(emailParts[0].Where(char.IsLetter).ToArray());
                 string toName = char.ToUpper(initials[0]) + initials.Substring(1);
@@ -114,11 +123,13 @@ namespace Orien.PYS.Business.Service.Implementation
                     await client.SendAsync(message);
                     await client.DisconnectAsync(true);
                 }
-                return true;
+                this.logger.LogInformation("This Email is sent Successfully");
+                return "Email Sent";
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                this.logger.LogError(ex.Message);
+                return ex.Message;
             }
         }
     }
