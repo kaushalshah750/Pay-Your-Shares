@@ -39,6 +39,7 @@ import { GroupListComponent } from './shared/groups/group-list/group-list.compon
 import { PaymentSlipComponent } from './shared/payments/payment-slip/payment-slip.component';
 import { AddGroupMemberComponent } from './shared/Dialog/add-group-member/add-group-member.component';
 import { GiveFeedbackComponent } from './shared/Dialog/give-feedback/give-feedback.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { GiveFeedbackComponent } from './shared/Dialog/give-feedback/give-feedba
     MatPaginatorModule,
     MatFormFieldModule, 
     MatInputModule,
+    MatTooltipModule,
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,

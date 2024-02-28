@@ -9,10 +9,10 @@
   <div class="my-2 d-grid grid-11 group-container">
     <div class="my-1">
       <div>
-        <h3 class="poppins-medium mb-0"><span class="mr-2">Group Name:</span> {{groupInfo.name}}</h3>
+        <h3 class="poppins-medium mb-0"><span class="mr-1">Group Name:</span> {{groupInfo.name}}</h3>
       </div>
       <div class="nophone">
-        <h3 class="poppins-medium mb-0"><span class="mr-2">Admin:</span> <img [src]="groupInfo.admin.picture" style="width: 40px;" class="rounded-circle mr-2" alt=""> {{groupInfo.admin.name}}</h3>
+        <h3 class="poppins-medium mb-0"><span class="mr-1">Admin:</span> <img [src]="groupInfo.admin.picture" style="width: 40px;" class="rounded-circle mr-2" alt=""> {{groupInfo.admin.name}}</h3>
       </div>
     </div>
     <div class="my-1 group-sum-container">
@@ -57,7 +57,7 @@
         <td mat-cell *matCellDef="let element"> 
           <ng-container>
             <div class="d-flex">
-              <div *ngFor="let user of element.users" class="mx-1" color="primary">
+              <div *ngFor="let user of element.users" class="mx-1" color="primary" [matTooltip]="user.name" matTooltipPosition="above">
                 <img [src]="user.picture" width="40px" class="rounded-circle" alt="" title="{{user.name}}"> 
               </div>
             </div>

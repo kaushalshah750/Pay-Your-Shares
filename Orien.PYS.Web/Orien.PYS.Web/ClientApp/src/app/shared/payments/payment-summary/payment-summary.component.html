@@ -7,7 +7,7 @@
 <div>
   <div>
     <div class="my-2">
-      <h3 class="poppins-medium mb-0"><span class="mr-1">Group Name:</span> {{groupInfo.name}}</h3>
+      <h3 class="poppins-medium mb-0">Group Name: {{groupInfo.name}}</h3>
     </div>
     <div class="table-responsive">
       <table class="table border">
@@ -19,8 +19,8 @@
         </thead>
         <tbody>
           <tr *ngFor="let user of userslist">
-            <td>{{user.name}}</td>
-            <td [ngClass]="{'red' : calculatesingledebt(user.uId, globalVar.user.uid) < 0 , 'green' : calculatesingledebt(user.uId, globalVar.user.uid) > 0}">{{calculatesingledebt(user.uId, globalVar.user.uid) | currency : 'INR'}}</td>
+            <td class="px-3"><img [src]="user.picture" class="rounded-circle mr-2" style="width: 40px;" alt="">{{user.name}}</td>
+            <td class="px-3" style="vertical-align: middle !important" [ngClass]="{'red' : calculatesingledebt(user.uId, globalVar.user.uid) < 0 , 'green' : calculatesingledebt(user.uId, globalVar.user.uid) > 0}">{{calculatesingledebt(user.uId, globalVar.user.uid) | currency : 'INR'}}</td>
           </tr>
         </tbody>
       </table>

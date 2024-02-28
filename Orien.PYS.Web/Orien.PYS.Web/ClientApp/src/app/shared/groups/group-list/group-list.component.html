@@ -26,8 +26,8 @@
                 </div>
                 <div style="margin-top: 20px;">
                     <h3><b>Members in the Group</b></h3>
-                    <div class="d-flex align-items-center">
-                        <div *ngFor="let user of group.members" class="mx-1">
+                    <div class="d-flex align-items-center" style="flex-wrap: wrap;">
+                        <div *ngFor="let user of group.members" class="mx-1 my-1" [matTooltip]="user.name" matTooltipPosition="above">
                             <img class="rounded-circle" style="width: 40px;" [src]="user.picture" alt="">
                         </div>
                         <div class="d-flex align-items-center pointer" (click)="addGroupMember(group)">
