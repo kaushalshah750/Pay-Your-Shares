@@ -1,0 +1,24 @@
+{
+  "name": "payyourshare",
+  "version": "1.0.0",
+  "description": "Pay Your Share is your ultimate solution for effortlessly dividing payments among friends",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --trace-warnings --exec babel-node src/server.js"
+  },
+  "author": "Kaushal Shah",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/node": "^7.23.9",
+    "@babel/preset-env": "^7.24.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "google-auth-library": "^9.6.3",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.2.0",
+    "nodemailer": "^6.9.11"
+  }
+}
