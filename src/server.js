@@ -45,8 +45,8 @@ app.get('*', (req, res) => {
 
 // Create an HTTPS server without a certificate
 const server = https.createServer({
-    key: fs.readFileSync('D:/Projects/MEAN/Node.Js/Pay Your Share/src/private.key'),
-    cert: fs.readFileSync('D:/Projects/MEAN/Node.Js/Pay Your Share/src/certificate.crt')
+    key: fs.readFileSync('./src/private.key'),
+    cert: fs.readFileSync('./src/certificate.crt')
 }, app);
 
 // Start the server
