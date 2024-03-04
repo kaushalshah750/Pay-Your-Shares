@@ -2,6 +2,7 @@ import groupInviteModel from '../Controller/group-invitation/group-invitation.mo
 import groupModel from '../Controller/groups/group.model';
 import userModel from '../Controller/users/user.model';
 import emailBusiness from './email.business';
+import properties from '../config/properties';
 
 async function sendGroupInvitation(data, groupId, userId){
     var group = await groupModel.findOne({_id: groupId})
@@ -15,7 +16,7 @@ async function sendGroupInvitation(data, groupId, userId){
         subject: "Invitation to Join the Group",
         body: "You have been invited to join the Group Name: <b>" + group.name + "</b>. Please click on the below " +
         "link to join the group by logging in using this email. <br><br> " +
-        "Group Link: https://localhost:4200/" + inviteId + "/" + groupId + "/login " +
+        "Group Link: " + properties.BaseUrl + inviteId + "/" + groupId + "/login " +
         "<br><br> <b>Best Regards<br>Pay Your Share</b>"
     }
     await emailBusiness.sendEmail(emailData.email, emailData.subject, emailData.body)
