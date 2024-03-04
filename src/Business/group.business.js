@@ -1,9 +1,11 @@
 import groupModel from '../Controller/groups/group.model';
 import groupInvitationModel from '../Controller/group-invitation/group-invitation.model';
 import userModel from '../Controller/users/user.model';
+import { ObjectId } from 'mongodb';
 
-async function getGroups() {
-    return await groupModel.find({})
+async function getGroups(userToken) {
+    var user = await userModel.findOne({uid: userToken.sub})
+    return await groupModel.find({"members": { $in: [user._id] }})
         .populate("admin").populate("members")
 }
 

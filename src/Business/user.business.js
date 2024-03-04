@@ -11,4 +11,23 @@ async function getGroupSummaryUsers(id, userid){
     return await users
 }
 
-module.exports = {loggedInUser, getGroupSummaryUsers}
+async function checkUser(user){
+    var newUser = await userModel.findOne({uid: user.sub})
+    if(newUser != null){
+        return "User Already Exists"
+    }else{
+        var newUserData = {
+            name: user.name,
+            email: user.email,
+            uid: user.sub,
+            picture: user.picture,
+            phone: ""
+        }
+
+        var newUserModel = userModel(newUserData);
+        await newUserModel.save();
+        return "New User Created"
+    }
+}
+
+module.exports = {loggedInUser, getGroupSummaryUsers, checkUser}

@@ -1,10 +1,9 @@
 import express from 'express';
 var app = express();
 import path from 'path';
-import https from 'https';
-import fs from 'fs';
 import properties from './config/properties';
 import db from './config/db'
+import cors from 'cors';
 import indexRoute from './Controller/index.routes'
 import { OAuth2Client } from 'google-auth-library';
 
@@ -34,6 +33,8 @@ async function verifyGoogleToken(req, res, next) {
     }
 }
 
+app.use(cors())
+
 // Serve static files from the 'public' folder (Angular build files)
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -43,13 +44,7 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Create an HTTPS server without a certificate
-const server = https.createServer({
-    key: fs.readFileSync('./src/private.key'),
-    cert: fs.readFileSync('./src/certificate.crt')
-}, app);
-
 // Start the server
-server.listen(properties.PORT, () => {
+app.listen(properties.PORT, () => {
     console.log(`Server is running on port ${properties.PORT}`);
 });

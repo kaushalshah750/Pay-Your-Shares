@@ -2,7 +2,7 @@ import groupbusiness from '../../Business/group.business'
 import responsedata from '../../Utils/response'
 
 exports.getAll = (req, res) => {
-    groupbusiness.getGroups()
+    groupbusiness.getGroups(req.user)
         .then(data => responsedata(res, false, "", data))
         .catch(err => responsedata(res, true, err, null))
 };

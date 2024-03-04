@@ -14,17 +14,15 @@ const sendEmail = async (to, subject, text) => {
     try {
         // Send mail with defined transport object
         await transporter.sendMail({
-        from: '"Pay Your Share" <atozbestdealsforyou@gmail.com>', // Sender address (your Gmail address)
-        to: to, // List of recipients
-        subject: subject, // Subject line
-        html: text // HTML text body
+            from: '"Pay Your Share" <atozbestdealsforyou@gmail.com>', // Sender address (your Gmail address)
+            to: to, // List of recipients
+            subject: subject, // Subject line
+            html: text // HTML text body
         });
-
         console.log('Email sent successfully');
     } catch (error) {
         console.error('Error sending email:', error);
     }
 };
-  
 
 module.exports = { sendEmail };

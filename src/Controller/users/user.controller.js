@@ -12,3 +12,9 @@ exports.getGroupSummaryUsers = (req, res) => {
         .then(data => responsedata(res, false, "", data))
         .catch(err => responsedata(res, true, err, null));
 }
+
+exports.checkUser = (req, res) => {
+    userBusiness.checkUser(req.user)
+        .then(data => responsedata(res, false, "", data))
+        .catch(err => responsedata(res, true, err, null));
+}

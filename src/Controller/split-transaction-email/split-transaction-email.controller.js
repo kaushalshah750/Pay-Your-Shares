@@ -1,4 +1,4 @@
-import emailBusiness from '../../Business/email.business';
+import emailBusiness from '../../Business/split-transaction-email.business';
 import responseData from '../../Utils/response';
 
 exports.sendEmail = (req, res) => {
