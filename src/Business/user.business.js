@@ -14,6 +14,8 @@ async function getGroupSummaryUsers(id, userid){
 async function checkUser(user){
     var newUser = await userModel.findOne({uid: user.sub})
     if(newUser != null){
+        newUser.last_login = new Date()
+        await userModel.findOneAndUpdate({_id: newUser._id}, newUser)
         return "User Already Exists"
     }else{
         var newUserData = {
@@ -21,7 +23,9 @@ async function checkUser(user){
             email: user.email,
             uid: user.sub,
             picture: user.picture,
-            phone: ""
+            phone: "",
+            registered_on: new Date(),
+            last_login: new Date()
         }
 
         var newUserModel = userModel(newUserData);
