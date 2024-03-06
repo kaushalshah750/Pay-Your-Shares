@@ -27,11 +27,19 @@ async function checkUser(user){
             registered_on: new Date(),
             last_login: new Date()
         }
-
+        
         var newUserModel = userModel(newUserData);
         await newUserModel.save();
         return "New User Created"
     }
 }
 
-module.exports = {loggedInUser, getGroupSummaryUsers, checkUser}
+async function updateUser(data, user){
+    var users = await userModel.findOne({uid: user.sub})
+    users.name = data.name
+    users.phone = data.phone
+    await userModel.findOneAndUpdate(users)
+    return "User is Updated Successfully"
+}
+
+module.exports = {loggedInUser, getGroupSummaryUsers, checkUser, updateUser}
