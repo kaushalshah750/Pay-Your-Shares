@@ -25,5 +25,16 @@ At "Pay Your Share," we value your input and strive to continuously improve our 
 #### Gain Insights into Group Dues at a Glance
 Stay organized and informed with our comprehensive summary payment feature. Easily track and manage group dues with a detailed summary that provides a clear overview of each member's contributions and outstanding balances. With real-time updates, you can effortlessly stay on top of your group payments and ensure that everyone pays their fair share.
 
+## Technology Stack
+- Frontend: HTML, CSS, Angular
+- Backend: Express, Node.js
+- Database: MongoDB
+- Server: AWS
+
+This project utilizes the MEAN stack (MongoDB, Express.js, Angular, Node.js) for its development.
+
+## Deployment
+This project is deployed and accessible at [http://payyourshare.mrkaushalshah.com/](http://payyourshare.mrkaushalshah.com/). Visit the URL to experience hassle-free group payments!
+
 ## Get Started
 Ready to simplify group payments and streamline expense sharing? Sign up for Pay Your Share today and experience hassle-free payments like never before!
