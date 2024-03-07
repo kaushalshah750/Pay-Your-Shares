@@ -1,7 +1,6 @@
 import groupModel from '../Controller/groups/group.model';
 import groupInvitationModel from '../Controller/group-invitation/group-invitation.model';
 import userModel from '../Controller/users/user.model';
-import { ObjectId } from 'mongodb';
 
 async function getGroups(userToken) {
     var user = await userModel.findOne({uid: userToken.sub})
@@ -12,6 +11,21 @@ async function getGroups(userToken) {
 async function getGroupbyId(query) {
     return await groupModel.findOne(query)
         .populate("admin").populate("members")
+}
+
+async function deleteGroup(query, user) {
+    var group = await groupModel.findOne(query);
+    if(group != null){
+        var user = await userModel.findOne({uid: user.sub})
+        if(group.admin.equals(user._id)){
+            await groupModel.findOneAndDelete(query);
+            return "Group is Successfully Deleted"
+        }else{
+            return "You are not Authorized to delete the Group"
+        }
+    }else{
+        return "Group failed to delete"
+    }
 }
 
 async function createGroup(data){
@@ -39,4 +53,4 @@ async function addGroupMembers(data, userId){
     }
 }
 
-module.exports = {getGroups, createGroup, modifyGroupMembers, addGroupMembers, getGroupbyId}
+module.exports = {getGroups, createGroup, modifyGroupMembers, addGroupMembers, getGroupbyId, deleteGroup}

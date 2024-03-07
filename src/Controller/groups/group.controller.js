@@ -13,6 +13,12 @@ exports.getGroupbyId = (req, res) => {
         .catch(err => responsedata(res, true, err, null))
 };
 
+exports.deleteGroup = (req, res) => {
+    groupbusiness.deleteGroup({_id:req.params.id}, req.user)
+        .then(data => responsedata(res, false, "", data))
+        .catch(err => responsedata(res, true, err, null))
+};
+
 exports.creategroup = (req, res) => {
     groupbusiness.createGroup(req.body)
         .then(data => responsedata(res, false, "", data))
