@@ -40,7 +40,7 @@ async function updateUser(data, user){
     users.name = data.name
     users.phone = data.phone
     console.log(users)
-    await userModel.findOneAndUpdate(users)
+    await userModel.findOneAndUpdate({uid: user.sub}, users)
     return "User is Updated Successfully"
 }
 
