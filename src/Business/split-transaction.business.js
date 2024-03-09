@@ -1,6 +1,4 @@
 import splitTransactionModel from '../Controller/split-tranasaction/split-transaction.model'
-import { sendEmail } from './email.business';
-import userModel from '../Controller/users/user.model';
 
 async function getSplitTransactions(query){
     return await splitTransactionModel.find(query)
@@ -19,7 +17,7 @@ async function getSplitTransactions(query){
         //         ]
         //     }
         // )
-        .populate("split_between");
+        .populate("split_between").sort({created_on: -1});
 }
 
 async function createSplitTransaction(data){
