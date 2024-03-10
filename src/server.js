@@ -5,6 +5,7 @@ import properties from './config/properties';
 import db from './config/db'
 import cors from 'cors';
 import indexRoute from './Controller/index.routes'
+import unauthindexRoute from './Controller/unauthindex.routes'
 import { OAuth2Client } from 'google-auth-library';
 
 db();
@@ -38,7 +39,9 @@ app.use(cors())
 // Serve static files from the 'public' folder (Angular build files)
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use("/unauth", unauthindexRoute);
 app.use("/api", verifyGoogleToken, indexRoute);
+
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
