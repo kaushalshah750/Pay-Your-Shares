@@ -1,7 +1,7 @@
 import splitTransactionModel from '../Controller/split-tranasaction/split-transaction.model'
 
 async function getSplitTransactionsbyId(query){
-    return await splitTransactionModel.find(query)
+    return await splitTransactionModel.findOne(query)
         .populate("paidUser_id")
         .populate("addedBy_id")
         .populate("split_between").sort({created_on: -1});
