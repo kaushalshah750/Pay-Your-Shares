@@ -1,5 +1,12 @@
 import splitTransactionModel from '../Controller/split-tranasaction/split-transaction.model'
 
+async function getSplitTransactionsbyId(query){
+    return await splitTransactionModel.find(query)
+        .populate("paidUser_id")
+        .populate("addedBy_id")
+        .populate("split_between").sort({created_on: -1});
+}
+
 async function getSplitTransactions(query){
     return await splitTransactionModel.find(query)
         .populate("paidUser_id")
@@ -29,4 +36,4 @@ async function deleteSplitTransaction(query){
     return await splitTransactionModel.findOneAndDelete(query)
 }
 
-module.exports = {createSplitTransaction, getSplitTransactions, deleteSplitTransaction}
+module.exports = {createSplitTransaction, getSplitTransactions, deleteSplitTransaction, getSplitTransactionsbyId}
