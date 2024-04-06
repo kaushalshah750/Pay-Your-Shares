@@ -7,6 +7,12 @@ exports.loggedInUser = (req, res) => {
         .catch(err => responsedata(res, true, err, null));
 }
 
+exports.getGroupSummary = (req, res) => {
+    userBusiness.getGroupSummary(req.params.id, req.user)
+        .then(data => responsedata(res, false, "", data))
+        .catch(err => responsedata(res, true, err, null));
+}
+
 exports.getGroupSummaryUsers = (req, res) => {
     userBusiness.getGroupSummaryUsers(req.params.id, req.user)
         .then(data => responsedata(res, false, "", data))

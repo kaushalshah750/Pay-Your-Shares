@@ -1,5 +1,6 @@
 import userModel from '../Controller/users/user.model';
 import groupModel from '../Controller/groups/group.model';
+import splitTransactionModel from '../Controller/split-tranasaction/split-transaction.model'
 
 async function loggedInUser(query){
     return await userModel.findOne(query);
@@ -8,7 +9,56 @@ async function loggedInUser(query){
 async function getGroupSummaryUsers(id, userid){
     var group = await groupModel.findOne({_id: id}).populate("members")
     var users = group.members.filter(user => user.uid !== userid.sub)
+    // console.log(group)
+    // console.log(users)
+    // console.log(userid)
     return await users
+}
+
+async function getGroupSummary(id, userid){
+    var paidbyfrom = 0
+    var paidbyto = 0
+    var current_user = await userModel.findOne({uid: userid.sub})
+    var users = []
+    if(id !== undefined){
+        console.log("if")
+        var group = await groupModel.findOne({_id: id}).populate("members")
+        users = group.members.filter(user => user.uid !== userid.sub)
+        var slip = await splitTransactionModel.find({group_id: id}).populate("paidUser_id").populate("addedBy_id").populate("split_between").sort({created_on: -1});
+    }else{
+        console.log("else")
+        var group = await groupModel.find().populate("members")
+        group.forEach((res) => {
+            res.members.forEach((member) => {
+                if(users.filter(x => x.uid == member.uid) == false && member.uid != current_user.uid){
+                    users.push(member)
+                }
+            })
+        })
+        var slip = await splitTransactionModel.find().populate("paidUser_id").populate("addedBy_id").populate("split_between").sort({created_on: -1});
+    }
+
+    console.log(users)
+    var userBalances = []
+
+    users.forEach((user) => {
+        paidbyfrom = 0
+        paidbyto = 0
+        slip.forEach((ele) => {
+            if(ele.paidUser_id.uid == current_user.uid && ele.split_between.some((sb) => sb.uid == user.uid)){
+                paidbyfrom = paidbyfrom + (ele.amount/ele.split_between.length)
+            }
+            if(ele.paidUser_id.uid == user.uid && ele.split_between.some((sb) => sb.uid == current_user.uid)){
+                paidbyto = paidbyto + (ele.amount/ele.split_between.length)
+            }
+        });
+        var userBalance = {
+            user: user,
+            balance: Math.round(paidbyto - paidbyfrom)
+        }
+        userBalances.push(userBalance)
+    })
+    return await userBalances
 }
 
 async function checkUser(user){
@@ -42,4 +92,4 @@ async function updateUser(data, user){
     return "User is Updated Successfully"
 }
 
-module.exports = {loggedInUser, getGroupSummaryUsers, checkUser, updateUser}
+module.exports = {loggedInUser, getGroupSummary, getGroupSummaryUsers, checkUser, updateUser}
