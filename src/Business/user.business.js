@@ -9,9 +9,6 @@ async function loggedInUser(query){
 async function getGroupSummaryUsers(id, userid){
     var group = await groupModel.findOne({_id: id}).populate("members")
     var users = group.members.filter(user => user.uid !== userid.sub)
-    // console.log(group)
-    // console.log(users)
-    // console.log(userid)
     return await users
 }
 
@@ -20,13 +17,12 @@ async function getGroupSummary(id, userid){
     var paidbyto = 0
     var current_user = await userModel.findOne({uid: userid.sub})
     var users = []
+    var userBalances = []
     if(id !== undefined){
-        console.log("if")
         var group = await groupModel.findOne({_id: id}).populate("members")
         users = group.members.filter(user => user.uid !== userid.sub)
         var slip = await splitTransactionModel.find({group_id: id}).populate("paidUser_id").populate("addedBy_id").populate("split_between").sort({created_on: -1});
     }else{
-        console.log("else")
         var group = await groupModel.find().populate("members")
         group.forEach((res) => {
             res.members.forEach((member) => {
@@ -37,10 +33,6 @@ async function getGroupSummary(id, userid){
         })
         var slip = await splitTransactionModel.find().populate("paidUser_id").populate("addedBy_id").populate("split_between").sort({created_on: -1});
     }
-
-    console.log(users)
-    var userBalances = []
-
     users.forEach((user) => {
         paidbyfrom = 0
         paidbyto = 0
