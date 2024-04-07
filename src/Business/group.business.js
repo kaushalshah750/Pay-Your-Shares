@@ -42,14 +42,22 @@ async function modifyGroupMembers(data){
 
 async function addGroupMembers(data, userId){
     var user = await userModel.findOne({uid: userId})
-    var group = await groupModel.findOne({_id: data.group})
-    group.members.push(user._id)
-    var validlink = await groupInvitationModel.findOne({invite_uid: data.invite, group_uid: data.group, email: user.email})
-    if(validlink != null){
-        await groupModel.findOneAndUpdate({_id: group._id}, group)
-        return "You have been successfully added to the Group"
+    var group = await groupModel.findOne({_id: data.group}).populate("members")
+    var userExits = group.members.some(res => res.uid == user.uid)
+    console.log(user)
+    console.log(group)
+    console.log(userExits)
+    if(userExits){
+        return "You Already exits in the Group"
     }else{
-        return "Invitation Link is Invalid";
+        group.members.push(user._id)
+        var validlink = await groupInvitationModel.findOne({invite_uid: data.invite, group_uid: data.group, email: user.email})
+        if(validlink != null){
+            await groupModel.findOneAndUpdate({_id: group._id}, group)
+            return "You have been successfully added to the Group"
+        }else{
+            return "Invitation Link is Invalid";
+        }
     }
 }
 
