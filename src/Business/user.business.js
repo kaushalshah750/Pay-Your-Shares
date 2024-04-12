@@ -1,6 +1,7 @@
 import userModel from '../Controller/users/user.model';
 import groupModel from '../Controller/groups/group.model';
 import splitTransactionModel from '../Controller/split-tranasaction/split-transaction.model'
+import transactionSettlementModel from '../Controller/transaction-settlement/transaction-settlement.model'
 
 async function loggedInUser(query){
     return await userModel.findOne(query);
@@ -21,7 +22,8 @@ async function getGroupSummary(id, userid){
     if(id !== undefined){
         var group = await groupModel.findOne({_id: id}).populate("members")
         users = group.members.filter(user => user.uid !== userid.sub)
-        var slip = await splitTransactionModel.find({group_id: id}).populate("paidUser_id").populate("addedBy_id").populate("split_between").sort({created_on: -1});
+        var slips = await splitTransactionModel.find({group_id: id}).populate("paidUser_id").populate("split_between").sort({created_on: -1});
+        var settle = await transactionSettlementModel.find({group_id: id}).populate("settleTo_User").populate("settleBy_User").sort({created_on: -1});
     }else{
         var group = await groupModel.find().populate("members")
         group.forEach((res) => {
@@ -31,12 +33,13 @@ async function getGroupSummary(id, userid){
                 }
             })
         })
-        var slip = await splitTransactionModel.find().populate("paidUser_id").populate("addedBy_id").populate("split_between").sort({created_on: -1});
+        var slips = await splitTransactionModel.find().populate("paidUser_id").populate("split_between").sort({created_on: -1});
+        var settle = await transactionSettlementModel.find({settleBy_User: current_user._id}).populate("settleTo_User").populate("settleBy_User").sort({created_on: -1});
     }
     users.forEach((user) => {
         paidbyfrom = 0
         paidbyto = 0
-        slip.forEach((ele) => {
+        slips.forEach((ele) => {
             if(ele.paidUser_id.uid == current_user.uid && ele.split_between.some((sb) => sb.uid == user.uid)){
                 paidbyfrom = paidbyfrom + (ele.amount/ele.split_between.length)
             }
@@ -44,9 +47,20 @@ async function getGroupSummary(id, userid){
                 paidbyto = paidbyto + (ele.amount/ele.split_between.length)
             }
         });
+        var settleAmountFrom = 0
+        var settleAmountTo = 0
+        settle.forEach((set) => {
+            if(set.settleTo_User.uid == user.uid){
+                settleAmountFrom = settleAmountFrom + set.amount
+            }
+            if(set.settleBy_User.uid == user.uid){
+                settleAmountTo = settleAmountTo + set.amount
+            }
+        })
+
         var userBalance = {
             user: user,
-            balance: Math.round(paidbyto - paidbyfrom)
+            balance: Math.round(paidbyfrom - paidbyto + settleAmountFrom - settleAmountTo)
         }
         userBalances.push(userBalance)
     })

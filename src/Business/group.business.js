@@ -44,9 +44,6 @@ async function addGroupMembers(data, userId){
     var user = await userModel.findOne({uid: userId})
     var group = await groupModel.findOne({_id: data.group}).populate("members")
     var userExits = group.members.some(res => res.uid == user.uid)
-    console.log(user)
-    console.log(group)
-    console.log(userExits)
     if(userExits){
         return "You Already exits in the Group"
     }else{

@@ -6,6 +6,7 @@ import groupRoutes from './groups/group.routes';
 import groupInviteRoutes from './group-invitation/group-invitation.routes';
 import feedbackRoutes from './feedback/feedback.routes';
 import splitTransactionRoutes from './split-tranasaction/split-transaction.routes';
+import transactionSettlementRoutes from './transaction-settlement/transaction-settlement.routes';
 import emailRoutes from './split-transaction-email/split-transaction-email.routes';
 
 router.use('/users', userRoutes());
@@ -13,6 +14,7 @@ router.use('/groups', groupRoutes());
 router.use('/group-invitation', groupInviteRoutes());
 router.use('/create-feedback', feedbackRoutes());
 router.use('/split-transaction', splitTransactionRoutes());
+router.use('/transaction-settlement', transactionSettlementRoutes());
 router.use('/email', emailRoutes());
 
 module.exports = router;
