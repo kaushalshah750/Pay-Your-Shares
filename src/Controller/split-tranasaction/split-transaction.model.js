@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 var splitTransactionSchema = new mongoose.Schema({
     name: String,
+    type: String,
     amount: Number,
     paidUser_id: {
         type: mongoose.Schema.ObjectId,
