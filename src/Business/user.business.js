@@ -34,7 +34,7 @@ async function getGroupSummary(id, userid){
             })
         })
         var slips = await splitTransactionModel.find().populate("paidUser_id").populate("split_between").sort({created_on: -1});
-        var settle = await transactionSettlementModel.find({settleBy_User: current_user._id}).populate("settleTo_User").populate("settleBy_User").sort({created_on: -1});
+        var settle = await transactionSettlementModel.find({}).populate("settleTo_User").populate("settleBy_User").sort({created_on: -1});
     }
     users.forEach((user) => {
         paidbyfrom = 0
