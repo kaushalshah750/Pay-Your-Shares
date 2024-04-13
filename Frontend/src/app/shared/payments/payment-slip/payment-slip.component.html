@@ -1,0 +1,90 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+
+<div class="py-4 bg-light">
+  <div class="container">
+    <h3 class="mb-0">
+      <span class="narrate pointer" [routerLink]="['/group']">Groups</span> &nbsp; >> &nbsp; 
+      <span>{{groupInfo.name}}</span>
+    </h3>
+  </div>
+  <div class="container my-3">
+    <div class="my-2 d-grid grid-11 group-container">
+      <div class="my-1">
+        <div class="nophone">
+          <h3 class="poppins-medium mb-0"><span class="mr-1">Admin:</span> <img [src]="groupInfo.admin.picture" style="width: 40px;" class="rounded-circle mr-2" alt=""> {{groupInfo.admin.name}}</h3>
+        </div>
+      </div>
+      <div class="my-1 group-sum-container">
+        <div>
+          <button mat-raised-button color="primary" [disabled]="groupInfo.members.length <= 1" [routerLink]="['summary']">Summary</button>
+        </div>
+        <div class="mx-3">
+          <button mat-raised-button color="primary" (click)="addslip()">New Split</button>
+        </div>
+        <div>
+          <button mat-mini-fab color="primary" matTooltip="Refresh" matTooltipPosition="above" class="d-flex" (click)="refresh()">
+            <mat-icon class="mx-0">refresh</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="my-2 table-responsive">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <!-- <ng-container matColumnDef="Type">
+          <th mat-header-cell *matHeaderCellDef> Type </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-icon [matTooltip]="element.type == 'Payment' ? 'Transaction' : 'Settlement'">{{element.type == "Payment" ? "attach_money" : "list_alt"}}</mat-icon>
+          </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="Name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Paid By">
+          <th mat-header-cell *matHeaderCellDef> Paid By </th>
+          <td mat-cell *matCellDef="let element"> {{element.paidUser_id.name}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Amount">
+          <th mat-header-cell *matHeaderCellDef> Amount </th>
+          <td mat-cell *matCellDef="let element"> {{element.amount | currency: 'INR'}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Transaction Date">
+          <th mat-header-cell *matHeaderCellDef> Transaction Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.payment_date | date:'yyyy-MM-dd' }} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Split In">
+          <th mat-header-cell *matHeaderCellDef> Split In </th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container>
+              <div class="d-flex">
+                <div *ngFor="let user of element.split_between" class="mx-1" color="primary" [matTooltip]="user.name" matTooltipPosition="above">
+                  <img [src]="user.picture" width="40px" class="rounded-circle" alt="" title="{{user.name}}">
+                </div>
+              </div>
+            </ng-container>
+          </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef> Action </th>
+          <td mat-cell *matCellDef="let element"> <mat-icon class="pointer" matTooltip="Delete" matTooltipPosition="above" (click)="deletesliptransaction(element)" *ngIf="user.uid == element.paidUser_id.uid">close</mat-icon> </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell text-center py-3" [attr.colspan]="displayedColumns.length">
+            <i>----- No Transaction Found. Create a New Split Transaction -----</i>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <mat-paginator class="bg-light" [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+  </div>
+</div>

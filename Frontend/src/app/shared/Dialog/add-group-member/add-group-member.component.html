@@ -1,0 +1,34 @@
+<h2 class="mb-0" mat-dialog-title>{{globalVar.user.uid == group.admin.uid ? "Invite Members in Group" : "Members in Group"}}</h2>
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<div class="px-3">
+    <div>
+        <mat-card *ngFor="let user of group.members" class="my-2">
+            <mat-card-content>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <img [src]="user.picture" width="40px" class="rounded-circle" alt="">
+                        <h3 class="mb-0 ml-2">{{user.name}}</h3>
+                    </div>
+                    <div class="d-flex" *ngIf="globalVar.user.uid != user.uid && globalVar.user.uid == group.admin.uid">
+                        <mat-icon class="pointer" (click)="removeGroupMemberbyGroupId(user.uid)">delete</mat-icon>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<mat-dialog-content *ngIf="globalVar.user.uid == group.admin.uid">
+    <form [formGroup]="addGroupMemberform">
+        <div class="d-flex justify-content-between">
+            <mat-form-field class="mb-0 w-100">
+                <mat-label>Email</mat-label>
+                <input type="email" matInput formControlName="Email">
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="secondary" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button color="primary" cdkFocusInitial [disabled]="isLoading" (click)="inviteMember()">Invite</button>
+</mat-dialog-actions>

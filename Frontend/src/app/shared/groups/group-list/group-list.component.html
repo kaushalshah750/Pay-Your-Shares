@@ -1,0 +1,76 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<div class="py-4 bg-light">
+    <div class="container">
+        <div>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1223895601346142"
+     crossorigin="anonymous"></script>
+        </div>
+        <div class="d-flex justify-content-between">
+            <div class="d-flex">
+                <div>
+                    <button mat-raised-button color="primary" (click)="createGroup()">Create Group</button>
+                </div>
+                <!-- <div>
+                    <button mat-raised-button color="primary" class="mx-2" [routerLink]="['payment/summary']">Summary</button>
+                </div> -->
+            </div>
+            <div>
+                <button mat-mini-fab color="primary" matTooltip="Refresh" matTooltipPosition="above" class="d-flex" (click)="refresh()">
+                    <mat-icon class="mx-0">refresh</mat-icon>
+                </button>        
+            </div>
+        </div>
+        <div class="my-5" *ngIf="groups.length == 0">
+            <div class="d-flex align-items-center justify-content-center text-center">
+                <h2>{{isLoading ? "Loading Group List...." : "This is no Group to create a split. Please create a Group First."}}</h2>
+            </div>
+        </div>
+        
+        <div class="bg-white border shadow-sm p-4 rounded my-3" *ngFor="let group of groups">
+            <div class="d-grid grid-11">
+                <div>
+                    <div>
+                        <h2><b>Group Name:</b> {{group.name}}</h2>
+                    </div>
+                    <div>
+                        <h3 class="mb-0"><b>Description:</b> {{group.description}}</h3>
+                    </div>
+                    <div class="d-flex align-items-center my-2">
+                        <h3 class="mb-0"><b>Admin:</b></h3>
+                        <div class="ml-1 d-flex align-items-center">
+                            <img class="rounded-circle" style="width: 40px;" [src]="group.admin.picture" alt="">
+                            <h4 class="mb-0 ml-2">{{group.admin.name}}</h4>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <h3 class="mb-1"><b>Members in the Group</b></h3>
+                        <div class="d-flex align-items-center" style="flex-wrap: wrap;">
+                            <div *ngFor="let user of group.members" class="mx-1 my-1 shadow rounded-circle" [matTooltip]="user.name" matTooltipPosition="above">
+                                <img class="rounded-circle" style="width: 40px;" [src]="user.picture" alt="">
+                            </div>
+                            <button mat-mini-fab color="secondary" class="shadow border ml-1" matTooltip="Add Members" matTooltipPosition="above" (click)="addGroupMember(group)">
+                                <mat-icon class="d-flex pointer">add</mat-icon>
+                            </button>
+                            <div class="ml-3" *ngIf="group.members.length == 0">No Member added to the group</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="actionbtn text-end d-flex justify-content-between flex-column">
+                    <div class="group-btn">
+                        <div>
+                            <button mat-raised-button color="primary" style="min-width: 120px;" (click)="addGroupMember(group)">Members</button>
+                        </div>
+                        <div class="my-3">
+                            <button mat-raised-button color="primary" style="min-width: 120px;" [routerLink]="[group._id,'payment']">Transaction</button>
+                        </div>
+                    </div>
+                    <div>
+                        <button mat-mini-fab color="primary" matTooltip="Delete Group" matTooltipPosition="above" (click)="deleteGroup(group)">
+                            <mat-icon class="d-flex pointer">delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

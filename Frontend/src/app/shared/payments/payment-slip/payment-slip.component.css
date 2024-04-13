@@ -1,0 +1,45 @@
+table{
+    width: 100% !important;
+}
+
+.red{
+    color: red;
+}
+
+.green{
+    color: green;
+}
+
+.user-container{
+    word-wrap:break-word;
+    padding: 7px;
+    margin: 3px;
+    border-radius: 10px;
+    background-color: #00000030
+}
+
+.mat-column-Type {
+    width: 32px;
+}
+
+.group-sum-container{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+/* Responsive design for phone */
+@media (max-width: 425px) {
+    /* .group-sum-container{
+        display: flex;
+        justify-content: end;
+        align-items: center;
+    } */
+}
+
+/* Responsive design for Tablet */
+@media (max-width: 768px) {
+    .group-sum-container{
+        justify-content: start;
+    }
+}

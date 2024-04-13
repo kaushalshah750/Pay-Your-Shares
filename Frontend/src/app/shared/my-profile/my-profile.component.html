@@ -1,0 +1,35 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<div class="py-4 bg-light">
+    <div class="container">
+        <div class="my-3">
+            <form [formGroup]="createform">
+                <div class="my-3">
+                    <div class="d-flex flex-column w-100 mr-2">
+                        <label class="mb-2">Profile Picture</label>
+                        <img [src]="users.picture" alt="" width="75px" class="rounded-circle">
+                    </div>
+                </div>
+                <div class="d-grid grid-11 gap-2">
+                    <mat-form-field appearance="outline">
+                        <mat-label class="poppins-regular">Full Name</mat-label>
+                        <input matInput class="poppins-regular" formControlName="name" (ngModelChange)="checkChangedValue()">
+                        <mat-error *ngIf="createform.controls['name'].invalid">{{this.createform.controls['name'].hasError('required') ? "You must enter a value" : "It should be Minimum 5 Character Long"}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label class="poppins-regular">Email</mat-label>
+                        <input matInput class="poppins-regular" formControlName="email">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label class="poppins-regular">Phone</mat-label>
+                        <span matTextPrefix class="poppins-regular">+91</span>
+                        <input matInput type="number" class="pl-1 poppins-regular" formControlName="phone" (ngModelChange)="checkChangedValue()">
+                        <mat-error *ngIf="createform.controls['phone'].invalid">{{this.createform.controls['phone'].hasError('required') ? "You must enter your number" : "Your number should be 10 Digits"}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="my-4">
+                    <button mat-raised-button [disabled]="!valueChanged || isLoading" color="primary" class="px-3" cdkFocusInitial (click)="updateUser()">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

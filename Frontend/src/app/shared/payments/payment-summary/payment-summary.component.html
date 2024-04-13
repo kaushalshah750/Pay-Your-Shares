@@ -1,0 +1,80 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+
+<div class="py-4 bg-light">
+  <div class="container">
+    <h3 class="mb-0">
+      <span class="narrate pointer" [routerLink]="['/group']">Groups</span> &nbsp; >> &nbsp; 
+      <span *ngIf="group_Uid == null">All</span>  
+      <span *ngIf="group_Uid != null" [ngClass]="{'narrate pointer' : group_Uid}" [routerLink]="['/group/', groupInfo._id, 'payment']">{{group_Uid ? groupInfo.name : "All"}}</span> &nbsp; >> &nbsp; 
+      <span>Summary</span>
+    </h3>
+  </div>
+  <div class="container my-3">
+    <div>
+      <div class="table-responsive">
+        <table class="table border bg-white">
+          <thead class="table-secondary">
+            <tr>
+              <th>Name</th>
+              <th>Amount</th>
+              <th style="width: 96px;" class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of groupSummary">
+              <td class="px-3"><img [src]="user.user.picture" class="rounded-circle mr-2" style="width: 40px;" alt="">{{user.user.name}}</td>
+              <td class="px-3" style="vertical-align: middle !important" [ngClass]="{'red' : user.balance < 0 , 'green' : user.balance > 0}">{{user.balance | currency : 'INR'}}</td>
+              <td>
+                <button mat-raised-button color="primary" *ngIf="user.balance != 0" (click)="settlePayment(user)">Settle</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="mt-2">
+        <h3>Settlement</h3>
+      </div>
+      <div class="my-2 table-responsive">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<!--   
+          <ng-container matColumnDef="Type">
+            <th mat-header-cell *matHeaderCellDef> Type </th>
+            <td mat-cell *matCellDef="let element">
+              <mat-icon [matTooltip]="element.type == 'Payment' ? 'Transaction' : 'Settlement'">{{element.type == "Payment" ? "attach_money" : "list_alt"}}</mat-icon>
+            </td>
+          </ng-container>
+   -->
+          <ng-container matColumnDef="Amount">
+            <th mat-header-cell *matHeaderCellDef> Amount </th>
+            <td mat-cell *matCellDef="let element"> {{element.amount | currency: 'INR'}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="Settle By">
+            <th mat-header-cell *matHeaderCellDef> Settled By </th>
+            <td mat-cell *matCellDef="let element"> {{element.settleBy_User.name}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="Settle To">
+            <th mat-header-cell *matHeaderCellDef> Settled To </th>
+            <td mat-cell *matCellDef="let element"> {{element.settleTo_User.name}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Transaction Date">
+            <th mat-header-cell *matHeaderCellDef> Settlement Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.payment_date | date:'yyyy-MM-dd'}} </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell text-center py-3" [attr.colspan]="displayedColumns.length">
+              <i>----- No Settlement has Found. Settle a Transaction -----</i>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

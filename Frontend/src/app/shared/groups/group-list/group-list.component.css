@@ -1,0 +1,32 @@
+@media (max-width: 768px) {
+    .actionbtn{
+        margin-top: 20px;
+        flex-direction: initial !important;
+        text-align: left;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .actionbtn > div.my-3{
+        margin: 0px;
+    }
+}
+
+/* Responsive design for Tablet */
+@media (max-width: 768px) {
+    .group-btn{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+}
+
+/* Responsive design for phone */
+@media (max-width: 425px) {
+    .group-btn{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+}  
+  

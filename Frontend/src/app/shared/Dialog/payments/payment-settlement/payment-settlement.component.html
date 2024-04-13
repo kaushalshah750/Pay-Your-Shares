@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Settle Your Payments</h2>
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<mat-dialog-content class="pb-0">
+    <form [formGroup]="createform">
+        <div class="mb-3">
+            <h3 class="mb-0 poppins-bold">Settle Payment: {{ user.user.name }}</h3>
+            <h3 class="mb-0 poppins-bold">{{ user.balance > 0 ? "You will receive : " + (user.balance | currency: 'INR')  : "You have to pay : " + (user.balance * -1 | currency: 'INR') }}</h3>
+        </div>
+        <div class="my-3">
+            <mat-form-field floatLabel="always" class="w-100">
+                <mat-label>Settle Amount</mat-label>
+                <input matInput type="number" class="example-right-align" placeholder="0" formControlName="amount" [min]="0" [max]="(user.balance < 0 ? user.balance * -1 : user.balance)">
+                <span matTextPrefix>₹&nbsp;</span>
+                <span matTextSuffix>.00</span>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="secondary" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button [disabled]="isLoading" color="primary" class="px-3 " cdkFocusInitial (click)="createTransactionSettlement()">Settle</button>
+</mat-dialog-actions>

@@ -1,0 +1,14 @@
+.hero{
+    width: calc(100vw - 17px);
+    height: calc(100vh - 90px);
+    /* min-height: 600px; */
+}
+
+.hero-text{
+    line-height: 50px;
+    font-size: 40px;
+}
+
+.header-text{
+    font-size: 30px;
+}

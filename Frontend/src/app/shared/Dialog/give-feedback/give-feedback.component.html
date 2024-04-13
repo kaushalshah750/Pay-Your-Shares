@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Feedback</h2>
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<mat-dialog-content>
+    <form [formGroup]="feedbackForm">
+        <div class="d-flex justify-content-between">
+            <mat-form-field class="mb-0 w-100">
+                <mat-label>FeedBack</mat-label>
+                <textarea matInput formControlName="Feedback"></textarea>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="secondary" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="isLoading" cdkFocusInitial (click)="createFeedback()">Submit</button>
+</mat-dialog-actions>
