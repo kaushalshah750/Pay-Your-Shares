@@ -1,4 +1,3 @@
 export interface SlipTransactionBody{
-    group: string
-    type: string
+    group: number
 }

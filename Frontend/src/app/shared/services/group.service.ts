@@ -4,6 +4,7 @@ import { Group, GroupAddResponseOne, GroupResponse, GroupResponseOne } from '../
 import { CreateGroup } from '../Models/CreateGroup';
 import { Users } from '../Models/Users';
 import { GroupInvitationResponse } from '../Models/GroupInvitation';
+import { RemoveGroupMember } from '../Models/RemoveGroupMember';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class GroupService {
     return this.authservice.get<GroupResponseOne>(this.url + "/" + groupId)
   }
 
-  deleteGroup(groupId:string){
+  deleteGroup(groupId:number){
     return this.authservice.delete<GroupAddResponseOne>(this.url + "/" + groupId + "/delete")
   }
 
@@ -43,8 +44,8 @@ export class GroupService {
     return this.authservice.put<GroupAddResponseOne>(this.url + "/add-members", reference)
   }
 
-  modifyMemberinGroup(group:Group){
-    return this.authservice.put<GroupResponseOne>(this.url + "/edit-members", group)
+  removeMemberfromGroup(removeMember:RemoveGroupMember){
+    return this.authservice.put<GroupResponseOne>(this.url + "/remove-member", removeMember)
   }
   
   sendInvitation(groupId:string, sendInvite:any){

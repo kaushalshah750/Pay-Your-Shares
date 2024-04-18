@@ -28,24 +28,21 @@ export class PaymentSlipComponent {
   user:any = ""
   users:Users[] = []
   userlist:number[] = []
-  group_Uid = this.route.snapshot.paramMap.get('groupid')!
+  group_Uid = Number(this.route.snapshot.paramMap.get('groupid')!)
   groupInfo:Group = {
-    _id: "",
-    name: "",
-    description: "",
-    admin: {
-      _id: "",
-      name: "",
-      email: "",
-      phone: 0,
-      picture: "",
-      last_login: "",
-      uid: ""
+    Group_id: 0,
+    Name: "",
+    Description: "",
+    Admin: {
+      User_id: 0,
+      Name: "",
+      Email: "",
+      Phone: 0,
+      Picture: ""
     },
-    members: [],
-    created_on: "",
-    updated_on: "",
-    uId: ""
+    Members: [],
+    Created_on: "",
+    Updated_on: ""
   }
   isLoading:boolean = false
   displayedColumns: string[] = ['Name', 'Paid By', 'Amount', 'Transaction Date', 'Split In', 'Action'];
@@ -70,28 +67,18 @@ export class PaymentSlipComponent {
     this.isLoading = true
     this.globalVar.createUser()
     this.user = this.globalVar.user
-    // this.getGroupDetail()
     await this.getslippayment()
   }
-  
-  // getGroupDetail(){
-  //   this.isLoading = true
-  //   this.groupService.getGroupByGroupId(this.group_Uid).subscribe((res:GroupResponseOne)=>{
-  //     this.isLoading = false
-  //     this.groupInfo = res.data
-  //   })
-  // }
-  
+    
   async getslippayment(){
     this.isLoading = true
     var transaction: SlipTransactionBody = {
-      group: this.group_Uid,
-      type: "Payment"
+      group: this.group_Uid
     }
     await this.sliptransactionService.getslipayment(transaction).subscribe((res:SlipResponse)=>{
       this.isLoading = false
-      this.slip = res.data.transaction
-      this.groupInfo = res.data.group
+      this.slip = res.data.Transaction
+      this.groupInfo = res.data.Group
       this.dataSource.data = this.slip;
     })
   }
@@ -129,7 +116,7 @@ export class PaymentSlipComponent {
     dialogRef.afterClosed().subscribe(res => {
       if(res){
         this.isLoading = true
-        this.sliptransactionService.deleteslipayment(slip._id).subscribe((res:SlipResponse)=>{
+        this.sliptransactionService.deleteslipayment(slip.Slip_id).subscribe((res:SlipResponse)=>{
           this.isLoading = false
           if(!res.err){
             this.snackBar.openFromComponent(SnackbarComponent, {

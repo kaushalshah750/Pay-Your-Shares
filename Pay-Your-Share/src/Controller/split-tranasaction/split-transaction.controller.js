@@ -8,7 +8,7 @@ exports.createSplitTransaction = (req, res) =>{
 }
 
 exports.getSplitTransactions = (req, res) =>{
-    splittransactionbusiness.getSplitTransactions(req.body)
+    splittransactionbusiness.getSplitTransactions(req.user.sub, req.body)
         .then(data => responsedata(res, false, "", data))
         .catch(err => responsedata(res, true, err, null))
 }
@@ -20,7 +20,7 @@ exports.getSplitTransactionsbyId = (req, res) =>{
 }
 
 exports.deleteSplitTransaction = (req, res) =>{
-    splittransactionbusiness.deleteSplitTransaction({_id: req.params.id})
+    splittransactionbusiness.deleteSplitTransaction(req.params.id)
         .then(data => responsedata(res, false, "", data))
         .catch(err => responsedata(res, true, err, null))
 }

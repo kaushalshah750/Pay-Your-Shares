@@ -61,7 +61,7 @@ export class GroupListComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.groupService.deleteGroup(group._id).subscribe((res:GroupAddResponseOne) => {
+        this.groupService.deleteGroup(group.Group_id).subscribe((res:GroupAddResponseOne) => {
           if(!res.err){
             if(res.data == "Group is Successfully Deleted"){
               this.isLoading = false
@@ -124,7 +124,7 @@ export class GroupListComponent {
 
   addGroupMember(group:Group){
     const dialogRef = this.dialog.open(AddGroupMemberComponent, {
-      data: group._id,
+      data: group.Group_id,
       width: '400px'
     });
 

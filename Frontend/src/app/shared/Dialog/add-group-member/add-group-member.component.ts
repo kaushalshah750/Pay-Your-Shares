@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../snackbar/snackbar.component';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { Users } from '../../Models/Users';
+import { RemoveGroupMember } from '../../Models/RemoveGroupMember';
 
 @Component({
   selector: 'app-add-group-member',
@@ -18,22 +19,19 @@ import { Users } from '../../Models/Users';
 export class AddGroupMemberComponent {
   isLoading:boolean = true
   group:Group = {
-    _id: "",
-    name: "",
-    description: "",
-    admin: {
-      _id: "",
-      name: "",
-      email: "",
-      phone: 0,
-      picture: "",
-      last_login: "",
-      uid: ""
+    Group_id: 0,
+    Name: "",
+    Description: "",
+    Admin: {
+      User_id: 0,
+      Name: "",
+      Email: "",
+      Phone: 0,
+      Picture: ""
     },
-    members: [],
-    created_on: "",
-    updated_on: "",
-    uId: ""
+    Members: [],
+    Created_on: "",
+    Updated_on: ""
   }
   addGroupMemberform = this.formBuilder.nonNullable.group({
     Email: ['', [Validators.required, Validators.email]]
@@ -99,12 +97,12 @@ export class AddGroupMemberComponent {
     }
   }
 
-  removeGroupMemberbyGroupId(userId:string){
-    var userDetail = this.group.members.filter(item => item.uid == userId)[0]
+  removeGroupMemberbyGroupId(userId:number){
+    var userDetail = this.group.Members.filter(item => item.User_id == userId)[0]
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       data: {
         title: "Are you sure?",
-        description: "Are you sure you want to remove <b>" + userDetail.name + "</b> from <b>'" + this.group.name + "'</b>",
+        description: "Are you sure you want to remove <b>" + userDetail.Name + "</b> from <b>'" + this.group.Name + "'</b>",
         button: "Remove"
       }
     })
@@ -112,8 +110,12 @@ export class AddGroupMemberComponent {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.isLoading = true
-        this.group.members = this.group.members.filter(item => item.uid !== userId)
-        this.groupService.modifyMemberinGroup(this.group).subscribe((res:GroupResponseOne) => {
+        var removeMember:RemoveGroupMember = {
+          Group_id: this.group.Group_id,
+          User_id: userId
+        }
+        this.group.Members = this.group.Members.filter(item => item.User_id !== userId)
+        this.groupService.removeMemberfromGroup(removeMember).subscribe((res:GroupResponseOne) => {
           this.isLoading = false
           if(!res.err){
             this.getGroupInfo()

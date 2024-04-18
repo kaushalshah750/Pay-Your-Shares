@@ -35,12 +35,9 @@ export class CreateGroupComponent {
   createGroup(){
     this.isLoading = true
     var group:CreateGroup = {
-      name: this.createGroupform.controls['Name'].value,
-      description: this.createGroupform.controls['Description'].value,
-      admin: this.globalVar.user.id,
-      members: [this.globalVar.user.id],
-      created_on: new Date(),
-      updated_on: new Date()
+      Name: this.createGroupform.controls['Name'].value,
+      Description: this.createGroupform.controls['Description'].value,
+      Admin: this.globalVar.user.User_id
     }
 
     this.groupService.createGroup(group).subscribe((group:GroupResponse) => {

@@ -7,7 +7,7 @@ module.exports = () => {
     router.get("/:id", groups.getGroupbyId);
     router.delete("/:id/delete", groups.deleteGroup);
     router.post("/create", groups.creategroup);
-    router.put("/edit-members", groups.modifyGroupMembers);
+    router.put("/remove-member", groups.removeGroupMember);
     router.put("/add-members", groups.addGroupMembers);
     return router;
 };

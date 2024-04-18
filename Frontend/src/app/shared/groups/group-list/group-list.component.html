@@ -30,28 +30,28 @@
             <div class="d-grid grid-11">
                 <div>
                     <div>
-                        <h2><b>Group Name:</b> {{group.name}}</h2>
+                        <h2><b>Group Name:</b> {{group.Name}}</h2>
                     </div>
                     <div>
-                        <h3 class="mb-0"><b>Description:</b> {{group.description}}</h3>
+                        <h3 class="mb-0"><b>Description:</b> {{group.Description}}</h3>
                     </div>
                     <div class="d-flex align-items-center my-2">
                         <h3 class="mb-0"><b>Admin:</b></h3>
                         <div class="ml-1 d-flex align-items-center">
-                            <img class="rounded-circle" style="width: 40px;" [src]="group.admin.picture" alt="">
-                            <h4 class="mb-0 ml-2">{{group.admin.name}}</h4>
+                            <img class="rounded-circle" style="width: 40px;" [src]="group.Admin.Picture" alt="">
+                            <h4 class="mb-0 ml-2">{{group.Admin.Name}}</h4>
                         </div>
                     </div>
                     <div style="margin-top: 10px;">
                         <h3 class="mb-1"><b>Members in the Group</b></h3>
                         <div class="d-flex align-items-center" style="flex-wrap: wrap;">
-                            <div *ngFor="let user of group.members" class="mx-1 my-1 shadow rounded-circle" [matTooltip]="user.name" matTooltipPosition="above">
-                                <img class="rounded-circle" style="width: 40px;" [src]="user.picture" alt="">
+                            <div *ngFor="let user of group.Members" class="mx-1 my-1 shadow rounded-circle" [matTooltip]="user.Name" matTooltipPosition="above">
+                                <img class="rounded-circle" style="width: 40px;" [src]="user.Picture" alt="">
                             </div>
                             <button mat-mini-fab color="secondary" class="shadow border ml-1" matTooltip="Add Members" matTooltipPosition="above" (click)="addGroupMember(group)">
                                 <mat-icon class="d-flex pointer">add</mat-icon>
                             </button>
-                            <div class="ml-3" *ngIf="group.members.length == 0">No Member added to the group</div>
+                            <div class="ml-3" *ngIf="group.Members.length == 0">No Member added to the group</div>
                         </div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                             <button mat-raised-button color="primary" style="min-width: 120px;" (click)="addGroupMember(group)">Members</button>
                         </div>
                         <div class="my-3">
-                            <button mat-raised-button color="primary" style="min-width: 120px;" [routerLink]="[group._id,'payment']">Transaction</button>
+                            <button mat-raised-button color="primary" style="min-width: 120px;" [routerLink]="[group.Group_id,'payment']">Transaction</button>
                         </div>
                     </div>
                     <div>

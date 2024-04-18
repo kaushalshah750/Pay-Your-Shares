@@ -17,11 +17,9 @@ export interface UsersResponseString{
 }
 
 export interface Users {
-    _id: string;
-    name: string;
-    email: string;
-    phone: number;
-    picture: string;
-    uid: string
-    last_login: string
+    User_id: number;
+    Name: string;
+    Email: string;
+    Phone: number;
+    Picture: string;
 }

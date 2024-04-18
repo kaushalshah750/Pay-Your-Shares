@@ -24,24 +24,21 @@ export class PaymentSummaryComponent {
   dataSource = new MatTableDataSource<TransactionSettlement>(this.slip);
   isLoading:boolean = false
   groupSummary:GroupSummary[] = []
-  group_Uid = this.route.snapshot.paramMap.get('groupid')!
+  group_Uid = Number(this.route.snapshot.paramMap.get('groupid')!)
   groupInfo:Group = {
-    _id: "",
-    name: "",
-    description: "",
-    admin: {
-      _id: "",
-      name: "",
-      email: "",
-      phone: 0,
-      picture: "",
-      last_login: "",
-      uid: ""
+    Group_id: 0,
+    Name: "",
+    Description: "",
+    Admin: {
+      User_id: 0,
+      Name: "",
+      Email: "",
+      Phone: 0,
+      Picture: ""
     },
-    members: [],
-    created_on: "",
-    updated_on: "",
-    uId: ""
+    Members: [],
+    Created_on: "",
+    Updated_on: ""
   }
 
   constructor(
@@ -65,8 +62,7 @@ export class PaymentSummaryComponent {
   async getslippayment(){
     this.isLoading = true
     var transaction: SlipTransactionBody = {
-      group: this.group_Uid,
-      type: "Settlement"
+      group: this.group_Uid
     }
     await this.transactionSettlementService.getTransactionSettlement(transaction).subscribe((res:TransactionSettlementResponse)=>{
       this.isLoading = false

@@ -1,4 +1,4 @@
 export interface RemoveGroupMember{
-    groupId: string
-    userId: string
+    Group_id: number
+    User_id: number
 }

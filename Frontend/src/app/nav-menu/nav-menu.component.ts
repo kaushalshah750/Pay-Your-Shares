@@ -27,12 +27,11 @@ export class NavMenuComponent {
     public globalVar: GlobalVarService,
   ){
     this.userService.getLoggedInUser().subscribe((res:UsersResponseOne) => {
-      this.globalVar.user.id = res.data._id
-      this.globalVar.user.name = res.data.name
-      this.globalVar.user.email = res.data.email
-      this.globalVar.user.picture = res.data.picture
-      this.globalVar.user.uid = res.data.uid
-      this.globalVar.user.phone = res.data.phone
+      this.globalVar.user.User_id = res.data.User_id
+      this.globalVar.user.Name = res.data.Name
+      this.globalVar.user.Email = res.data.Email
+      this.globalVar.user.Picture = res.data.Picture
+      this.globalVar.user.Phone = res.data.Phone
     })
   }
   

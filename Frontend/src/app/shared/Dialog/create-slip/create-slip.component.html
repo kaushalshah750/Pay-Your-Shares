@@ -20,8 +20,8 @@
             <mat-form-field class="w-100">
                 <mat-label>Who Paid?</mat-label>
                 <mat-select formControlName="paidByUserId">
-                  <mat-option value="{{user._id}}" *ngFor="let user of data.members">
-                    <img [src]="user.picture" class="rounded-circle" style="width: 40px;" alt=""> <span style="margin-left: 20px;">{{user.name}}</span>
+                  <mat-option value="{{user.User_id}}" *ngFor="let user of data.Members">
+                    <img [src]="user.Picture" class="rounded-circle" style="width: 40px;" alt=""> <span style="margin-left: 20px;">{{user.Name}}</span>
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -39,8 +39,8 @@
             <mat-form-field [formGroup]='createform' class="w-100">
                 <mat-label>Slip In</mat-label>
                 <mat-select multiple formControlName="Users" placeholder="Slip In">
-                  <mat-option *ngFor="let user of data.members" [value]="user._id">
-                    <img [src]="user.picture" class="rounded-circle" style="width: 40px;" alt=""> <span style="margin-left: 20px;">{{ user.name }}</span>
+                  <mat-option *ngFor="let user of data.Members" [value]="user.User_id">
+                    <img [src]="user.Picture" class="rounded-circle" style="width: 40px;" alt=""> <span style="margin-left: 20px;">{{ user.Name }}</span>
                   </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -49,5 +49,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-raised-button color="secondary" [mat-dialog-close]="false">Cancel</button>
-    <button mat-raised-button [disabled]="isLoading || data.members.length <= 1" color="primary" class="px-3 " cdkFocusInitial (click)="createnewspliptransaction()">Submit</button>
+    <button mat-raised-button [disabled]="isLoading || data.Members.length <= 1" color="primary" class="px-3 " cdkFocusInitial (click)="createnewspliptransaction()">Submit</button>
 </mat-dialog-actions>

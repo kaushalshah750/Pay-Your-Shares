@@ -1,10 +1,11 @@
 import transactionSettlementModel from '../Controller/transaction-settlement/transaction-settlement.model'
 import groupModel from '../Controller/groups/group.model'
 import userModel from '../Controller/users/user.model'
+import userBusiness from './user.business';
 
 async function getTransactionsSummary(user_uid, transaction){
     var group = await groupModel.findOne({_id: transaction.group})
-    var user = await userModel.findOne({uid: user_uid})
+    var user = userBusiness.getUserbyGoogleId(user_uid)
     var tranasactions = await transactionSettlementModel.find({type: transaction.type, group_id: transaction.group})
         .populate("settleBy_User")
         .populate("settleTo_User")
@@ -18,6 +19,7 @@ async function getTransactionsSummary(user_uid, transaction){
 }
 
 async function settleTransaction(user_uid, transaction){
+
     var current_user = await userModel.findOne({uid: user_uid})
     var data = {
         type: "Settlement",

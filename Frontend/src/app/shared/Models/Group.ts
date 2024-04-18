@@ -19,12 +19,11 @@ export interface GroupAddResponseOne{
 }
 
 export interface Group{
-    _id: string
-    name: string
-    description: string
-    admin: Users
-    members: Users[]
-    created_on: string
-    updated_on: string
-    uId: string
+    Group_id: number
+    Name: string
+    Description: string
+    Admin: Users
+    Members: Users[]
+    Created_on: string
+    Updated_on: string
 }

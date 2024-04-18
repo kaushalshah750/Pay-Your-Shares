@@ -25,7 +25,7 @@ export class UserService {
     return this.authservice.get<UsersResponse>(this.url + "/group/" + groupId + "/summary/users")
   }
 
-  getGroupSummary(groupId:string){
+  getGroupSummary(groupId:number){
     return this.authservice.get<GroupSummaryResponse>(this.url + "/group/" + (groupId != null ? groupId + "/summary" : "summary"))
   }
 

@@ -15,12 +15,11 @@ export class GlobalVarService {
   Uid = 'UId';
 
   user:UserInfo = {
-    id:"",
-    name: "",
-    email: "",
-    uid: "",
-    picture: "",
-    phone: 0
+    User_id: 0,
+    Name: "",
+    Email: "",
+    Picture: "",
+    Phone: 0
   }
   constructor(
     private router: Router,
@@ -31,10 +30,9 @@ export class GlobalVarService {
     var userinfo:any = JSON.parse(sessionStorage.getItem("UserInfo")!)
     
     if(userinfo){
-      this.user.uid = userinfo.sub
-      this.user.name = userinfo.name
-      this.user.email = userinfo.email
-      this.user.picture = userinfo.picture
+      this.user.Name = userinfo.name
+      this.user.Email = userinfo.email
+      this.user.Picture = userinfo.picture
     }
   }
 

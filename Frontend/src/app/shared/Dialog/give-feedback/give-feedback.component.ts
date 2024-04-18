@@ -33,9 +33,9 @@ export class GiveFeedbackComponent {
   createFeedback(){
     this.isLoading = true
     var feedback:FeedBack = {
-      user: this.globalVar.user.id,
-      feedback: this.feedbackForm.controls['Feedback'].value,
-      created_on: new Date()
+      User_id: this.globalVar.user.User_id,
+      Feedback: this.feedbackForm.controls['Feedback'].value,
+      Created_on: new Date()
     }
     this.feedbackService.createFeedback(feedback).subscribe((res:FeedBackResponse) => {
       this.isLoading = false

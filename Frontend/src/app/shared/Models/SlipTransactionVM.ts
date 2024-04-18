@@ -8,19 +8,16 @@ export interface SlipResponse{
 }
 
 export interface SlipTransactionWithGroup{
-    group: Group
-    transaction: SlipTransactionVM[]
+    Group: Group
+    Transaction: SlipTransactionVM[]
 }
 
 export interface SlipTransactionVM{
-    _id: string
-    name: string
-    amount: number
-    type: string
-    addedBy_id: Users
-    group_id: Group
-    paidUser_id: Users
-    payment_date: Date
-    split_between: Users[]
-    updated_on: Date
+    Slip_id: string
+    Name: string
+    Amount: number
+    AddedBy_id: Users
+    PaidBy_id: Users
+    Split_between: Users[]
+    Payment_date: Date
 }

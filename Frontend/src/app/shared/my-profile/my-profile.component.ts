@@ -17,13 +17,11 @@ export class MyProfileComponent {
     phone: [0, [Validators.required, Validators.pattern("^[0-9]{10}$")]],
   })
   users: Users = {
-    _id: "",
-    name: "",
-    email: "",
-    phone: 0,
-    picture: "",
-    last_login: "",
-    uid: ""
+    User_id: 0,
+    Name: "",
+    Email: "",
+    Phone: 0,
+    Picture: "",
   }
   isLoading:boolean = true
   valueChanged:boolean = false
@@ -41,11 +39,11 @@ export class MyProfileComponent {
   }
 
   checkChangedValue(){
-    if(this.users.name != this.createform.controls['name'].value){
+    if(this.users.Name != this.createform.controls['name'].value){
       this.valueChanged = true
-    }else if(this.users.email != this.createform.controls['email'].value){
+    }else if(this.users.Email != this.createform.controls['email'].value){
       this.valueChanged = true
-    }else if(this.users.phone != this.createform.controls['phone'].value){
+    }else if(this.users.Phone != this.createform.controls['phone'].value){
       this.valueChanged = true
     }else{
       this.phoneError = false
@@ -63,17 +61,17 @@ export class MyProfileComponent {
     this.userService.getLoggedInUser().subscribe((res:UsersResponseOne) => {
       this.isLoading = false
       this.users = res.data
-      this.createform.controls['name'].setValue(this.users.name)
-      this.createform.controls['email'].setValue(this.users.email)
-      this.createform.controls['phone'].setValue(this.users.phone)
+      this.createform.controls['name'].setValue(this.users.Name)
+      this.createform.controls['email'].setValue(this.users.Email)
+      this.createform.controls['phone'].setValue(this.users.Phone)
     })
   }
 
   updateUser(){
     if(this.createform.valid){
       var newUser:Users = this.users
-      newUser.name = this.createform.controls['name'].value
-      newUser.phone = this.createform.controls['phone'].value
+      newUser.Name = this.createform.controls['name'].value
+      newUser.Phone = this.createform.controls['phone'].value
       
       this.isLoading = true
       this.userService.updateUser(newUser).subscribe((res:UsersResponseString) => {

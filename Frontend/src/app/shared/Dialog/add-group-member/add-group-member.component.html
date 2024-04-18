@@ -1,16 +1,16 @@
-<h2 class="mb-0" mat-dialog-title>{{globalVar.user.uid == group.admin.uid ? "Invite Members in Group" : "Members in Group"}}</h2>
+<h2 class="mb-0" mat-dialog-title>{{globalVar.user.User_id == group.Admin.User_id ? "Invite Members in Group" : "Members in Group"}}</h2>
 <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
 <div class="px-3">
     <div>
-        <mat-card *ngFor="let user of group.members" class="my-2">
+        <mat-card *ngFor="let user of group.Members" class="my-2">
             <mat-card-content>
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
-                        <img [src]="user.picture" width="40px" class="rounded-circle" alt="">
-                        <h3 class="mb-0 ml-2">{{user.name}}</h3>
+                        <img [src]="user.Picture" width="40px" class="rounded-circle" alt="">
+                        <h3 class="mb-0 ml-2">{{user.Name}}</h3>
                     </div>
-                    <div class="d-flex" *ngIf="globalVar.user.uid != user.uid && globalVar.user.uid == group.admin.uid">
-                        <mat-icon class="pointer" (click)="removeGroupMemberbyGroupId(user.uid)">delete</mat-icon>
+                    <div class="d-flex" *ngIf="globalVar.user.User_id != user.User_id && globalVar.user.User_id == group.Admin.User_id">
+                        <mat-icon class="pointer" (click)="removeGroupMemberbyGroupId(user.User_id)">delete</mat-icon>
                     </div>
                 </div>
             </mat-card-content>
@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<mat-dialog-content *ngIf="globalVar.user.uid == group.admin.uid">
+<mat-dialog-content *ngIf="globalVar.user.User_id == group.Admin.User_id">
     <form [formGroup]="addGroupMemberform">
         <div class="d-flex justify-content-between">
             <mat-form-field class="mb-0 w-100">

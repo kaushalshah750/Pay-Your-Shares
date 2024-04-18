@@ -8,13 +8,13 @@ exports.getAll = (req, res) => {
 };
 
 exports.getGroupbyId = (req, res) => {
-    groupbusiness.getGroupbyId({_id:req.params.id})
+    groupbusiness.getGroupbyId(req.params.id)
         .then(data => responsedata(res, false, "", data))
         .catch(err => responsedata(res, true, err, null))
 };
 
 exports.deleteGroup = (req, res) => {
-    groupbusiness.deleteGroup({_id:req.params.id}, req.user)
+    groupbusiness.deleteGroup(req.params.id, req.user.sub)
         .then(data => responsedata(res, false, "", data))
         .catch(err => responsedata(res, true, err, null))
 };
@@ -25,8 +25,8 @@ exports.creategroup = (req, res) => {
         .catch(err => responsedata(res, true, err, null))
 };
 
-exports.modifyGroupMembers = (req, res) => {
-    groupbusiness.modifyGroupMembers(req.body)
+exports.removeGroupMember = (req, res) => {
+    groupbusiness.removeGroupMember(req.body, req.user.sub)
         .then(data => responsedata(res, false, "", data))
         .catch(err => responsedata(res, true, err, null))
 };

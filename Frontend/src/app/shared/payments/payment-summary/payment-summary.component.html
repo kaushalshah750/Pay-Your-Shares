@@ -5,7 +5,7 @@
     <h3 class="mb-0">
       <span class="narrate pointer" [routerLink]="['/group']">Groups</span> &nbsp; >> &nbsp; 
       <span *ngIf="group_Uid == null">All</span>  
-      <span *ngIf="group_Uid != null" [ngClass]="{'narrate pointer' : group_Uid}" [routerLink]="['/group/', groupInfo._id, 'payment']">{{group_Uid ? groupInfo.name : "All"}}</span> &nbsp; >> &nbsp; 
+      <span *ngIf="group_Uid != null" [ngClass]="{'narrate pointer' : group_Uid}" [routerLink]="['/group/', groupInfo.Group_id, 'payment']">{{group_Uid ? groupInfo.Name : "All"}}</span> &nbsp; >> &nbsp; 
       <span>Summary</span>
     </h3>
   </div>
@@ -22,7 +22,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let user of groupSummary">
-              <td class="px-3"><img [src]="user.user.picture" class="rounded-circle mr-2" style="width: 40px;" alt="">{{user.user.name}}</td>
+              <td class="px-3"><img [src]="user.user.Picture" class="rounded-circle mr-2" style="width: 40px;" alt="">{{user.user.Name}}</td>
               <td class="px-3" style="vertical-align: middle !important" [ngClass]="{'red' : user.balance < 0 , 'green' : user.balance > 0}">{{user.balance | currency : 'INR'}}</td>
               <td>
                 <button mat-raised-button color="primary" *ngIf="user.balance != 0" (click)="settlePayment(user)">Settle</button>

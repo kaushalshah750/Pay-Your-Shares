@@ -5,7 +5,7 @@ export interface FeedBackResponse{
 }
 
 export interface FeedBack{
-    user:string
-    feedback: string
-    created_on: Date
+    User_id: number
+    Feedback: string
+    Created_on: Date
 }

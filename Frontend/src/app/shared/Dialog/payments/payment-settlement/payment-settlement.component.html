@@ -3,7 +3,7 @@
 <mat-dialog-content class="pb-0">
     <form [formGroup]="createform">
         <div class="mb-3">
-            <h3 class="mb-0 poppins-bold">Settle Payment: {{ user.user.name }}</h3>
+            <h3 class="mb-0 poppins-bold">Settle Payment: {{ user.user.Name }}</h3>
             <h3 class="mb-0 poppins-bold">{{ user.balance > 0 ? "You will receive : " + (user.balance | currency: 'INR')  : "You have to pay : " + (user.balance * -1 | currency: 'INR') }}</h3>
         </div>
         <div class="my-3">
