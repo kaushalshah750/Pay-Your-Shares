@@ -82,7 +82,7 @@ async function checkUser(user){
             return "User Already Exists"
         }else{
             var [usermax] = await db.query(`
-                select max(User_id) as id from users;
+                select max(User_id) as id from Users;
             `)
             
             await db.query(`

@@ -6,18 +6,18 @@ import db from '../config/db';
 async function getGroups(userToken) {
     var user = await getUserbyGoogleId(userToken.sub);
     var [groups] = await db.query(`
-        select g.* from Split_Group g
-        left join Group_User gu on gu.group_id = g.group_id
-        left join users u on u.user_id = gu.user_id
-        where gu.user_id = ?
+        SELECT g.* FROM Split_Group g
+        LEFT JOIN Group_User gu on gu.Group_id = g.Group_id
+        LEFT JOIN Users u on u.User_id = gu.User_id
+        WHERE gu.User_id = ?
         order by g.Name
     `, [user.User_id])
 
     for (const group of groups) {
         var [members] = await db.query(`
-            select u.User_id, u.Name, u.Email, u.Phone, u.Picture from users u
-            left join Group_User gu on u.user_id = gu.user_id
-            where gu.group_id = ?
+            SELECT u.User_id, u.Name, u.Email, u.Phone, u.Picture FROM Users u
+            LEFT JOIN Group_User gu on u.User_id = gu.User_id
+            WHERE gu.Group_id = ?
         `, [group.Group_id])
         var admin = await getUserbyId(group.Admin)
         group['Members'] = members
@@ -27,18 +27,18 @@ async function getGroups(userToken) {
     return groups;
 }
 
-async function getGroupbyId(group_id) {
+async function getGroupbyId(Group_id) {
     var [group] = await db.query(`
-        select * from Split_Group 
-        where group_id = ?
-    `, [group_id])
+        SELECT * FROM Split_Group 
+        WHERE Group_id = ?
+    `, [Group_id])
 
     var [admin] = await getUserbyId(group.Admin)
 
     var [members] = await db.query(`
-        select u.User_id, u.Name, u.Email, u.Phone, u.Picture from users u
-        left join Group_User gu on u.user_id = gu.user_id
-        where gu.group_id = ?
+        SELECT u.User_id, u.Name, u.Email, u.Phone, u.Picture FROM users u
+        LEFT JOIN Group_User gu on u.User_id = gu.User_id
+        WHERE gu.Group_id = ?
         order by u.Name
     `, [group[0].Group_id])
     
@@ -48,17 +48,17 @@ async function getGroupbyId(group_id) {
     return await group[0]
 }
 
-async function deleteGroup(group_id, userGoogleid) {
+async function deleteGroup(Group_id, userGoogleid) {
     var [group] = await db.query(`
-        select * from Split_Group 
-        where Group_id = ?
-    `, [group_id])
+        SELECT * FROM Split_Group 
+        WHERE Group_id = ?
+    `, [Group_id])
 
     if(group[0] != null){
         var [user] = await getUserbyGoogleId(userGoogleid)
         if(group[0].Admin == user[0].User_id){
-            await db.query("DELETE FROM Group_User WHERE Group_id = ?", [group_id])
-            await db.query("DELETE FROM Split_Group WHERE Group_id = ?", [group_id])
+            await db.query("DELETE FROM Group_User WHERE Group_id = ?", [Group_id])
+            await db.query("DELETE FROM Split_Group WHERE Group_id = ?", [Group_id])
             return "Group is Successfully Deleted"
         }else{
             return "You are not Authorized to delete the Group"
@@ -90,15 +90,15 @@ async function createGroup(data){
 async function removeGroupMember(data, userGoogleid){
     try{
         var [group] = await db.query(`
-            select * from Split_Group 
-            where Group_id = ?
+            SELECT * FROM Split_Group 
+            WHERE Group_id = ?
         `, [data.Group_id])
 
         var [user] = await getUserbyGoogleId(userGoogleid);
         var [removeUser] = await getUserbyId(data.User_id)
 
         if(group[0].Admin == user[0].User_id){
-            await db.query("Delete from Group_User WHERE Group_id = ? AND User_id = ?", [data.Group_id, data.User_id])
+            await db.query("Delete FROM Group_User WHERE Group_id = ? AND User_id = ?", [data.Group_id, data.User_id])
             return removeUser[0].Name + " is Successfully Removed"
         }else{
             return "You are not Authorized to delete the Group"

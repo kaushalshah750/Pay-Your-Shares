@@ -33,17 +33,21 @@ async function getSplitTransactions(userGoogleId, transaction){
         
         var [tranasactions] = await db.query(`
             SELECT distinct st.Slip_id, st.Name, st.Amount, st.PaidBy_id, st.AddedBy_id, st.Payment_date FROM Split_Transaction st
-            left join Split_Between sb on sb.Slip_id = st.Slip_id
+            LEFT JOIN Split_Between sb on sb.Slip_id = st.Slip_id
             WHERE st.Group_id = ? and (sb.User_id = ? OR st.PaidBy_id = ? OR st.AddedBy_id = ?)
         `, [transaction.group, user[0].User_id, user[0].User_id, user[0].User_id])
 
         for (const tranasaction of tranasactions) {
             var [AddedBy] = await db.query(`
-                SELECT User_id, Name, Email, Phone, Picture FROM Users WHERE User_id = ?
+                SELECT User_id, Name, Email, Phone, Picture 
+                FROM Users 
+                WHERE User_id = ?
             `, [tranasaction.AddedBy_id])
             
             var [PaidBy] = await db.query(`
-                SELECT User_id, Name, Email, Phone, Picture FROM Users WHERE User_id = ?
+                SELECT User_id, Name, Email, Phone, Picture 
+                FROM Users 
+                WHERE User_id = ?
             `, [tranasaction.PaidBy_id])
             
             var [SplitBetween] = await db.query(`
