@@ -21,9 +21,9 @@ export class UserService {
     return this.authservice.get<UsersResponseOne>(this.url + "/loggedin")
   }
 
-  getGroupSummaryUsers(groupId:string){
-    return this.authservice.get<UsersResponse>(this.url + "/group/" + groupId + "/summary/users")
-  }
+  // getGroupSummaryUsers(groupId:string){
+  //   return this.authservice.get<UsersResponse>(this.url + "/group/" + groupId + "/summary/users")
+  // }
 
   getGroupSummary(groupId:number){
     return this.authservice.get<GroupSummaryResponse>(this.url + "/group/" + (groupId != null ? groupId + "/summary" : "summary"))

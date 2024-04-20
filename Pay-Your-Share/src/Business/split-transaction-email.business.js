@@ -1,12 +1,24 @@
-import splitTransactionEmailModel from '../Controller/split-transaction-email/split-transaction-email.model';
 import emailBusiness from './email.business';
-import userModel from '../Controller/users/user.model';
+import db from '../config/db';
 
 async function storeEmailData(data){
-  var user = await userModel.findById({_id: data.user})
-  await emailBusiness.sendEmail(user.email, data.subject, data.body)
-  var emaildata = new splitTransactionEmailModel(data)
-  return await emaildata.save();
+  try{
+    var user = await getUserbyId(data.User)
+    await emailBusiness.sendEmail(user.Email, data.Subject, data.Body)
+    return true;
+  }catch(error){
+    console.log(error)
+    return false;
+  }
+}
+
+async function getUserbyId(User_id){
+  var [user] = await db.query(`
+      SELECT User_id, Name, Email, Phone, Picture 
+      FROM Users 
+      WHERE User_id = ?
+  `, [User_id])
+  return user[0];
 }
 
 module.exports = { storeEmailData };

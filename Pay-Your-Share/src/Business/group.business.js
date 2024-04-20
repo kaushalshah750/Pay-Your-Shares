@@ -33,7 +33,7 @@ async function getGroupbyId(Group_id) {
         WHERE Group_id = ?
     `, [Group_id])
 
-    var [admin] = await getUserbyId(group.Admin)
+    var admin = await getUserbyId(group[0].Admin)
 
     var [members] = await db.query(`
         SELECT u.User_id, u.Name, u.Email, u.Phone, u.Picture FROM users u
@@ -42,7 +42,7 @@ async function getGroupbyId(Group_id) {
         order by u.Name
     `, [group[0].Group_id])
     
-    group[0].Admin = admin[0]
+    group[0].Admin = admin
     group[0]['Members'] = members
     
     return await group[0]
@@ -55,8 +55,9 @@ async function deleteGroup(Group_id, userGoogleid) {
     `, [Group_id])
 
     if(group[0] != null){
-        var [user] = await getUserbyGoogleId(userGoogleid)
-        if(group[0].Admin == user[0].User_id){
+        var user = await getUserbyGoogleId(userGoogleid)
+        if(group[0].Admin == user.User_id){
+            await db.query("DELETE FROM Group_Invite WHERE Group_id = ?", [Group_id])
             await db.query("DELETE FROM Group_User WHERE Group_id = ?", [Group_id])
             await db.query("DELETE FROM Split_Group WHERE Group_id = ?", [Group_id])
             return "Group is Successfully Deleted"
@@ -94,12 +95,12 @@ async function removeGroupMember(data, userGoogleid){
             WHERE Group_id = ?
         `, [data.Group_id])
 
-        var [user] = await getUserbyGoogleId(userGoogleid);
-        var [removeUser] = await getUserbyId(data.User_id)
+        var user = await getUserbyGoogleId(userGoogleid);
+        var removeUser = await getUserbyId(data.User_id)
 
-        if(group[0].Admin == user[0].User_id){
+        if(group[0].Admin == user.User_id){
             await db.query("Delete FROM Group_User WHERE Group_id = ? AND User_id = ?", [data.Group_id, data.User_id])
-            return removeUser[0].Name + " is Successfully Removed"
+            return removeUser.Name + " is Successfully Removed"
         }else{
             return "You are not Authorized to delete the Group"
         }
@@ -110,17 +111,27 @@ async function removeGroupMember(data, userGoogleid){
 }
 
 async function addGroupMembers(data, userId){
-    var user = await userModel.findOne({uid: userId})
-    var group = await groupModel.findOne({_id: data.group}).populate("members")
-    var userExits = group.members.some(res => res.uid == user.uid)
+    var user = await getUserbyGoogleId(userId)
+    var group = await getGroupbyId(data.group)
+    var userExits = group.Members.some(res => res.User_id == user.User_id)
     if(userExits){
         return "You Already exits in the Group"
     }else{
-        group.members.push(user._id)
-        var validlink = await groupInvitationModel.findOne({invite_uid: data.invite, group_uid: data.group, email: user.email})
-        if(validlink != null){
-            await groupModel.findOneAndUpdate({_id: group._id}, group)
+        // group.members.push(user._id)
+        // var validlink = await groupInvitationModel.findOne({invite_uid: data.invite, group_uid: data.group, email: user.email})
+        var [validlink] = await db.query(`
+            SELECT * FROM Group_Invite 
+            WHERE Invite_id = ? AND Group_id = ? AND Email = ?
+        `, [data.invite, data.group, user.Email])
+        
+        if(validlink[0] != null){
+            
+            await db.query(`
+                INSERT INTO Group_User ( Group_id, User_id, Added_on ) 
+                VALUES ( ?, ?, ? )
+            `, [group.Group_id, user.User_id, new Date()])
             return "You have been successfully added to the Group"
+
         }else{
             return "Invitation Link is Invalid";
         }

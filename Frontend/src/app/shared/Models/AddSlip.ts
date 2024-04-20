@@ -4,6 +4,6 @@ export interface AddSlip {
     PaidBy_id: number
     AddedBy_id: number
     Group_id: number
-    Split_between: string[]
+    Split_between: number[]
     Payment_date: Date
 }

@@ -63,7 +63,7 @@ export class AddGroupMemberComponent {
     this.isLoading = true
     if(this.addGroupMemberform.valid){
       var groupInvite:any = {
-        email: this.addGroupMemberform.controls['Email'].value
+        Email: this.addGroupMemberform.controls['Email'].value
       }
       this.groupService.sendInvitation(this.data, groupInvite).subscribe((res:GroupInvitationResponse) => {
         this.isLoading = false

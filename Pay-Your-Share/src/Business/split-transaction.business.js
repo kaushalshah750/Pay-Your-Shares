@@ -1,12 +1,11 @@
-import splitTransactionModel from '../Controller/split-tranasaction/split-transaction.model'
 import db from '../config/db';
 
-async function getSplitTransactionsbyId(query){
-    return await splitTransactionModel.findOne(query)
-        .populate("paidUser_id")
-        .populate("addedBy_id")
-        .populate("split_between").sort({created_on: -1});
-}
+// async function getSplitTransactionsbyId(query){
+//     return await splitTransactionModel.findOne(query)
+//         .populate("paidUser_id")
+//         .populate("addedBy_id")
+//         .populate("split_between").sort({created_on: -1});
+// }
 
 async function getSplitTransactions(userGoogleId, transaction){
     try{
@@ -71,7 +70,8 @@ async function getSplitTransactions(userGoogleId, transaction){
         return payment    
 
     }catch(error){
-
+        console.log(error)
+        return false;
     }
 }
 
@@ -114,4 +114,4 @@ async function deleteSplitTransaction(Slip_id){
     }
 }
 
-module.exports = {createSplitTransaction, getSplitTransactions, deleteSplitTransaction, getSplitTransactionsbyId}
+module.exports = {createSplitTransaction, getSplitTransactions, deleteSplitTransaction}

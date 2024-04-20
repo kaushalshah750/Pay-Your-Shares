@@ -5,7 +5,7 @@ export interface EmailResponse{
 }
 
 export interface EmailBody{
-    user: string
-    subject: string
-    body: string
+    User: number
+    Subject: string
+    Body: string
 }

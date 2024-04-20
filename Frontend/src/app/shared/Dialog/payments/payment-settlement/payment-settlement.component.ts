@@ -31,20 +31,15 @@ export class PaymentSettlementComponent {
   ){}
   
   createTransactionSettlement(){
-    console.log(this.createform)
-    console.log(this.createform.valid)
     if(this.createform.valid){
       var settlement:TransactionSettlement = {
-        type: "Settlement",
-        action: this.user.balance > 0 ? "Me" : "You",
-        amount: this.createform.controls['amount'].value,
-        settleBy_User: this.user.user,
-        settleTo_User: this.user.user,
-        addedBy_id: this.user.user,
-        group_id: this.group,
-        payment_date: new Date(),
-        created_on: new Date(),
-        updated_on: new Date()  
+        Action: this.user.balance > 0 ? "Me" : "You",
+        Amount: this.createform.controls['amount'].value,
+        SettleBy_id: this.user.user,
+        SettleTo_id: this.user.user,
+        AddedBy_id: this.user.user,
+        Group_id: this.group,
+        Payment_date: new Date(),
       }
       
       this.transactionSettlementService.addTransactionSettlement(settlement).subscribe((res) => {

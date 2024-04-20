@@ -13,11 +13,11 @@ exports.getSplitTransactions = (req, res) =>{
         .catch(err => responsedata(res, true, err, null))
 }
 
-exports.getSplitTransactionsbyId = (req, res) =>{
-    splittransactionbusiness.getSplitTransactionsbyId({group_id: req.params.group, _id: req.params.id})
-        .then(data => responsedata(res, false, "", data))
-        .catch(err => responsedata(res, true, err, null))
-}
+// exports.getSplitTransactionsbyId = (req, res) =>{
+//     splittransactionbusiness.getSplitTransactionsbyId({group_id: req.params.group, _id: req.params.id})
+//         .then(data => responsedata(res, false, "", data))
+//         .catch(err => responsedata(res, true, err, null))
+// }
 
 exports.deleteSplitTransaction = (req, res) =>{
     splittransactionbusiness.deleteSplitTransaction(req.params.id)

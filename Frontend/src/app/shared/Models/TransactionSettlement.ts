@@ -13,14 +13,11 @@ export interface TransactionSettlementWithGroup{
 }
 
 export interface TransactionSettlement{
-    type: string
-    action: string
-    amount: number
-    settleBy_User: Users
-    settleTo_User: Users
-    addedBy_id: Users
-    group_id: Group
-    payment_date: Date
-    created_on: Date
-    updated_on: Date
+    Action: string
+    Amount: number
+    SettleBy_id: Users
+    SettleTo_id: Users
+    AddedBy_id: Users
+    Group_id: Group
+    Payment_date: Date
 }

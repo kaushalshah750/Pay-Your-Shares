@@ -4,7 +4,7 @@ import splitTransaction from './split-transaction.controller';
 
 module.exports = () => {
     router.post("/get-transaction", splitTransaction.getSplitTransactions);
-    router.get("/:group/get-transaction/:id", splitTransaction.getSplitTransactionsbyId);
+    // router.get("/:group/get-transaction/:id", splitTransaction.getSplitTransactionsbyId);
     router.post("/create", splitTransaction.createSplitTransaction);
     router.delete("/:id/delete", splitTransaction.deleteSplitTransaction);
     return router;

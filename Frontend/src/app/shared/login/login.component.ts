@@ -66,7 +66,6 @@ export class LoginComponent {
             }
             this.isLoading = true
             this.userService.checkUser().subscribe((res:UsersResponseString)=>{
-              console.log(res)
               if(!res.err){
                 this.groupService.addMemberinGroup(reference).subscribe((res:GroupAddResponseOne) => {
                   this.isLoading = false
@@ -149,8 +148,6 @@ export class LoginComponent {
   }
 
   handleCredentialResponse(response:any) {
-    console.log(response)
-    console.log(response)
   }
 
   decodeToken(token:string){
