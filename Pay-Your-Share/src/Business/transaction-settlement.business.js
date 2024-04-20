@@ -12,7 +12,7 @@ async function getTransactionsSummary(user_uid, transaction){
     var [tranasactions] = await db.query(`
         SELECT * FROM Transaction_Settlement 
         WHERE Group_id = ? AND ( SettleBy_id = ? OR SettleTo_id = ? )
-        ORDER BY Payment_date DESC
+        ORDER BY Updated_on DESC
     `, [transaction.group, user.User_id, user.User_id])
     
     for (var trans of tranasactions){
