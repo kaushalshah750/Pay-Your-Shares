@@ -207,7 +207,7 @@ async function getGroupbyId(Group_id) {
     var admin = await getUserbyId(group[0].Admin)
 
     var [members] = await db.query(`
-        SELECT u.User_id, u.Name, u.Email, u.Phone, u.Picture FROM users u
+        SELECT u.User_id, u.Name, u.Email, u.Phone, u.Picture FROM Users u
         LEFT JOIN Group_User gu on u.User_id = gu.User_id
         WHERE gu.Group_id = ?
         order by u.Name
