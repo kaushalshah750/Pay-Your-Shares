@@ -11,20 +11,15 @@ async function getTransactionsSummary(user_uid, transaction){
     
     var [tranasactions] = await db.query(`
         SELECT * FROM Transaction_Settlement 
-        WHERE Group_id = ? AND (SettleBy_id = ? OR SettleTo_id = ?)
+        WHERE Group_id = ? AND ( SettleBy_id = ? OR SettleTo_id = ? )
+        ORDER BY Payment_date DESC
     `, [transaction.group, user.User_id, user.User_id])
     
     for (var trans of tranasactions){
         trans.SettleBy_id = await getUserbyId(trans.SettleBy_id)
         trans.SettleTo_id = await getUserbyId(trans.SettleTo_id)
     }
-    // var group = await groupBusiness.getGroupbyId(transaction.group)
-    // var user = userBusiness.getUserbyGoogleId(user_uid)
-    // var tranasactions = await transactionSettlementModel.find({type: transaction.type, group_id: transaction.group})
-    //     .populate("settleBy_User")
-    //     .populate("settleTo_User")
-    //     .populate("addedBy_id")
-    //     .populate("group_id").sort({created_on: -1});
+
     var payment = {
         group: group[0],
         transaction: tranasactions
