@@ -10,6 +10,7 @@ import { SnackbarComponent } from '../snackbar/snackbar.component';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { Users } from '../../Models/Users';
 import { RemoveGroupMember } from '../../Models/RemoveGroupMember';
+import { AuthUser } from '../../Models/AuthUser';
 
 @Component({
   selector: 'app-add-group-member',
@@ -39,7 +40,7 @@ export class AddGroupMemberComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: string,
-    public globalVar: GlobalVarService,
+    public globalVarService: GlobalVarService,
     private groupService: GroupService,
     private snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
@@ -47,7 +48,7 @@ export class AddGroupMemberComponent {
   ){}
 
   ngOnInit(){
-    this.globalVar.checkToken()
+    this.globalVarService.checkToken()
     this.getGroupInfo()
   }
   
@@ -56,6 +57,15 @@ export class AddGroupMemberComponent {
     this.groupService.getGroupByGroupId(this.data).subscribe((res:GroupResponseOne)=>{
       this.isLoading = false
       this.group = res.data
+    }, (error) => {
+      if (error.status == 401){
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+          if(res.id_token){
+            localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+            this.getGroupInfo()
+          }
+        })
+      }
     })
   }
 
@@ -85,14 +95,15 @@ export class AddGroupMemberComponent {
             panelClass: ['error-sb']
           });
         }
-      }, (error) =>{
-        this.snackBar.openFromComponent(SnackbarComponent, {
-          data: {
-            message: error.error.title,
-            status: "error"
-          },
-          panelClass: ['error-sb']
-        });
+      }, (error) => {
+        if (error.status == 401){
+          this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+            if(res.id_token){
+              localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+              this.inviteMember()
+            }
+          })
+        }
       })
     }
   }
@@ -135,7 +146,16 @@ export class AddGroupMemberComponent {
               panelClass: ['error-sb']
             });
           }
-        })  
+        }, (error) => {
+          if (error.status == 401){
+            this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+              if(res.id_token){
+                localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+                this.removeGroupMemberbyGroupId(userId)
+              }
+            })
+          }
+        })
       }
     })
 

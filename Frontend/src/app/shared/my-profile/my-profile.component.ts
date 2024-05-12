@@ -4,6 +4,9 @@ import { UserService } from '../services/user.service';
 import { Users, UsersResponse, UsersResponseOne, UsersResponseString } from '../Models/Users';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../Dialog/snackbar/snackbar.component';
+import { AuthUser } from '../Models/AuthUser';
+import { GlobalVarService } from '../services/global-var.service';
+import { SnackbarService } from '../services/snackbar.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -30,7 +33,8 @@ export class MyProfileComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar,
+    private globalVarService: GlobalVarService,
+    private snackbarService: SnackbarService,
     private userService: UserService,
   ){}
 
@@ -64,6 +68,15 @@ export class MyProfileComponent {
       this.createform.controls['name'].setValue(this.users.Name)
       this.createform.controls['email'].setValue(this.users.Email)
       this.createform.controls['phone'].setValue(this.users.Phone)
+    }, (error) => {
+      if (error.status == 401){
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+          if(res.id_token){
+            localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+            this.getLoggedInUser()
+          }
+        })
+      }
     })
   }
 
@@ -75,28 +88,22 @@ export class MyProfileComponent {
       
       this.isLoading = true
       this.userService.updateUser(newUser).subscribe((res:UsersResponseString) => {
-      this.isLoading = false
-      this.getLoggedInUser()
-      this.checkChangedValue()
-      this.snackBar.openFromComponent(SnackbarComponent, 
-        {
-          data: {
-            message: "Your Details is Updated Successfully",
-            status: "success"
-          },
-          panelClass: ['success-sb']
-        });
+        this.isLoading = false
+        this.getLoggedInUser()
+        this.checkChangedValue()
+        this.snackbarService.openSuccessSnackbar("Your Details is Updated Successfully")
+      }, (error) => {
+        if (error.status == 401){
+          this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+            if(res.id_token){
+              localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+              this.updateUser()
+            }
+          })
+        }
       })
     }else{
-      this.snackBar.openFromComponent(SnackbarComponent, {
-        data: {
-          message: "Please Enter the Valid Value",
-          status: "info"
-        },
-        panelClass: ['info-sb']
-      });
+      this.snackbarService.openInfoSnackbar("Please Enter the Valid Value")
     }
-
   }
-
 }

@@ -6,6 +6,7 @@ import { FeedbackService } from '../../services/feedback.service';
 import { GlobalVarService } from '../../services/global-var.service';
 import { SnackbarComponent } from '../snackbar/snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthUser } from '../../Models/AuthUser';
 
 @Component({
   selector: 'app-give-feedback',
@@ -20,20 +21,20 @@ export class GiveFeedbackComponent {
 
   constructor(
     public dialogRef: MatDialogRef<GiveFeedbackComponent>,
-    private globalVar: GlobalVarService,
+    private globalVarService: GlobalVarService,
     private snackBar: MatSnackBar,
     private feedbackService: FeedbackService,
     private formBuilder: FormBuilder
   ){}
 
   ngOnInit(){
-    this.globalVar.checkToken()
+    this.globalVarService.checkToken()
   }
 
   createFeedback(){
     this.isLoading = true
     var feedback:FeedBack = {
-      User_id: this.globalVar.user.User_id,
+      User_id: this.globalVarService.user.User_id,
       Feedback: this.feedbackForm.controls['Feedback'].value,
       Created_on: new Date()
     }
@@ -56,6 +57,15 @@ export class GiveFeedbackComponent {
           },
           panelClass: ['error-sb']
         });
+      }
+    }, (error) => {
+      if (error.status == 401){
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+          if(res.id_token){
+            localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+            this.createFeedback()
+          }
+        })
       }
     })
   }

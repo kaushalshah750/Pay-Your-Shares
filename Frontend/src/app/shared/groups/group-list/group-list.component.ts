@@ -9,6 +9,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../Dialog/snackbar/snackbar.component';
 import { ConfirmationComponent } from '../../Dialog/confirmation/confirmation.component';
 import { AuthapiService } from '../../services/authapi.service';
+import { AuthUser } from '../../Models/AuthUser';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-group-list',
@@ -22,23 +24,32 @@ export class GroupListComponent {
   constructor(
     private groupService: GroupService,
     private snackBar: MatSnackBar,
-    private globalVar: GlobalVarService,
-    private authService: AuthapiService,
+    private globalVarService: GlobalVarService,
+    private snackbarService: SnackbarService,
     public dialog: MatDialog,
   ){}
   
   ngOnInit(){
     this.isLoading = true
-    this.globalVar.checkToken()
     this.getGroups()
   }
 
-  getGroups(){
+  async getGroups(){
     this.isLoading = true
-    this.groupService.getGroups().subscribe((res:GroupResponse)=>{
+    await this.groupService.getGroups().subscribe((res:GroupResponse) => {
+      console.log(res)
       if(!res.err){
         this.isLoading = false
         this.groups = res.data
+      }
+    }, (error) => {
+      if (error.status == 401){
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+          if(res.id_token){
+            localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+            this.getGroups()
+          }
+        })
       }
     })
   }
@@ -65,13 +76,7 @@ export class GroupListComponent {
           if(!res.err){
             if(res.data == "Group is Successfully Deleted"){
               this.isLoading = false
-              this.snackBar.openFromComponent(SnackbarComponent, {
-                data: {
-                  message: "Group is Deleted Successfully",
-                  status: "success"
-                },
-                panelClass: ['success-sb']
-              });
+              this.snackbarService.openSuccessSnackbar("Group is Deleted Successfully")
               this.getGroups()
             }else if(res.data == "You are not Authorized to delete the Group"){
               this.isLoading = false
@@ -84,25 +89,22 @@ export class GroupListComponent {
               });
             }else{
               this.isLoading = false
-              this.snackBar.openFromComponent(SnackbarComponent, {
-                data: {
-                  message: "Group is Already Deleted",
-                  status: "success"
-                },
-                panelClass: ['success-sb']
-              });
+              this.snackbarService.openSuccessSnackbar("Group is Already Deleted")
               this.getGroups()
             }
           }else{
-            this.snackBar.openFromComponent(SnackbarComponent, {
-              data: {
-                message: "We are facing some issue. Please Try Again Later",
-                status: "error"
-              },
-              panelClass: ['error-sb']
-            });
+            this.snackbarService.openErrorSnackbar("We are facing some issue. Please Try Again Later")
           }
-        })    
+        }, (error) => {
+          if (error.status == 401){
+            this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+              if(res.id_token){
+                localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+                this.deleteGroup(group)
+              }
+            })
+          }
+        })
       }
     })
 

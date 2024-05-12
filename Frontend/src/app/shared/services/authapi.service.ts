@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthServiceService } from './auth-service.service';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserDetails } from '../Models/UserDetails';
+import { GlobalVarService } from './global-var.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class AuthapiService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthServiceService
+    private globalService: GlobalVarService
   ) {}
 
   get<T>(endpoint: string): Observable<T> {
@@ -44,10 +44,8 @@ export class AuthapiService {
     });
   }
 
-  // Add more methods (post, put, delete) as needed
-
   private createHeaders(): HttpHeaders {
-    const token = this.authService.getAccessToken();
+    const token = this.globalService.getAccessToken();
     return new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`

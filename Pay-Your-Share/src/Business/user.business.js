@@ -42,6 +42,7 @@ async function getGroupSummary(id, userid){
             slip.PaidBy_id = PaidBy[0]
             slip['Split_between'] = SplitBetween
         }
+        console.log(slips)
 
         var [settlements] = await db.query(`
             SELECT Trans_id, Amount, SettleBy_id, SettleTo_id, AddedBy_id, Group_id, Payment_date, Created_on, Updated_on FROM Transaction_Settlement

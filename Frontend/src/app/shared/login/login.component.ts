@@ -18,7 +18,6 @@ import { SnackbarComponent } from '../Dialog/snackbar/snackbar.component';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  google:any;
   createform = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
@@ -40,111 +39,115 @@ export class LoginComponent {
   ){}
 
   ngOnInit(){
-    this.login()
+    // this.login()
+  }
 
-    google.accounts.id.initialize({
-      client_id: environment.google.client_id,
-      callback: (res:any) =>{
-        this.isLoading = true
-        this.authService.setAccessToken(res.credential)
-        this.userInfo = this.decodeToken(res.credential);
-        if(this.userInfo){
-          this.isLoading = true
-          sessionStorage.setItem('UId', this.userInfo.sub)
-          this.userService.getLoggedInUser().subscribe((res:UsersResponseOne) => {
-            this.globalVar.user.User_id = res.data.User_id
-            this.globalVar.user.Name = res.data.Name
-            this.globalVar.user.Email = res.data.Email
-            this.globalVar.user.Picture = res.data.Picture
-            this.globalVar.user.Phone = res.data.Phone
-          })
+  // google.accounts.id.initialize({
+  //   client_id: environment.google.client_id,
+  //   callback: (res:any) =>{
+  //     this.isLoading = true
+  //     this.authService.setAccessToken(res.credential)
+  //     this.userInfo = this.decodeToken(res.credential);
+  //     console.log(this.userInfo)
+  //     console.log(this.userInfo)
+  //     if(this.userInfo){
+  //       this.isLoading = true
+  //       localStorage.setItem('UId', this.userInfo.sub)
+  //       this.userService.getLoggedInUser().subscribe((res:UsersResponseOne) => {
+  //         this.globalVar.user.User_id = res.data.User_id
+  //         this.globalVar.user.Name = res.data.Name
+  //         this.globalVar.user.Email = res.data.Email
+  //         this.globalVar.user.Picture = res.data.Picture
+  //         this.globalVar.user.Phone = res.data.Phone
+  //       })
 
-          if(this.groupId != null){
-            var reference = {
-              group: this.groupId,
-              invite: this.inviteId
-            }
-            this.isLoading = true
-            this.userService.checkUser().subscribe((res:UsersResponseString)=>{
-              if(!res.err){
-                this.groupService.addMemberinGroup(reference).subscribe((res:GroupAddResponseOne) => {
-                  this.isLoading = false
-                  if(res.data == "You Already exits in the Group"){
-                    this.snackBar.openFromComponent(SnackbarComponent, {
-                      data: {
-                        message: "You Already exits in the Group",
-                        status: "info"
-                      },
-                      panelClass: ['info-sb']
-                    });
-                    this.router.navigate(['/group'])
-                  }else if (!res.err && res.data != "Invitation Link is Invalid"){
-                    this.snackBar.openFromComponent(SnackbarComponent, {
-                      data: {
-                        message: "You have been Successfully Added to the Group",
-                        status: "success"
-                      },
-                      panelClass: ['success-sb']
-                    });
-                    this.router.navigate(['/group'])
-                  }else if (res.data == "Invitation Link is Invalid"){
-                    this.snackBar.open("Invitation Link is Invalid");
-                  }
-                })
-              }else{
-                this.snackBar.openFromComponent(SnackbarComponent, {
-                  data: {
-                    message: "There is some issue with the Service. Try Again Later.",
-                    status: "error"
-                  },
-                  panelClass: ['error-sb']
-                });    
-              }
-            })
-          }else{
-            this.isLoading = true
-            this.userService.checkUser().subscribe((res:UsersResponseString)=>{
-              this.isLoading = false
-              if(!res.err){
-                if(res.data == "User Already Exists"){
-                  this.snackBar.openFromComponent(SnackbarComponent, {
-                    data: {
-                      message: "You have Successfully Logged In",
-                      status: "success"
-                    },
-                    panelClass: ['success-sb']
-                  });      
-                }else if(res.data == "New User Created"){
-                  this.snackBar.openFromComponent(SnackbarComponent, {
-                    data: {
-                      message: "You have Successfully Signned In",
-                      status: "success"
-                    },
-                    panelClass: ['success-sb']
-                  });      
-                }
-                this.router.navigate(['/group'])
-              }else{
-                this.snackBar.openFromComponent(SnackbarComponent, {
-                  data: {
-                    message: "There is some issue with the Service. Try Again Later.",
-                    status: "error"
-                  },
-                  panelClass: ['error-sb']
-                });    
-              }
-            })
-          }
-        }
-      }
-    });
+  //       if(this.groupId != null){
+  //         var reference = {
+  //           group: this.groupId,
+  //           invite: this.inviteId
+  //         }
+  //         this.isLoading = true
+  //         this.userService.checkUser().subscribe((res:UsersResponseString)=>{
+  //           if(!res.err){
+  //             this.groupService.addMemberinGroup(reference).subscribe((res:GroupAddResponseOne) => {
+  //               this.isLoading = false
+  //               if(res.data == "You Already exits in the Group"){
+  //                 this.snackBar.openFromComponent(SnackbarComponent, {
+  //                   data: {
+  //                     message: "You Already exits in the Group",
+  //                     status: "info"
+  //                   },
+  //                   panelClass: ['info-sb']
+  //                 });
+  //                 this.router.navigate(['/group'])
+  //               }else if (!res.err && res.data != "Invitation Link is Invalid"){
+  //                 this.snackBar.openFromComponent(SnackbarComponent, {
+  //                   data: {
+  //                     message: "You have been Successfully Added to the Group",
+  //                     status: "success"
+  //                   },
+  //                   panelClass: ['success-sb']
+  //                 });
+  //                 this.router.navigate(['/group'])
+  //               }else if (res.data == "Invitation Link is Invalid"){
+  //                 this.snackBar.open("Invitation Link is Invalid");
+  //               }
+  //             })
+  //           }else{
+  //             this.snackBar.openFromComponent(SnackbarComponent, {
+  //               data: {
+  //                 message: "There is some issue with the Service. Try Again Later.",
+  //                 status: "error"
+  //               },
+  //               panelClass: ['error-sb']
+  //             });    
+  //           }
+  //         })
+  //       }else{
+  //         this.isLoading = true
+  //         this.userService.checkUser().subscribe((res:UsersResponseString)=>{
+  //           this.isLoading = false
+  //           if(!res.err){
+  //             if(res.data == "User Already Exists"){
+  //               this.snackBar.openFromComponent(SnackbarComponent, {
+  //                 data: {
+  //                   message: "You have Successfully Logged In",
+  //                   status: "success"
+  //                 },
+  //                 panelClass: ['success-sb']
+  //               });      
+  //             }else if(res.data == "New User Created"){
+  //               this.snackBar.openFromComponent(SnackbarComponent, {
+  //                 data: {
+  //                   message: "You have Successfully Signned In",
+  //                   status: "success"
+  //                 },
+  //                 panelClass: ['success-sb']
+  //               });      
+  //             }
+  //             this.router.navigate(['/group'])
+  //           }else{
+  //             this.snackBar.openFromComponent(SnackbarComponent, {
+  //               data: {
+  //                 message: "There is some issue with the Service. Try Again Later.",
+  //                 status: "error"
+  //               },
+  //               panelClass: ['error-sb']
+  //             });    
+  //           }
+  //         })
+  //       }
+  //     }
+  //   }
+  // });
 
-    google.accounts.id.renderButton(document.getElementById("google-btn"),{
-      theme: 'outline',
-      size: 'large',
-      shape: 'rectangle',
-      width: 100
-    })
+
+  callGoogleUrl(){
+    // var scope:string = "https://www.googleapis.com/auth/userinfo.email&https://www.googleapis.com/auth/userinfo.profile&openid"
+    var scope:string = "https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile"
+    var url = `https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${window.location.origin}/&prompt=consent&response_type=code&client_id=${environment.google.client_id}&scope=${scope}&access_type=offline`
+    console.log(url)
+    window.location.href = url
   }
 
   handleCredentialResponse(response:any) {

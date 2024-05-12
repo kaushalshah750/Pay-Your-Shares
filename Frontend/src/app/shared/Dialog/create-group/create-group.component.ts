@@ -7,6 +7,7 @@ import { GlobalVarService } from '../../services/global-var.service';
 import { GroupResponse } from '../../Models/Group';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../snackbar/snackbar.component';
+import { AuthUser } from '../../Models/AuthUser';
 
 @Component({
   selector: 'app-create-group',
@@ -25,11 +26,11 @@ export class CreateGroupComponent {
     private groupService: GroupService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private globalVar: GlobalVarService
+    private globalVarService: GlobalVarService
   ){}
 
   ngOnInit(){
-    this.globalVar.checkToken()
+    this.globalVarService.checkToken()
   }
 
   createGroup(){
@@ -37,7 +38,7 @@ export class CreateGroupComponent {
     var group:CreateGroup = {
       Name: this.createGroupform.controls['Name'].value,
       Description: this.createGroupform.controls['Description'].value,
-      Admin: this.globalVar.user.User_id
+      Admin: this.globalVarService.user.User_id
     }
 
     this.groupService.createGroup(group).subscribe((group:GroupResponse) => {
@@ -51,6 +52,15 @@ export class CreateGroupComponent {
           panelClass: ['success-sb']
         });
         this.dialogRef.close(true);
+      }
+    }, (error) => {
+      if (error.status == 401){
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+          if(res.id_token){
+            localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+            this.createGroup()
+          }
+        })
       }
     })
   }

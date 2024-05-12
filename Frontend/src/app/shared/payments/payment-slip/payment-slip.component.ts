@@ -1,21 +1,19 @@
 import { Component, ViewChild } from '@angular/core';
-import { SlipTransactionVM, SlipResponse, SlipTransactionWithGroup } from '../../Models/SlipTransactionVM';
+import { SlipTransactionVM, SlipResponse } from '../../Models/SlipTransactionVM';
 import { SliptransactionsService } from '../../services/sliptransactions.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { GlobalVarService } from '../../services/global-var.service';
-import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Users } from '../../Models/Users';
-import { ActivatedRoute, Router } from '@angular/router';
-import { GroupService } from '../../services/group.service';
-import { Group, GroupResponse, GroupResponseOne } from '../../Models/Group';
+import { ActivatedRoute } from '@angular/router';
+import { Group } from '../../Models/Group';
 import { CreateSlipComponent } from '../../Dialog/create-slip/create-slip.component';
-import { SnackbarComponent } from '../../Dialog/snackbar/snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationComponent } from '../../Dialog/confirmation/confirmation.component';
 import { SlipTransactionBody } from '../../Models/SlipTransactionBody';
+import { AuthUser } from '../../Models/AuthUser';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-payment-slip',
@@ -50,13 +48,12 @@ export class PaymentSlipComponent {
 
   constructor(
     private sliptransactionService: SliptransactionsService,
-    public globalVar: GlobalVarService,
+    public globalVarService: GlobalVarService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
-    private groupService: GroupService,
-    private snackBar: MatSnackBar,
+    private snackbarService: SnackbarService,
   ){
-    this.globalVar.checkToken()
+    this.globalVarService.checkToken()
   }
 
   ngAfterViewInit() {
@@ -65,8 +62,8 @@ export class PaymentSlipComponent {
 
   async ngOnInit(){
     this.isLoading = true
-    this.globalVar.createUser()
-    this.user = this.globalVar.user
+    this.globalVarService.createUser()
+    this.user = this.globalVarService.user
     await this.getslippayment()
   }
     
@@ -80,6 +77,15 @@ export class PaymentSlipComponent {
       this.slip = res.data.Transaction
       this.groupInfo = res.data.Group
       this.dataSource.data = this.slip;
+    }, (error) => {
+      if (error.status == 401){
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+          if(res.id_token){
+            localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+            this.getslippayment()
+          }
+        })
+      }
     })
   }
 
@@ -119,22 +125,19 @@ export class PaymentSlipComponent {
         this.sliptransactionService.deleteslipayment(slip.Slip_id).subscribe((res:SlipResponse)=>{
           this.isLoading = false
           if(!res.err){
-            this.snackBar.openFromComponent(SnackbarComponent, {
-              data: {
-                message: "The Slip is Successfully deleted",
-                status: "success"
-              },
-              panelClass: ['success-sb']
-            });
+            this.snackbarService.openSuccessSnackbar("The Slip is Successfully deleted")
             this.getslippayment()
           }else{
-            this.snackBar.openFromComponent(SnackbarComponent, {
-              data: {
-                message: "The Slip Failed to delete",
-                status: "error"
-              },
-              panelClass: ['error-sb']
-            });
+            this.snackbarService.openErrorSnackbar("The Slip Failed to Delete.")
+          }
+        }, (error) => {
+          if (error.status == 401){
+            this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+              if(res.id_token){
+                localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+                this.deletesliptransaction(slip)
+              }
+            })
           }
         })
       }

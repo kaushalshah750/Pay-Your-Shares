@@ -1,4 +1,4 @@
-<h2 class="mb-0" mat-dialog-title>{{globalVar.user.User_id == group.Admin.User_id ? "Invite Members in Group" : "Members in Group"}}</h2>
+<h2 class="mb-0" mat-dialog-title>{{globalVarService.user.User_id == group.Admin.User_id ? "Invite Members in Group" : "Members in Group"}}</h2>
 <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
 <div class="px-3">
     <div>
@@ -9,7 +9,7 @@
                         <img [src]="user.Picture" width="40px" class="rounded-circle" alt="">
                         <h3 class="mb-0 ml-2">{{user.Name}}</h3>
                     </div>
-                    <div class="d-flex" *ngIf="globalVar.user.User_id != user.User_id && globalVar.user.User_id == group.Admin.User_id">
+                    <div class="d-flex" *ngIf="globalVarService.user.User_id != user.User_id && globalVarService.user.User_id == group.Admin.User_id">
                         <mat-icon class="pointer" (click)="removeGroupMemberbyGroupId(user.User_id)">delete</mat-icon>
                     </div>
                 </div>
@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<mat-dialog-content *ngIf="globalVar.user.User_id == group.Admin.User_id">
+<mat-dialog-content *ngIf="globalVarService.user.User_id == group.Admin.User_id">
     <form [formGroup]="addGroupMemberform">
         <div class="d-flex justify-content-between">
             <mat-form-field class="mb-0 w-100">

@@ -8,6 +8,9 @@ import { GroupSummary } from 'src/app/shared/Models/GroupSummary';
 import { TransactionSettlement } from 'src/app/shared/Models/TransactionSettlement';
 import { TransactionSettlementService } from 'src/app/shared/services/transaction-settlement.service';
 import { SnackbarComponent } from '../../snackbar/snackbar.component';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { GlobalVarService } from 'src/app/shared/services/global-var.service';
+import { AuthUser } from 'src/app/shared/Models/AuthUser';
 
 @Component({
   selector: 'app-payment-settlement',
@@ -26,8 +29,9 @@ export class PaymentSettlementComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<PaymentSettlementComponent>,
     private transactionSettlementService: TransactionSettlementService,
-    private snackBar: MatSnackBar,
-    private formBuilder: FormBuilder
+    private snackbarService: SnackbarService,
+    private globalVarService: GlobalVarService,
+    private formBuilder: FormBuilder,
   ){}
   
   createTransactionSettlement(){
@@ -44,22 +48,19 @@ export class PaymentSettlementComponent {
       
       this.transactionSettlementService.addTransactionSettlement(settlement).subscribe((res) => {
         this.dialogRef.close(true);
+        this.snackbarService.openSuccessSnackbar(formatCurrency(this.createform.controls['amount'].value, 'en-US', '₹', 'INR', '1.2-2') + " is Settled Successfully")
+      }, (error) => {
+        if (error.status == 401){
+          this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+            if(res.id_token){
+              localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+              this.createTransactionSettlement()
+            }
+          })
+        }
       })
-      this.snackBar.openFromComponent(SnackbarComponent, {
-        data: {
-          message: formatCurrency(this.createform.controls['amount'].value, 'en-US', '₹', 'INR', '1.2-2') + " is Settled Successfully",
-          status: "success"
-        },
-        panelClass: ['success-sb']
-      });
     }else{
-      this.snackBar.openFromComponent(SnackbarComponent, {
-        data: {
-          message: "Please Enter a Valid Amount to Settle",
-          status: "error"
-        },
-        panelClass: ['error-sb']
-      });
+      this.snackbarService.openErrorSnackbar("Please Enter a Valid Amount to Settle")
     }
   }
 

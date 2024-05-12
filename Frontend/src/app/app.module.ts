@@ -103,19 +103,19 @@ import { PaymentSettlementComponent } from './shared/Dialog/payments/payment-set
     }),
     RouterModule.forRoot([
       {
-        path: ':invite/:groupid/login',
+        path: 'login/:invite/:groupid/login',
         component: LoginComponent
       },
-      {
-        path: '',
-        component: WelcomeComponent
-      },
+      // {
+      //   path: '',
+      //   component: WelcomeComponent
+      // },
       {
         path: 'login',
         component: LoginComponent
       },
       {
-        path: 'home',
+        path: '',
         pathMatch: 'prefix',
         redirectTo: 'group',
       },

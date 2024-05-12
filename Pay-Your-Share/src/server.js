@@ -30,7 +30,7 @@ async function verifyGoogleToken(req, res, next) {
         next();
     } catch (error) {
         console.error('Error verifying Google token:', error);
-        return res.status(401).json({ error: 'Unauthorized' });
+        return res.status(401).json({ err: true, errMessage: 'Unauthorized', data: null });
     }
 }
 

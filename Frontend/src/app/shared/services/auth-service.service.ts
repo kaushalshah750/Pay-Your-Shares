@@ -17,8 +17,6 @@ export class AuthServiceService {
     private router: Router,
     private globalVar: GlobalVarService,
     private snackBar: MatSnackBar,
-    private toastr: ToastrService,
-
   ) {}
 
   signOut(){
@@ -35,16 +33,12 @@ export class AuthServiceService {
     })
   }
 
-  getAccessToken(): string | null {
-    return localStorage.getItem(this.globalVar.accessTokenKey);
-  }
-
   getAzureID(): string | null {
-    return sessionStorage.getItem(this.globalVar.Uid);
+    return localStorage.getItem(this.globalVar.Uid);
   }
 
   getUserInfo():string | null{
-    return JSON.parse(sessionStorage.getItem("UserInfo")!);
+    return JSON.parse(localStorage.getItem("UserInfo")!);
   }
 
   setAccessToken(token: string): void {

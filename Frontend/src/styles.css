@@ -172,6 +172,14 @@ table, th, td {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.br5{
+  border-radius: 5px !important;
+}
+
+.br10{
+  border-radius: 10px !important;
+}
+
 .br20{
   border-radius: 20px !important;
 }

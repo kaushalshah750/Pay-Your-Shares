@@ -11,6 +11,7 @@ import { TransactionSettlement, TransactionSettlementResponse } from '../../Mode
 import { MatDialog } from '@angular/material/dialog';
 import { CreateSlipComponent } from '../../Dialog/create-slip/create-slip.component';
 import { PaymentSettlementComponent } from '../../Dialog/payments/payment-settlement/payment-settlement.component';
+import { AuthUser } from '../../Models/AuthUser';
 
 @Component({
   selector: 'app-payment-summary',
@@ -43,7 +44,7 @@ export class PaymentSummaryComponent {
 
   constructor(
     private transactionSettlementService: TransactionSettlementService,
-    public globalVar: GlobalVarService,
+    public globalVarService: GlobalVarService,
     private userService: UserService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -54,7 +55,7 @@ export class PaymentSummaryComponent {
     //   await this.getGroupDetail()
     // }
     this.isLoading = true
-    this.globalVar.checkToken()
+    this.globalVarService.checkToken()
     await this.getGroupSummary()
     await this.getslippayment()
   }
@@ -69,6 +70,15 @@ export class PaymentSummaryComponent {
       this.slip = res.data.transaction
       this.groupInfo = res.data.group
       this.dataSource.data = this.slip;
+    }, (error) => {
+      if (error.status == 401){
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+          if(res.id_token){
+            localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+            this.getslippayment()
+          }
+        })
+      }
     })
   }
 
@@ -95,6 +105,15 @@ export class PaymentSummaryComponent {
     await this.userService.getGroupSummary(this.group_Uid).subscribe((res:GroupSummaryResponse)=>{
       this.isLoading = false
       this.groupSummary = res.data
+    }, (error) => {
+      if (error.status == 401){
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+          if(res.id_token){
+            localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+            this.getGroupSummary()
+          }
+        })
+      }
     })
   }
 

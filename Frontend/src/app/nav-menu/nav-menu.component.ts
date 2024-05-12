@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { GiveFeedbackComponent } from '../shared/Dialog/give-feedback/give-feedback.component';
 import { UserService } from '../shared/services/user.service';
 import { UsersResponse, UsersResponseOne } from '../shared/Models/Users';
+import { AuthUser } from '../shared/Models/AuthUser';
 
 @Component({
   selector: 'app-nav-menu',
@@ -22,22 +23,35 @@ export class NavMenuComponent {
   constructor(
     public dialog: MatDialog,
     private authservice: AuthServiceService,
-    private router: Router,
     public userService: UserService,
-    public globalVar: GlobalVarService,
+    public globalVarService: GlobalVarService,
   ){
-    this.userService.getLoggedInUser().subscribe((res:UsersResponseOne) => {
-      this.globalVar.user.User_id = res.data.User_id
-      this.globalVar.user.Name = res.data.Name
-      this.globalVar.user.Email = res.data.Email
-      this.globalVar.user.Picture = res.data.Picture
-      this.globalVar.user.Phone = res.data.Phone
-    })
+    this.getLoggedInUser()
   }
   
   ngOnInit(){
-    this.user = this.authservice.getclaims(this.authservice.getAccessToken())
+    this.user = this.authservice.getclaims(this.globalVarService.getAccessToken())
     this.userinfo = this.authservice.getUserInfo()
+    console.log(this.userinfo)
+  }
+
+  getLoggedInUser(){
+    this.userService.getLoggedInUser().subscribe((res:UsersResponseOne) => {
+      this.globalVarService.user.User_id = res.data.User_id
+      this.globalVarService.user.Name = res.data.Name
+      this.globalVarService.user.Email = res.data.Email
+      this.globalVarService.user.Picture = res.data.Picture
+      this.globalVarService.user.Phone = res.data.Phone
+    }, (error) => {
+      if (error.status == 401){
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
+          if(res.id_token){
+            localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
+            this.getLoggedInUser()
+          }
+        })
+      }
+    })
   }
 
   giveFeedback(){
