@@ -28,7 +28,7 @@ export class GiveFeedbackComponent {
   ){}
 
   ngOnInit(){
-    this.globalVarService.checkToken()
+    // this.globalVarService.checkToken()
   }
 
   createFeedback(){

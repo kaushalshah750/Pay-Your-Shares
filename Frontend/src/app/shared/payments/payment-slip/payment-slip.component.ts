@@ -53,7 +53,7 @@ export class PaymentSlipComponent {
     private route: ActivatedRoute,
     private snackbarService: SnackbarService,
   ){
-    this.globalVarService.checkToken()
+    // this.globalVarService.checkToken()
   }
 
   ngAfterViewInit() {

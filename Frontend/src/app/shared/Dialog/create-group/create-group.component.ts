@@ -30,7 +30,7 @@ export class CreateGroupComponent {
   ){}
 
   ngOnInit(){
-    this.globalVarService.checkToken()
+    // this.globalVarService.checkToken()
   }
 
   createGroup(){

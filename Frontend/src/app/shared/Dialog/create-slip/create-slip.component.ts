@@ -47,7 +47,7 @@ export class CreateSlipComponent {
 
   async ngOnInit(){
     this.isLoading = true
-    this.globalVarService.checkToken()
+    // this.globalVarService.checkToken()
     await this.getslippayment()
   }
 

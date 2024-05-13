@@ -55,7 +55,7 @@ export class PaymentSummaryComponent {
     //   await this.getGroupDetail()
     // }
     this.isLoading = true
-    this.globalVarService.checkToken()
+    // this.globalVarService.checkToken()
     await this.getGroupSummary()
     await this.getslippayment()
   }

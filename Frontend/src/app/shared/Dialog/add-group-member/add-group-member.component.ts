@@ -48,7 +48,7 @@ export class AddGroupMemberComponent {
   ){}
 
   ngOnInit(){
-    this.globalVarService.checkToken()
+    // this.globalVarService.checkToken()
     this.getGroupInfo()
   }
   
