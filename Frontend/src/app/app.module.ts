@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 
@@ -49,136 +49,130 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { ConfirmationComponent } from './shared/Dialog/confirmation/confirmation.component';
 import { PaymentSettlementComponent } from './shared/Dialog/payments/payment-settlement/payment-settlement.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    NavMenuComponent,
-    HomeComponent,
-    CounterComponent,
-    CreditCardComponent,
-    PaymentSummaryComponent,
-    FetchDataComponent,
-    CreateSlipComponent,
-    PaymentSettlementComponent,
-    CreateGroupComponent,
-    LoginComponent,
-    WelcomeComponent,
-    SnackbarComponent,
-    SplitPaymentComponent,
-    PaymentSlipComponent,
-    GroupListComponent,
-    MyProfileComponent,
-    AddGroupMemberComponent,
-    GiveFeedbackComponent,
-    ConfirmationComponent,
-    UsersComponent
-  ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    NgxSpinnerModule,
-    MatTableModule,
-    MatProgressBarModule,
-    MatPaginatorModule,
-    MatFormFieldModule, 
-    MatInputModule,
-    MatTooltipModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatDividerModule,
-    MatButtonModule,
-    MatCardModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatMenuModule,
-    ToastrModule.forRoot({
-      timeOut: 3000,
-      positionClass: 'toast-top-right'
-    }),
-    RouterModule.forRoot([
-      {
-        path: 'login/:invite/:groupid/login',
-        component: LoginComponent
-      },
-      // {
-      //   path: '',
-      //   component: WelcomeComponent
-      // },
-      {
-        path: 'login',
-        component: LoginComponent
-      },
-      {
-        path: '',
-        pathMatch: 'prefix',
-        redirectTo: 'group',
-      },
-      {
-        path: '',
-        component: HomeComponent,
-        children:[
-          {
-            path: 'my-profile',
-            component: MyProfileComponent
-          },
-          {
-            path: 'group',
-            component: GroupListComponent
-          },
-          {
-            path: 'group/:groupid/payment',
-            component: PaymentSlipComponent
-          },
-          {
-            path: 'group/payment/summary',
-            component: PaymentSummaryComponent
-          },
-          {
-            path: 'group/:groupid/payment/summary',
-            component: PaymentSummaryComponent
-          },
-          { 
-            path: 'counter',
-            component: CounterComponent 
-          },
-          { 
-            path: 'summary',
-            component: PaymentSummaryComponent 
-          },
-          { 
-            path: 'users',
-            component: UsersComponent 
-          },
-          { 
-            path: 'credit-card',
-            component: CreditCardComponent 
-          },
-          { 
-            path: 'fetch-data',
-            component: FetchDataComponent 
-          }
-        ]
-      },
-    ])
-  ],
-  providers: [
-      DatePipe,
-      CurrencyPipe,
-      {
-        provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, 
-        useValue: {
-          duration: 2000, 
-          verticalPosition: "top", 
-          horizontalPosition: "right"
-        }
-      }
+@NgModule({ declarations: [
+        AppComponent,
+        NavMenuComponent,
+        HomeComponent,
+        CounterComponent,
+        CreditCardComponent,
+        PaymentSummaryComponent,
+        FetchDataComponent,
+        CreateSlipComponent,
+        PaymentSettlementComponent,
+        CreateGroupComponent,
+        LoginComponent,
+        WelcomeComponent,
+        SnackbarComponent,
+        SplitPaymentComponent,
+        PaymentSlipComponent,
+        GroupListComponent,
+        MyProfileComponent,
+        AddGroupMemberComponent,
+        GiveFeedbackComponent,
+        ConfirmationComponent,
+        UsersComponent
     ],
-  bootstrap: [AppComponent]
-})
+    bootstrap: [AppComponent], imports: [BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        NgxSpinnerModule,
+        MatTableModule,
+        MatProgressBarModule,
+        MatPaginatorModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTooltipModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+        MatDividerModule,
+        MatButtonModule,
+        MatCardModule,
+        MatSnackBarModule,
+        MatDialogModule,
+        MatMenuModule,
+        ToastrModule.forRoot({
+            timeOut: 3000,
+            positionClass: 'toast-top-right'
+        }),
+        RouterModule.forRoot([
+            {
+                path: 'login/:invite/:groupid/login',
+                component: LoginComponent
+            },
+            // {
+            //   path: '',
+            //   component: WelcomeComponent
+            // },
+            {
+                path: 'login',
+                component: LoginComponent
+            },
+            {
+                path: '',
+                pathMatch: 'prefix',
+                redirectTo: 'group',
+            },
+            {
+                path: '',
+                component: HomeComponent,
+                children: [
+                    {
+                        path: 'my-profile',
+                        component: MyProfileComponent
+                    },
+                    {
+                        path: 'group',
+                        component: GroupListComponent
+                    },
+                    {
+                        path: 'group/:groupid/payment',
+                        component: PaymentSlipComponent
+                    },
+                    {
+                        path: 'group/payment/summary',
+                        component: PaymentSummaryComponent
+                    },
+                    {
+                        path: 'group/:groupid/payment/summary',
+                        component: PaymentSummaryComponent
+                    },
+                    {
+                        path: 'counter',
+                        component: CounterComponent
+                    },
+                    {
+                        path: 'summary',
+                        component: PaymentSummaryComponent
+                    },
+                    {
+                        path: 'users',
+                        component: UsersComponent
+                    },
+                    {
+                        path: 'credit-card',
+                        component: CreditCardComponent
+                    },
+                    {
+                        path: 'fetch-data',
+                        component: FetchDataComponent
+                    }
+                ]
+            },
+        ])], providers: [
+        DatePipe,
+        CurrencyPipe,
+        {
+            provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+            useValue: {
+                duration: 2000,
+                verticalPosition: "top",
+                horizontalPosition: "right"
+            }
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
