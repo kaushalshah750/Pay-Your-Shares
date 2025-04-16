@@ -1,4 +1,4 @@
-declare var google:any;
+declare var google: any;
 import { Component } from '@angular/core';
 import { AuthServiceService } from '../services/auth-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,8 +22,8 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
   })
-  isLoading:boolean = false
-  userInfo:any
+  isLoading: boolean = false
+  userInfo: any
   groupId = this.route.snapshot.paramMap.get('groupid')!
   inviteId = this.route.snapshot.paramMap.get('invite')!
 
@@ -36,9 +36,9 @@ export class LoginComponent {
     private groupService: GroupService,
     private snackBar: MatSnackBar,
     private globalVar: GlobalVarService,
-  ){}
+  ) { }
 
-  ngOnInit(){
+  ngOnInit() {
     // this.login()
   }
 
@@ -142,22 +142,22 @@ export class LoginComponent {
   // });
 
 
-  callGoogleUrl(){
+  callGoogleUrl() {
     // var scope:string = "https://www.googleapis.com/auth/userinfo.email&https://www.googleapis.com/auth/userinfo.profile&openid"
-    var scope:string = "https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile"
+    var scope: string = "https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile"
     var url = `https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${window.location.origin}/&prompt=consent&response_type=code&client_id=${environment.google.client_id}&scope=${scope}&access_type=offline`
     console.log(url)
     window.location.href = url
   }
 
-  handleCredentialResponse(response:any) {
+  handleCredentialResponse(response: any) {
   }
 
-  decodeToken(token:string){
+  decodeToken(token: string) {
     return JSON.parse(atob(token.split(".")[1]))
   }
 
-  login(){
+  login() {
     this.userService.getLoggedIn().subscribe((res) => {
 
     })

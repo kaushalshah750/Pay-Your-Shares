@@ -9,6 +9,13 @@ const pool = mysql.createPool({
     database: 'PayYourShare'
 }).promise()
 
+// const pool = mysql.createPool({
+//     host: '127.0.0.1',
+//     user: 'root', //MSI\KAUSHAL
+//     password: 'Kaushal$#@#123',
+//     database: 'payyourshare'
+// }).promise()
+
 export default pool;
 
 // module.exports = function(){
