@@ -3,7 +3,7 @@ import { GlobalVarService } from '../../services/global-var.service';
 import { ActivatedRoute } from '@angular/router';
 import { Group } from '../../Models/Group';
 import { UserService } from '../../services/user.service';
-import { GroupSummary, GroupSummaryResponse} from '../../Models/GroupSummary';
+import { GroupSummary, GroupSummaryResponse } from '../../Models/GroupSummary';
 import { MatTableDataSource } from '@angular/material/table';
 import { SlipTransactionBody } from '../../Models/SlipTransactionBody';
 import { TransactionSettlementService } from '../../services/transaction-settlement.service';
@@ -16,17 +16,18 @@ import { AuthUser } from '../../Models/AuthUser';
 @Component({
   selector: 'app-payment-summary',
   templateUrl: './payment-summary.component.html',
-  styleUrls: ['./payment-summary.component.css']
+  styleUrls: ['./payment-summary.component.css'],
+  standalone: false,
 })
 
 export class PaymentSummaryComponent {
-  slip:TransactionSettlement[] = []
+  slip: TransactionSettlement[] = []
   displayedColumns: string[] = ['Amount', 'Settle By', 'Settle To', 'Transaction Date'];
   dataSource = new MatTableDataSource<TransactionSettlement>(this.slip);
-  isLoading:boolean = false
-  groupSummary:GroupSummary[] = []
+  isLoading: boolean = false
+  groupSummary: GroupSummary[] = []
   group_Uid = Number(this.route.snapshot.paramMap.get('groupid')!)
-  groupInfo:Group = {
+  groupInfo: Group = {
     Group_id: 0,
     Name: "",
     Description: "",
@@ -48,9 +49,9 @@ export class PaymentSummaryComponent {
     private userService: UserService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
-  ){}
+  ) { }
 
-  async ngOnInit(){
+  async ngOnInit() {
     // if(this.group_Uid){
     //   await this.getGroupDetail()
     // }
@@ -60,20 +61,20 @@ export class PaymentSummaryComponent {
     await this.getslippayment()
   }
 
-  async getslippayment(){
+  async getslippayment() {
     this.isLoading = true
     var transaction: SlipTransactionBody = {
       group: this.group_Uid
     }
-    await this.transactionSettlementService.getTransactionSettlement(transaction).subscribe((res:TransactionSettlementResponse)=>{
+    await this.transactionSettlementService.getTransactionSettlement(transaction).subscribe((res: TransactionSettlementResponse) => {
       this.isLoading = false
       this.slip = res.data.transaction
       this.groupInfo = res.data.group
       this.dataSource.data = this.slip;
     }, (error) => {
-      if (error.status == 401){
-        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-          if(res.id_token){
+      if (error.status == 401) {
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+          if (res.id_token) {
             localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
             this.getslippayment()
           }
@@ -82,33 +83,33 @@ export class PaymentSummaryComponent {
     })
   }
 
-  settlePayment(user:GroupSummary){
+  settlePayment(user: GroupSummary) {
     const dialogRef = this.dialog.open(PaymentSettlementComponent, {
-        data: {
-          settleUser: user,
-          group: this.groupInfo
-        },
-        width: '400px'
-      } 
+      data: {
+        settleUser: user,
+        group: this.groupInfo
+      },
+      width: '400px'
+    }
     );
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this.getslippayment()
         this.getGroupSummary()
       }
     });
   }
 
-  async getGroupSummary(){
+  async getGroupSummary() {
     this.isLoading = true
-    await this.userService.getGroupSummary(this.group_Uid).subscribe((res:GroupSummaryResponse)=>{
+    await this.userService.getGroupSummary(this.group_Uid).subscribe((res: GroupSummaryResponse) => {
       this.isLoading = false
       this.groupSummary = res.data
     }, (error) => {
-      if (error.status == 401){
-        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-          if(res.id_token){
+      if (error.status == 401) {
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+          if (res.id_token) {
             localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
             this.getGroupSummary()
           }

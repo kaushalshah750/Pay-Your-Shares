@@ -15,16 +15,17 @@ import { AuthUser } from 'src/app/shared/Models/AuthUser';
 @Component({
   selector: 'app-payment-settlement',
   templateUrl: './payment-settlement.component.html',
-  styleUrls: ['./payment-settlement.component.css']
+  styleUrls: ['./payment-settlement.component.css'],
+  standalone: false,
 })
 export class PaymentSettlementComponent {
-  isLoading:boolean = false
+  isLoading: boolean = false
   createform = this.formBuilder.nonNullable.group({
     amount: [0, [Validators.required]],
   })
-  user:GroupSummary = this.data.settleUser
-  group:Group = this.data.group
-  
+  user: GroupSummary = this.data.settleUser
+  group: Group = this.data.group
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<PaymentSettlementComponent>,
@@ -32,11 +33,11 @@ export class PaymentSettlementComponent {
     private snackbarService: SnackbarService,
     private globalVarService: GlobalVarService,
     private formBuilder: FormBuilder,
-  ){}
-  
-  createTransactionSettlement(){
-    if(this.createform.valid){
-      var settlement:TransactionSettlement = {
+  ) { }
+
+  createTransactionSettlement() {
+    if (this.createform.valid) {
+      var settlement: TransactionSettlement = {
         Action: this.user.balance > 0 ? "Me" : "You",
         Amount: this.createform.controls['amount'].value,
         SettleBy_id: this.user.user,
@@ -45,21 +46,21 @@ export class PaymentSettlementComponent {
         Group_id: this.group,
         Payment_date: new Date(),
       }
-      
+
       this.transactionSettlementService.addTransactionSettlement(settlement).subscribe((res) => {
         this.dialogRef.close(true);
         this.snackbarService.openSuccessSnackbar(formatCurrency(this.createform.controls['amount'].value, 'en-US', '₹', 'INR', '1.2-2') + " is Settled Successfully")
       }, (error) => {
-        if (error.status == 401){
-          this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-            if(res.id_token){
+        if (error.status == 401) {
+          this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+            if (res.id_token) {
               localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
               this.createTransactionSettlement()
             }
           })
         }
       })
-    }else{
+    } else {
       this.snackbarService.openErrorSnackbar("Please Enter a Valid Amount to Settle")
     }
   }

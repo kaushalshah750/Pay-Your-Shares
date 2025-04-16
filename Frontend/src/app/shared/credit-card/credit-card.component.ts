@@ -7,37 +7,38 @@ import { CreditCardSummary } from '../Models/CreditCardSummary';
 @Component({
   selector: 'app-credit-card',
   templateUrl: './credit-card.component.html',
-  styleUrls: ['./credit-card.component.css']
+  styleUrls: ['./credit-card.component.css'],
+  standalone: false,
 })
 export class CreditCardComponent {
-  creditcardlist:CreditCardSummary[] = []
-  creditcardstatlist:CreditCardStatement[] = []
+  creditcardlist: CreditCardSummary[] = []
+  creditcardstatlist: CreditCardStatement[] = []
 
-  constructor(private creditcardService: CreditCardService){}
+  constructor(private creditcardService: CreditCardService) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.getcreditcardlist()
     this.getcreditcardstatementlist()
   }
 
-  totalamount(){
-    let totalamount:number = 0
+  totalamount() {
+    let totalamount: number = 0
 
-    this.creditcardstatlist.forEach((res:CreditCardStatement) => {
+    this.creditcardstatlist.forEach((res: CreditCardStatement) => {
       totalamount = totalamount + res.amount
     })
 
     return totalamount;
   }
 
-  getcreditcardlist(){
-    this.creditcardService.getcreditcardlist().subscribe((res:CreditCardSummary[]) => {
+  getcreditcardlist() {
+    this.creditcardService.getcreditcardlist().subscribe((res: CreditCardSummary[]) => {
       this.creditcardlist = res
     })
   }
 
-  getcreditcardstatementlist(){
-    this.creditcardService.getcreditcardstatementlist().subscribe((res:CreditCardStatement[]) => {
+  getcreditcardstatementlist() {
+    this.creditcardService.getcreditcardstatementlist().subscribe((res: CreditCardStatement[]) => {
       this.creditcardstatlist = res
     })
   }

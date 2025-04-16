@@ -48,8 +48,10 @@ import { MyProfileComponent } from './shared/my-profile/my-profile.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ConfirmationComponent } from './shared/Dialog/confirmation/confirmation.component';
 import { PaymentSettlementComponent } from './shared/Dialog/payments/payment-settlement/payment-settlement.component';
+import { AppRoutingModule } from './app-routing.module';
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         AppComponent,
         NavMenuComponent,
         HomeComponent,
@@ -72,8 +74,11 @@ import { PaymentSettlementComponent } from './shared/Dialog/payments/payment-set
         ConfirmationComponent,
         UsersComponent
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
         FormsModule,
+        AppRoutingModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
         NgxSpinnerModule,
@@ -98,71 +103,8 @@ import { PaymentSettlementComponent } from './shared/Dialog/payments/payment-set
             timeOut: 3000,
             positionClass: 'toast-top-right'
         }),
-        RouterModule.forRoot([
-            {
-                path: 'login/:invite/:groupid/login',
-                component: LoginComponent
-            },
-            // {
-            //   path: '',
-            //   component: WelcomeComponent
-            // },
-            {
-                path: 'login',
-                component: LoginComponent
-            },
-            {
-                path: '',
-                pathMatch: 'prefix',
-                redirectTo: 'group',
-            },
-            {
-                path: '',
-                component: HomeComponent,
-                children: [
-                    {
-                        path: 'my-profile',
-                        component: MyProfileComponent
-                    },
-                    {
-                        path: 'group',
-                        component: GroupListComponent
-                    },
-                    {
-                        path: 'group/:groupid/payment',
-                        component: PaymentSlipComponent
-                    },
-                    {
-                        path: 'group/payment/summary',
-                        component: PaymentSummaryComponent
-                    },
-                    {
-                        path: 'group/:groupid/payment/summary',
-                        component: PaymentSummaryComponent
-                    },
-                    {
-                        path: 'counter',
-                        component: CounterComponent
-                    },
-                    {
-                        path: 'summary',
-                        component: PaymentSummaryComponent
-                    },
-                    {
-                        path: 'users',
-                        component: UsersComponent
-                    },
-                    {
-                        path: 'credit-card',
-                        component: CreditCardComponent
-                    },
-                    {
-                        path: 'fetch-data',
-                        component: FetchDataComponent
-                    }
-                ]
-            },
-        ])], providers: [
+    ],
+    providers: [
         DatePipe,
         CurrencyPipe,
         {
@@ -174,5 +116,6 @@ import { PaymentSettlementComponent } from './shared/Dialog/payments/payment-set
             }
         },
         provideHttpClient(withInterceptorsFromDi())
-    ] })
+    ]
+})
 export class AppModule { }

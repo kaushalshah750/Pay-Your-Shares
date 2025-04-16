@@ -15,11 +15,12 @@ import { AuthUser } from '../../Models/AuthUser';
 @Component({
   selector: 'app-add-group-member',
   templateUrl: './add-group-member.component.html',
-  styleUrls: ['./add-group-member.component.css']
+  styleUrls: ['./add-group-member.component.css'],
+  standalone: false,
 })
 export class AddGroupMemberComponent {
-  isLoading:boolean = true
-  group:Group = {
+  isLoading: boolean = true
+  group: Group = {
     Group_id: 0,
     Name: "",
     Description: "",
@@ -45,22 +46,22 @@ export class AddGroupMemberComponent {
     private snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
-  ){}
+  ) { }
 
-  ngOnInit(){
+  ngOnInit() {
     // this.globalVarService.checkToken()
     this.getGroupInfo()
   }
-  
-  getGroupInfo(){
+
+  getGroupInfo() {
     this.isLoading = true
-    this.groupService.getGroupByGroupId(this.data).subscribe((res:GroupResponseOne)=>{
+    this.groupService.getGroupByGroupId(this.data).subscribe((res: GroupResponseOne) => {
       this.isLoading = false
       this.group = res.data
     }, (error) => {
-      if (error.status == 401){
-        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-          if(res.id_token){
+      if (error.status == 401) {
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+          if (res.id_token) {
             localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
             this.getGroupInfo()
           }
@@ -69,15 +70,15 @@ export class AddGroupMemberComponent {
     })
   }
 
-  inviteMember(){
+  inviteMember() {
     this.isLoading = true
-    if(this.addGroupMemberform.valid){
-      var groupInvite:any = {
+    if (this.addGroupMemberform.valid) {
+      var groupInvite: any = {
         Email: this.addGroupMemberform.controls['Email'].value
       }
-      this.groupService.sendInvitation(this.data, groupInvite).subscribe((res:GroupInvitationResponse) => {
+      this.groupService.sendInvitation(this.data, groupInvite).subscribe((res: GroupInvitationResponse) => {
         this.isLoading = false
-        if(!res.err){
+        if (!res.err) {
           this.snackBar.openFromComponent(SnackbarComponent, {
             data: {
               message: "Invitation Sent Successfully",
@@ -86,7 +87,7 @@ export class AddGroupMemberComponent {
             panelClass: ['success-sb']
           });
           this.addGroupMemberform.controls['Email'].setValue('')
-        }else{
+        } else {
           this.snackBar.openFromComponent(SnackbarComponent, {
             data: {
               message: "Failed to Send the Invitation Link, Try Again",
@@ -96,9 +97,9 @@ export class AddGroupMemberComponent {
           });
         }
       }, (error) => {
-        if (error.status == 401){
-          this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-            if(res.id_token){
+        if (error.status == 401) {
+          this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+            if (res.id_token) {
               localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
               this.inviteMember()
             }
@@ -108,7 +109,7 @@ export class AddGroupMemberComponent {
     }
   }
 
-  removeGroupMemberbyGroupId(userId:number){
+  removeGroupMemberbyGroupId(userId: number) {
     var userDetail = this.group.Members.filter(item => item.User_id == userId)[0]
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       data: {
@@ -119,16 +120,16 @@ export class AddGroupMemberComponent {
     })
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this.isLoading = true
-        var removeMember:RemoveGroupMember = {
+        var removeMember: RemoveGroupMember = {
           Group_id: this.group.Group_id,
           User_id: userId
         }
         this.group.Members = this.group.Members.filter(item => item.User_id !== userId)
-        this.groupService.removeMemberfromGroup(removeMember).subscribe((res:GroupResponseOne) => {
+        this.groupService.removeMemberfromGroup(removeMember).subscribe((res: GroupResponseOne) => {
           this.isLoading = false
-          if(!res.err){
+          if (!res.err) {
             this.getGroupInfo()
             this.snackBar.openFromComponent(SnackbarComponent, {
               data: {
@@ -137,7 +138,7 @@ export class AddGroupMemberComponent {
               },
               panelClass: ['success-sb']
             });
-          }else{
+          } else {
             this.snackBar.openFromComponent(SnackbarComponent, {
               data: {
                 message: "The Member is not removed from the Group",
@@ -147,9 +148,9 @@ export class AddGroupMemberComponent {
             });
           }
         }, (error) => {
-          if (error.status == 401){
-            this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-              if(res.id_token){
+          if (error.status == 401) {
+            this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+              if (res.id_token) {
                 localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
                 this.removeGroupMemberbyGroupId(userId)
               }

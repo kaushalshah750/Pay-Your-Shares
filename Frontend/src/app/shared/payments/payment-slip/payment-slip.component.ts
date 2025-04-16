@@ -18,16 +18,17 @@ import { SnackbarService } from '../../services/snackbar.service';
 @Component({
   selector: 'app-payment-slip',
   templateUrl: './payment-slip.component.html',
-  styleUrls: ['./payment-slip.component.css']
+  styleUrls: ['./payment-slip.component.css'],
+  standalone: false,
 })
 export class PaymentSlipComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  slip:SlipTransactionVM[] = []
-  user:any = ""
-  users:Users[] = []
-  userlist:number[] = []
+  slip: SlipTransactionVM[] = []
+  user: any = ""
+  users: Users[] = []
+  userlist: number[] = []
   group_Uid = Number(this.route.snapshot.paramMap.get('groupid')!)
-  groupInfo:Group = {
+  groupInfo: Group = {
     Group_id: 0,
     Name: "",
     Description: "",
@@ -42,7 +43,7 @@ export class PaymentSlipComponent {
     Created_on: "",
     Updated_on: ""
   }
-  isLoading:boolean = false
+  isLoading: boolean = false
   displayedColumns: string[] = ['Name', 'Paid By', 'Amount', 'Transaction Date', 'Split In', 'Action'];
   dataSource = new MatTableDataSource<SlipTransactionVM>(this.slip);
 
@@ -52,7 +53,7 @@ export class PaymentSlipComponent {
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private snackbarService: SnackbarService,
-  ){
+  ) {
     // this.globalVarService.checkToken()
   }
 
@@ -60,27 +61,27 @@ export class PaymentSlipComponent {
     this.dataSource.paginator = this.paginator;
   }
 
-  async ngOnInit(){
+  async ngOnInit() {
     this.isLoading = true
     this.globalVarService.createUser()
     this.user = this.globalVarService.user
     await this.getslippayment()
   }
-    
-  async getslippayment(){
+
+  async getslippayment() {
     this.isLoading = true
     var transaction: SlipTransactionBody = {
       group: this.group_Uid
     }
-    await this.sliptransactionService.getslipayment(transaction).subscribe((res:SlipResponse)=>{
+    await this.sliptransactionService.getslipayment(transaction).subscribe((res: SlipResponse) => {
       this.isLoading = false
       this.slip = res.data.Transaction
       this.groupInfo = res.data.Group
       this.dataSource.data = this.slip;
     }, (error) => {
-      if (error.status == 401){
-        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-          if(res.id_token){
+      if (error.status == 401) {
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+          if (res.id_token) {
             localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
             this.getslippayment()
           }
@@ -89,26 +90,26 @@ export class PaymentSlipComponent {
     })
   }
 
-  addslip(){
+  addslip() {
     const dialogRef = this.dialog.open(CreateSlipComponent, {
-        data: this.groupInfo,
-        width: '400px'
-      } 
+      data: this.groupInfo,
+      width: '400px'
+    }
     );
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this.getslippayment()
       }
     });
   }
 
-  refresh(){
+  refresh() {
     this.slip = []
     this.getslippayment()
   }
 
-  deletesliptransaction(slip:SlipTransactionVM){
+  deletesliptransaction(slip: SlipTransactionVM) {
 
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       data: {
@@ -120,20 +121,20 @@ export class PaymentSlipComponent {
     })
 
     dialogRef.afterClosed().subscribe(res => {
-      if(res){
+      if (res) {
         this.isLoading = true
-        this.sliptransactionService.deleteslipayment(slip.Slip_id).subscribe((res:SlipResponse)=>{
+        this.sliptransactionService.deleteslipayment(slip.Slip_id).subscribe((res: SlipResponse) => {
           this.isLoading = false
-          if(!res.err){
+          if (!res.err) {
             this.snackbarService.openSuccessSnackbar("The Slip is Successfully deleted")
             this.getslippayment()
-          }else{
+          } else {
             this.snackbarService.openErrorSnackbar("The Slip Failed to Delete.")
           }
         }, (error) => {
-          if (error.status == 401){
-            this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-              if(res.id_token){
+          if (error.status == 401) {
+            this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+              if (res.id_token) {
                 localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
                 this.deletesliptransaction(slip)
               }

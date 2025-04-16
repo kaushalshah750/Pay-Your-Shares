@@ -15,11 +15,12 @@ import { SnackbarService } from '../../services/snackbar.service';
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
-  styleUrls: ['./group-list.component.css']
+  styleUrls: ['./group-list.component.css'],
+  standalone: false,
 })
 export class GroupListComponent {
-  groups:Group[] = []
-  isLoading:boolean = false
+  groups: Group[] = []
+  isLoading: boolean = false
 
   constructor(
     private groupService: GroupService,
@@ -27,25 +28,25 @@ export class GroupListComponent {
     private globalVarService: GlobalVarService,
     private snackbarService: SnackbarService,
     public dialog: MatDialog,
-  ){}
-  
-  ngOnInit(){
+  ) { }
+
+  ngOnInit() {
     this.isLoading = true
     this.getGroups()
   }
 
-  async getGroups(){
+  async getGroups() {
     this.isLoading = true
-    await this.groupService.getGroups().subscribe((res:GroupResponse) => {
+    await this.groupService.getGroups().subscribe((res: GroupResponse) => {
       console.log(res)
-      if(!res.err){
+      if (!res.err) {
         this.isLoading = false
         this.groups = res.data
       }
     }, (error) => {
-      if (error.status == 401){
-        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-          if(res.id_token){
+      if (error.status == 401) {
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+          if (res.id_token) {
             localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
             this.getGroups()
           }
@@ -53,13 +54,13 @@ export class GroupListComponent {
       }
     })
   }
-  
-  refresh(){
+
+  refresh() {
     this.groups = []
     this.getGroups()
   }
 
-  deleteGroup(group:Group){
+  deleteGroup(group: Group) {
 
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       data: {
@@ -71,14 +72,14 @@ export class GroupListComponent {
     })
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.groupService.deleteGroup(group.Group_id).subscribe((res:GroupAddResponseOne) => {
-          if(!res.err){
-            if(res.data == "Group is Successfully Deleted"){
+      if (result) {
+        this.groupService.deleteGroup(group.Group_id).subscribe((res: GroupAddResponseOne) => {
+          if (!res.err) {
+            if (res.data == "Group is Successfully Deleted") {
               this.isLoading = false
               this.snackbarService.openSuccessSnackbar("Group is Deleted Successfully")
               this.getGroups()
-            }else if(res.data == "You are not Authorized to delete the Group"){
+            } else if (res.data == "You are not Authorized to delete the Group") {
               this.isLoading = false
               this.snackBar.openFromComponent(SnackbarComponent, {
                 data: {
@@ -87,18 +88,18 @@ export class GroupListComponent {
                 },
                 panelClass: ['info-sb']
               });
-            }else{
+            } else {
               this.isLoading = false
               this.snackbarService.openSuccessSnackbar("Group is Already Deleted")
               this.getGroups()
             }
-          }else{
+          } else {
             this.snackbarService.openErrorSnackbar("We are facing some issue. Please Try Again Later")
           }
         }, (error) => {
-          if (error.status == 401){
-            this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-              if(res.id_token){
+          if (error.status == 401) {
+            this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+              if (res.id_token) {
                 localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
                 this.deleteGroup(group)
               }
@@ -110,21 +111,21 @@ export class GroupListComponent {
 
   }
 
-  createGroup(){
+  createGroup() {
     const dialogRef = this.dialog.open(CreateGroupComponent, {
       width: '350px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this.getGroups()
-      }else{
+      } else {
         this.isLoading = false
       }
     });
   }
 
-  addGroupMember(group:Group){
+  addGroupMember(group: Group) {
     const dialogRef = this.dialog.open(AddGroupMemberComponent, {
       data: group.Group_id,
       width: '400px'

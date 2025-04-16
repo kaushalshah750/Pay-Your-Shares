@@ -11,10 +11,11 @@ import { AuthUser } from '../../Models/AuthUser';
 @Component({
   selector: 'app-give-feedback',
   templateUrl: './give-feedback.component.html',
-  styleUrls: ['./give-feedback.component.css']
+  styleUrls: ['./give-feedback.component.css'],
+  standalone: false,
 })
 export class GiveFeedbackComponent {
-  isLoading:boolean = false
+  isLoading: boolean = false
   feedbackForm = this.formBuilder.nonNullable.group({
     Feedback: ['', [Validators.required, Validators.minLength(5)]]
   })
@@ -25,22 +26,22 @@ export class GiveFeedbackComponent {
     private snackBar: MatSnackBar,
     private feedbackService: FeedbackService,
     private formBuilder: FormBuilder
-  ){}
+  ) { }
 
-  ngOnInit(){
+  ngOnInit() {
     // this.globalVarService.checkToken()
   }
 
-  createFeedback(){
+  createFeedback() {
     this.isLoading = true
-    var feedback:FeedBack = {
+    var feedback: FeedBack = {
       User_id: this.globalVarService.user.User_id,
       Feedback: this.feedbackForm.controls['Feedback'].value,
       Created_on: new Date()
     }
-    this.feedbackService.createFeedback(feedback).subscribe((res:FeedBackResponse) => {
+    this.feedbackService.createFeedback(feedback).subscribe((res: FeedBackResponse) => {
       this.isLoading = false
-      if(!res.err){
+      if (!res.err) {
         this.dialogRef.close(true)
         this.snackBar.openFromComponent(SnackbarComponent, {
           data: {
@@ -49,7 +50,7 @@ export class GiveFeedbackComponent {
           },
           panelClass: ['success-sb']
         });
-      }else{
+      } else {
         this.snackBar.openFromComponent(SnackbarComponent, {
           data: {
             message: "We failed to receive your feedback. Please Try Again Later",
@@ -59,9 +60,9 @@ export class GiveFeedbackComponent {
         });
       }
     }, (error) => {
-      if (error.status == 401){
-        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-          if(res.id_token){
+      if (error.status == 401) {
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+          if (res.id_token) {
             localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
             this.createFeedback()
           }

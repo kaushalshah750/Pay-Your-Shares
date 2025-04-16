@@ -12,7 +12,8 @@ import { AuthUser } from '../../Models/AuthUser';
 @Component({
   selector: 'app-create-group',
   templateUrl: './create-group.component.html',
-  styleUrls: ['./create-group.component.css']
+  styleUrls: ['./create-group.component.css'],
+  standalone: false,
 })
 export class CreateGroupComponent {
   isLoading: boolean = false
@@ -27,23 +28,23 @@ export class CreateGroupComponent {
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private globalVarService: GlobalVarService
-  ){}
+  ) { }
 
-  ngOnInit(){
+  ngOnInit() {
     // this.globalVarService.checkToken()
   }
 
-  createGroup(){
+  createGroup() {
     this.isLoading = true
-    var group:CreateGroup = {
+    var group: CreateGroup = {
       Name: this.createGroupform.controls['Name'].value,
       Description: this.createGroupform.controls['Description'].value,
       Admin: this.globalVarService.user.User_id
     }
 
-    this.groupService.createGroup(group).subscribe((group:GroupResponse) => {
+    this.groupService.createGroup(group).subscribe((group: GroupResponse) => {
       this.isLoading = false
-      if(!group.err){
+      if (!group.err) {
         this.snackBar.openFromComponent(SnackbarComponent, {
           data: {
             message: "The Group is Created Successfully",
@@ -54,9 +55,9 @@ export class CreateGroupComponent {
         this.dialogRef.close(true);
       }
     }, (error) => {
-      if (error.status == 401){
-        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-          if(res.id_token){
+      if (error.status == 401) {
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+          if (res.id_token) {
             localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
             this.createGroup()
           }

@@ -15,7 +15,8 @@ import { SnackbarComponent } from '../Dialog/snackbar/snackbar.component';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  standalone: false,
 })
 export class LoginComponent {
   createform = this.formBuilder.nonNullable.group({

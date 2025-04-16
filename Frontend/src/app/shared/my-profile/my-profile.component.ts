@@ -11,12 +11,13 @@ import { SnackbarService } from '../services/snackbar.service';
 @Component({
   selector: 'app-my-profile',
   templateUrl: './my-profile.component.html',
-  styleUrls: ['./my-profile.component.css']
+  styleUrls: ['./my-profile.component.css'],
+  standalone: false,
 })
 export class MyProfileComponent {
   createform = this.formBuilder.nonNullable.group({
     name: ["", [Validators.required, Validators.minLength(5)]],
-    email: [{value: "", disabled:true}, [Validators.required, Validators.email]],
+    email: [{ value: "", disabled: true }, [Validators.required, Validators.email]],
     phone: [0, [Validators.required, Validators.pattern("^[0-9]{10}$")]],
   })
   users: Users = {
@@ -26,52 +27,52 @@ export class MyProfileComponent {
     Phone: 0,
     Picture: "",
   }
-  isLoading:boolean = true
-  valueChanged:boolean = false
-  nameError:boolean = false
-  phoneError:boolean = false
+  isLoading: boolean = true
+  valueChanged: boolean = false
+  nameError: boolean = false
+  phoneError: boolean = false
 
   constructor(
     private formBuilder: FormBuilder,
     private globalVarService: GlobalVarService,
     private snackbarService: SnackbarService,
     private userService: UserService,
-  ){}
+  ) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.getLoggedInUser()
   }
 
-  checkChangedValue(){
-    if(this.users.Name != this.createform.controls['name'].value){
+  checkChangedValue() {
+    if (this.users.Name != this.createform.controls['name'].value) {
       this.valueChanged = true
-    }else if(this.users.Email != this.createform.controls['email'].value){
+    } else if (this.users.Email != this.createform.controls['email'].value) {
       this.valueChanged = true
-    }else if(this.users.Phone != this.createform.controls['phone'].value){
+    } else if (this.users.Phone != this.createform.controls['phone'].value) {
       this.valueChanged = true
-    }else{
+    } else {
       this.phoneError = false
       this.nameError = false
       this.valueChanged = false
     }
-    
-    if(this.createform.invalid){
+
+    if (this.createform.invalid) {
       this.valueChanged = false
     }
   }
 
-  getLoggedInUser(){
+  getLoggedInUser() {
     this.isLoading = true
-    this.userService.getLoggedInUser().subscribe((res:UsersResponseOne) => {
+    this.userService.getLoggedInUser().subscribe((res: UsersResponseOne) => {
       this.isLoading = false
       this.users = res.data
       this.createform.controls['name'].setValue(this.users.Name)
       this.createform.controls['email'].setValue(this.users.Email)
       this.createform.controls['phone'].setValue(this.users.Phone)
     }, (error) => {
-      if (error.status == 401){
-        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-          if(res.id_token){
+      if (error.status == 401) {
+        this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+          if (res.id_token) {
             localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
             this.getLoggedInUser()
           }
@@ -80,29 +81,29 @@ export class MyProfileComponent {
     })
   }
 
-  updateUser(){
-    if(this.createform.valid){
-      var newUser:Users = this.users
+  updateUser() {
+    if (this.createform.valid) {
+      var newUser: Users = this.users
       newUser.Name = this.createform.controls['name'].value
       newUser.Phone = this.createform.controls['phone'].value
-      
+
       this.isLoading = true
-      this.userService.updateUser(newUser).subscribe((res:UsersResponseString) => {
+      this.userService.updateUser(newUser).subscribe((res: UsersResponseString) => {
         this.isLoading = false
         this.getLoggedInUser()
         this.checkChangedValue()
         this.snackbarService.openSuccessSnackbar("Your Details is Updated Successfully")
       }, (error) => {
-        if (error.status == 401){
-          this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res:AuthUser) => {
-            if(res.id_token){
+        if (error.status == 401) {
+          this.globalVarService.getRefreshToken(this.globalVarService.getRefreshAccessToken()!).subscribe((res: AuthUser) => {
+            if (res.id_token) {
               localStorage.setItem(this.globalVarService.accessTokenKey, res.id_token)
               this.updateUser()
             }
           })
         }
       })
-    }else{
+    } else {
       this.snackbarService.openInfoSnackbar("Please Enter the Valid Value")
     }
   }
