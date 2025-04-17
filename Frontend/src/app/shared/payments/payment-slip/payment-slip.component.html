@@ -1,90 +1,91 @@
-<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading" class="absolute top-0 left-0 right-0 z-50"></mat-progress-bar>
 
-<div class="py-4 bg-light">
-  <div class="container">
-    <h3 class="mb-0">
-      <span class="narrate pointer" [routerLink]="['/group']">Groups</span> &nbsp; >> &nbsp; 
-      <span>{{groupInfo.Name}}</span>
-    </h3>
-  </div>
-  <div class="container my-3">
-    <div class="my-2 d-grid grid-11 group-container">
-      <div class="my-1">
-        <div class="nophone">
-          <h3 class="poppins-medium mb-0"><span class="mr-1">Admin:</span> <img [src]="groupInfo.Admin.Picture" style="width: 40px;" class="rounded-circle mr-2" alt=""> {{groupInfo.Admin.Name}}</h3>
+<div class="py-4 bg-gray-50 min-h-full">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb -->
+        <h3 class="text-sm font-semibold text-gray-800 flex items-center">
+            <span class="text-indigo-600 hover:underline cursor-pointer" [routerLink]="['/group']">Groups</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mx-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+            <span class="text-gray-700">{{ groupInfo.Name }}</span>
+        </h3>
+
+        <!-- Header -->
+        <div class="bg-white shadow-md rounded-xl p-6 mt-6 flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0">
+            <div class="flex items-center space-x-3">
+                <span class="text-gray-700 font-medium">Admin:</span>
+                <img [src]="groupInfo.Admin.Picture" class="w-10 h-10 rounded-full border-2 border-indigo-200" />
+                <span class="font-semibold text-gray-900">{{ groupInfo.Admin.Name }}</span>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-lg transition" [disabled]="groupInfo.Members.length <= 1" [routerLink]="['summary']">
+                    Summary
+                </button>
+                <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-lg transition" (click)="addslip()">
+                    New Split
+                </button>
+                <button class="w-10 h-10 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-full transition" matTooltip="Refresh" (click)="refresh()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                    </svg>
+                    </button>
+            </div>
         </div>
-      </div>
-      <div class="my-1 group-sum-container">
-        <div>
-          <button mat-raised-button color="primary" [disabled]="groupInfo.Members.length <= 1" [routerLink]="['summary']">Summary</button>
+
+        <!-- Table -->
+        <div class="bg-white shadow-sm rounded-lg overflow-hidden my-5">
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto border border-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-r border-gray-200">Name</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-r border-gray-200">Paid By</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-r border-gray-200">Amount</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-r border-gray-200">Transaction Date</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-r border-gray-200">Split In</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr *ngFor="let element of dataSource.data" class="hover:bg-gray-50 transition">
+                            <td class="px-4 py-3 text-sm text-gray-800 border-r border-gray-200">{{ element.Name }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-800 border-r border-gray-200">{{ element.PaidBy_id.Name }}</td>
+                            <td class="px-4 py-3 text-sm font-semibold text-gray-900 border-r border-gray-200">{{ element.Amount | currency: 'INR' }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-700 border-r border-gray-200">{{ element.Payment_date | date: 'yyyy-MM-dd' }}</td>
+                            <td class="px-4 py-3 border-r border-gray-200">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <div *ngFor="let user of element.Split_between">
+                                        <img [src]="user.Picture" class="w-8 h-8 rounded-full object-cover border border-gray-300" [alt]="user.Name" [title]="user.Name" />
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <button *ngIf="user.User_id === element.AddedBy_id.User_id" class="text-red-600 hover:text-red-800 transition-colors duration-200" (click)="deletesliptransaction(element)" title="Delete">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                          viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                            </td>
+                        </tr>
+
+                        <!-- No data row -->
+                        <tr *ngIf="dataSource.data.length === 0">
+                            <td class="px-4 py-6 text-center text-gray-500" colspan="6">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-2 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                                <p class="text-sm">No transactions found. Create a new split transaction.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="mx-3">
-          <button mat-raised-button color="primary" (click)="addslip()">New Split</button>
-        </div>
-        <div>
-          <button mat-mini-fab color="primary" matTooltip="Refresh" matTooltipPosition="above" class="d-flex" (click)="refresh()">
-            <mat-icon class="mx-0">refresh</mat-icon>
-          </button>
-        </div>
-      </div>
+
+
     </div>
-    <div class="my-2 table-responsive">
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-        <!-- <ng-container matColumnDef="Type">
-          <th mat-header-cell *matHeaderCellDef> Type </th>
-          <td mat-cell *matCellDef="let element">
-            <mat-icon [matTooltip]="element.type == 'Payment' ? 'Transaction' : 'Settlement'">{{element.type == "Payment" ? "attach_money" : "list_alt"}}</mat-icon>
-          </td>
-        </ng-container> -->
-
-        <ng-container matColumnDef="Name">
-          <th mat-header-cell *matHeaderCellDef> Name </th>
-          <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="Paid By">
-          <th mat-header-cell *matHeaderCellDef> Paid By </th>
-          <td mat-cell *matCellDef="let element"> {{element.PaidBy_id.Name}} </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="Amount">
-          <th mat-header-cell *matHeaderCellDef> Amount </th>
-          <td mat-cell *matCellDef="let element"> {{element.Amount | currency: 'INR'}} </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="Transaction Date">
-          <th mat-header-cell *matHeaderCellDef> Transaction Date </th>
-          <td mat-cell *matCellDef="let element"> {{element.Payment_date | date:'yyyy-MM-dd' }} </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="Split In">
-          <th mat-header-cell *matHeaderCellDef> Split In </th>
-          <td mat-cell *matCellDef="let element">
-            <ng-container>
-              <div class="d-flex">
-                <div *ngFor="let user of element.Split_between" class="mx-1" color="primary" [matTooltip]="user.name" matTooltipPosition="above">
-                  <img [src]="user.Picture" width="40px" class="rounded-circle" alt="" title="{{user.Name}}">
-                </div>
-              </div>
-            </ng-container>
-          </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="Action">
-          <th mat-header-cell *matHeaderCellDef> Action </th>
-          <td mat-cell *matCellDef="let element"> <mat-icon class="pointer" matTooltip="Delete" matTooltipPosition="above" (click)="deletesliptransaction(element)" *ngIf="user.User_id == element.AddedBy_id.User_id">close</mat-icon> </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell text-center py-3" [attr.colspan]="displayedColumns.length">
-            <i>----- No Transaction Found. Create a New Split Transaction -----</i>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <mat-paginator class="bg-light" [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
-  </div>
 </div>

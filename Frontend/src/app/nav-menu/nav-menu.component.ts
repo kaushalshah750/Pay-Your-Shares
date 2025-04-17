@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { AuthServiceService } from '../shared/services/auth-service.service';
 import { GlobalVarService } from '../shared/services/global-var.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -17,11 +17,14 @@ import { AuthUser } from '../shared/Models/AuthUser';
 })
 export class NavMenuComponent {
   isExpanded = false;
+  @ViewChild('userMenuContainer') userMenuContainer!: ElementRef;
+  isUserMenuOpen = false;
   user: any = ""
   userinfo: any = ""
   currentDate = new Date()
 
   constructor(
+    private elementRef: ElementRef,
     public dialog: MatDialog,
     private authservice: AuthServiceService,
     public userService: UserService,
@@ -30,10 +33,25 @@ export class NavMenuComponent {
     this.getLoggedInUser()
   }
 
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: MouseEvent) {
+    // Check if the click was outside the menu container
+    if (this.userMenuContainer && !this.userMenuContainer.nativeElement.contains(event.target)) {
+      this.isUserMenuOpen = false;
+    }
+  }
+
   ngOnInit() {
     this.user = this.authservice.getclaims(this.globalVarService.getAccessToken())
     this.userinfo = this.authservice.getUserInfo()
     console.log(this.userinfo)
+  }
+
+  toggleUserMenu(event?: MouseEvent) {
+    if (event) {
+      event.stopPropagation(); // Prevent the document click from immediately closing the menu
+    }
+    this.isUserMenuOpen = !this.isUserMenuOpen;
   }
 
   getLoggedInUser() {
@@ -56,6 +74,7 @@ export class NavMenuComponent {
   }
 
   giveFeedback() {
+    this.isUserMenuOpen = false;
     const dialogRef = this.dialog.open(GiveFeedbackComponent, {
       width: "400px"
     });
@@ -73,6 +92,7 @@ export class NavMenuComponent {
   }
 
   signOut() {
+    this.isUserMenuOpen = false;
     this.authservice.signOut()
   }
 }

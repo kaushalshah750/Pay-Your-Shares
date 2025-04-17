@@ -1,73 +1,117 @@
-<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-<div class="py-4 bg-light">
-    <div class="container">
+<!-- Custom loading bar -->
+<div *ngIf="isLoading" class="h-1 bg-blue-200 w-full overflow-hidden">
+    <div class="h-full bg-blue-600 animate-pulse"></div>
+</div>
+
+<div class="py-6 bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4">
+        <!-- Ad script -->
         <div>
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1223895601346142"
-     crossorigin="anonymous"></script>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1223895601346142" crossorigin="anonymous"></script>
         </div>
-        <div class="d-flex justify-content-between">
-            <div class="d-flex">
-                <div>
-                    <button mat-raised-button color="primary" (click)="createGroup()">Create Group</button>
-                </div>
-                <!-- <div>
-                    <button mat-raised-button color="primary" class="mx-2" [routerLink]="['payment/summary']">Summary</button>
-                </div> -->
-            </div>
+
+        <!-- Header actions -->
+        <div class="flex justify-between items-center mb-6">
             <div>
-                <button mat-mini-fab color="primary" matTooltip="Refresh" matTooltipPosition="above" class="d-flex" (click)="refresh()">
-                    <mat-icon class="mx-0">refresh</mat-icon>
-                </button>        
+                <button (click)="createGroup()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-sm flex items-center transition duration-150">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                    Create Group
+                </button>
+            </div>
+
+            <button (click)="refresh()" class="p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-sm flex items-center justify-center transition duration-150" title="Refresh">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Empty state -->
+        <div *ngIf="groups.length == 0" class="my-16 text-center">
+            <div class="flex flex-col items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <h2 class="text-xl font-medium text-gray-700">
+                    {{isLoading ? "Loading Group List..." : "There are no Groups to create a split. Please create a Group first."}}
+                </h2>
             </div>
         </div>
-        <div class="my-5" *ngIf="groups.length == 0">
-            <div class="d-flex align-items-center justify-content-center text-center">
-                <h2>{{isLoading ? "Loading Group List...." : "This is no Group to create a split. Please create a Group First."}}</h2>
-            </div>
-        </div>
-        
-        <div class="bg-white border shadow-sm p-4 rounded my-3" *ngFor="let group of groups">
-            <div class="d-grid grid-11">
-                <div>
-                    <div>
-                        <h2><b>Group Name:</b> {{group.Name}}</h2>
+
+        <!-- Group list -->
+        <div *ngFor="let group of groups" class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 mb-4">
+            <div class="flex flex-col md:flex-row md:justify-between">
+                <!-- Group details -->
+                <div class="flex-1">
+                    <div class="mb-3">
+                        <h2 class="text-lg font-semibold text-gray-800">
+                            <span class="font-medium text-gray-600">Group Name:</span> {{group.Name}}
+                        </h2>
                     </div>
-                    <div>
-                        <h3 class="mb-0"><b>Description:</b> {{group.Description}}</h3>
+
+                    <div class="mb-3">
+                        <p class="text-gray-700">
+                            <span class="font-medium text-gray-600">Description:</span> {{group.Description}}
+                        </p>
                     </div>
-                    <div class="d-flex align-items-center my-2">
-                        <h3 class="mb-0"><b>Admin:</b></h3>
-                        <div class="ml-1 d-flex align-items-center">
-                            <img class="rounded-circle" style="width: 40px;" [src]="group.Admin.Picture" alt="">
-                            <h4 class="mb-0 ml-2">{{group.Admin.Name}}</h4>
+
+                    <!-- Admin section -->
+                    <div class="flex items-center mb-4">
+                        <span class="font-medium text-gray-600 mr-2">Admin:</span>
+                        <div class="flex items-center">
+                            <img class="w-10 h-10 rounded-full object-cover border border-gray-200" [src]="group.Admin.Picture" alt="Admin photo">
+                            <span class="ml-2 text-gray-700">{{group.Admin.Name}}</span>
                         </div>
                     </div>
-                    <div style="margin-top: 10px;">
-                        <h3 class="mb-1"><b>Members in the Group</b></h3>
-                        <div class="d-flex align-items-center" style="flex-wrap: wrap;">
-                            <div *ngFor="let user of group.Members" class="mx-1 my-1 shadow rounded-circle" [matTooltip]="user.Name" matTooltipPosition="above">
-                                <img class="rounded-circle" style="width: 40px;" [src]="user.Picture" alt="">
+
+                    <!-- Members section -->
+                    <div>
+                        <h3 class="font-medium text-gray-600 mb-2">Members in the Group</h3>
+                        <div class="flex flex-wrap items-center">
+                            <div *ngFor="let user of group.Members" class="mr-2 mb-2" title="{{user.Name}}">
+                                <img class="w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm" [src]="user.Picture" alt="Member photo">
                             </div>
-                            <button mat-mini-fab color="secondary" class="shadow border ml-1" matTooltip="Add Members" matTooltipPosition="above" (click)="addGroupMember(group)">
-                                <mat-icon class="d-flex pointer">add</mat-icon>
-                            </button>
-                            <div class="ml-3" *ngIf="group.Members.length == 0">No Member added to the group</div>
+
+                            <button (click)="addGroupMember(group)" class="w-10 h-10 rounded-full bg-gray-100 border border-gray-300 flex items-center justify-center mr-2 mb-2 hover:bg-gray-200 transition duration-150" title="Add Members">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+
+                            <div *ngIf="group.Members.length == 0" class="text-gray-500 text-sm">
+                                No members added to the group
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="actionbtn text-end d-flex justify-content-between flex-column">
-                    <div class="group-btn">
-                        <div>
-                            <button mat-raised-button color="primary" style="min-width: 120px;" (click)="addGroupMember(group)">Members</button>
-                        </div>
-                        <div class="my-3">
-                            <button mat-raised-button color="primary" style="min-width: 120px;" [routerLink]="[group.Group_id,'payment']">Transaction</button>
-                        </div>
+
+                <!-- Actions -->
+                <div class="mt-4 md:mt-0 md:ml-6 flex flex-row md:flex-col justify-between">
+                    <div class="space-y-3">
+                        <button (click)="addGroupMember(group)" class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-sm transition duration-150 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                </svg>
+                Members
+              </button>
+
+                        <button [routerLink]="[group.Group_id,'payment']" class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-sm transition duration-150 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                  <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" />
+                </svg>
+                Transaction
+              </button>
                     </div>
-                    <div>
-                        <button mat-mini-fab color="primary" matTooltip="Delete Group" matTooltipPosition="above" (click)="deleteGroup(group)">
-                            <mat-icon class="d-flex pointer">delete</mat-icon>
-                        </button>
+
+                    <div class="md:mt-auto md:self-end">
+                        <button (click)="deleteGroup(group)" class="p-2 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-sm flex items-center justify-center transition duration-150" title="Delete Group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              </button>
                     </div>
                 </div>
             </div>

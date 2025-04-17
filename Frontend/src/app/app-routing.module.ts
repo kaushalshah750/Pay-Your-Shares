@@ -10,16 +10,17 @@ import { MyProfileComponent } from './shared/my-profile/my-profile.component';
 import { PaymentSlipComponent } from './shared/payments/payment-slip/payment-slip.component';
 import { PaymentSummaryComponent } from './shared/payments/payment-summary/payment-summary.component';
 import { UsersComponent } from './shared/users/users.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 const routes: Routes = [
+    {
+        path: '',
+        component: WelcomeComponent
+    },
     {
         path: 'login/:invite/:groupid/login',
         component: LoginComponent
     },
-    // {
-    //   path: '',
-    //   component: WelcomeComponent
-    // },
     {
         path: 'login',
         component: LoginComponent

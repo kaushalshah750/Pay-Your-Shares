@@ -1,39 +1,66 @@
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
-        <div class="container">
-            <div class="flex align-items-center">
-                <img src="../../assets/logo/logo-nobg.png" class="pointer mr-4" [routerLink]="['/group']" width="70px" alt="">
+    <nav class="bg-white border-b border-gray-200 shadow-sm py-2">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="../../assets/logo/logo-nobg.png" class="cursor-pointer mr-4 w-16" [routerLink]="['/group']" alt="Logo">
                 <div>
-                    <h2 class="mb-0 py-0 pointer navbar-brand" [routerLink]="['/group']">Pay Your Share</h2>
-                    <h5 class="mb-0 py-0 pointer navbar-brand" [routerLink]="['/group']">Payment Splitting made Simple</h5>
+                    <h2 class="m-0 text-lg font-bold cursor-pointer" [routerLink]="['/group']">Pay Your Share</h2>
+                    <h5 class="m-0 text-sm text-gray-600 cursor-pointer" [routerLink]="['/group']">Payment Splitting made Simple</h5>
                 </div>
             </div>
-            <div class="d-flex align-items-center">
-                <img [src]="userinfo.picture" [matMenuTriggerFor]="menu" class="rounded-circle" width="40px" alt="">
-                <mat-menu #menu="matMenu" xPosition="before">
-                    <button mat-menu-item disabled>
-            <mat-icon>insert_emoticon</mat-icon>
-            <b class="mr-3">Hi {{user.name}}</b>
-          </button>
-                    <mat-divider></mat-divider>
-                    <button mat-menu-item [routerLink]="['my-profile']">
-            <mat-icon>person</mat-icon>
-            <h3 class="mb-0">My Profile</h3>
-          </button>
-                    <button mat-menu-item [routerLink]="['group']">
-            <mat-icon>group</mat-icon>
-            <h3 class="mb-0">Groups</h3>
-          </button>
-                    <button mat-menu-item (click)="giveFeedback()">
-            <mat-icon>feedback</mat-icon>
-            <h3 class="mb-0">Feedback</h3>
-          </button>
-                    <mat-divider></mat-divider>
-                    <button mat-menu-item (click)="signOut()">
-            <mat-icon>exit_to_app</mat-icon>
-            <h3 class="mb-0">Log out</h3>
-          </button>
-                </mat-menu>
+
+            <!-- User menu dropdown -->
+            <div class="relative" #userMenuContainer>
+                <img [src]="userinfo.picture" (click)="toggleUserMenu()" class="rounded-full w-10 h-10 cursor-pointer border border-gray-300" alt="User avatar">
+
+                <!-- Custom dropdown menu -->
+                <div *ngIf="isUserMenuOpen" class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg py-1 z-10 border border-gray-200">
+                    <!-- User greeting -->
+                    <div class="px-4 py-3 flex items-center text-gray-700 bg-gray-50 border-b border-gray-200">
+                        <svg class="w-5 h-5 mr-2 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        </svg>
+                        <span class="font-medium">Hi {{user.name}}</span>
+                    </div>
+
+                    <!-- Menu items -->
+                    <a [routerLink]="['my-profile']" (click)="isUserMenuOpen = false" class="px-4 py-3 flex items-center hover:bg-gray-100 cursor-pointer">
+                        <svg class="w-5 h-5 mr-3 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>My Profile</span>
+                    </a>
+
+                    <a [routerLink]="['group']" class="px-4 py-3 flex items-center hover:bg-gray-100 cursor-pointer" (click)="isUserMenuOpen = false">
+                        <svg class="w-5 h-5 mr-3 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span>Groups</span>
+                    </a>
+
+                    <a (click)="giveFeedback()" class="px-4 py-3 flex items-center hover:bg-gray-100 cursor-pointer">
+                        <svg class="w-5 h-5 mr-3 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>Feedback</span>
+                    </a>
+
+                    <div class="border-t border-gray-200 my-1"></div>
+
+                    <a (click)="signOut()" class="px-4 py-3 flex items-center hover:bg-gray-100 cursor-pointer text-red-600">
+                        <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span>Log out</span>
+                    </a>
+                </div>
             </div>
         </div>
     </nav>

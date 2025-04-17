@@ -1,131 +1,141 @@
-<div>
-    <div>
+<div class="min-h-screen flex flex-col">
+    <div class="flex-grow">
         <header>
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
-              <div class="container">
-                <div class="d-flex align-items-center">
-                  <img src="../../assets/logo/logo-nobg.png" class="mr-4" width="70px" alt="">
-                  <div>
-                    <h2 class="mb-0 py-0 pointer navbar-brand" [routerLink]="['/']">Pay Your Share</h2>
-                    <h5 class="mb-0 py-0 pointer navbar-brand" [routerLink]="['/']">Payment Splitting made Simple</h5>
-                  </div>
-                </div>
-                <div class="d-flex align-items-center">
-                    <button mat-raised-button color="primary" [routerLink]="['/login']">Login</button>
-                </div>
-              </div>
-            </nav>
-        </header>
-        <div class="hero bg-white">
-            <div class="container h-100">
-                <div class="d-grid grid-11 gap-3 align-items-center justify-content-between h-100 px-3">
-                    <div class="w-100">
-                        <h1 class="hero-text poppins-semibold text-secondary">Less stress when sharing expenses with anyone.</h1>
-                        <h4>Keep track of your shared expenses and balances with housemates, trips, groups, friends, and family.</h4>
+            <nav class="bg-white border-b shadow-sm">
+                <div class="container mx-auto px-4 py-3">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <img src="../../assets/logo/logo-nobg.png" class="mr-4 w-[70px]" alt="Logo">
+                            <div>
+                                <h2 class="m-0 py-0 cursor-pointer text-xl font-semibold" [routerLink]="['/']">Pay Your Share</h2>
+                                <h5 class="m-0 py-0 cursor-pointer text-sm" [routerLink]="['/']">Payment Splitting made Simple</h5>
+                            </div>
+                        </div>
                         <div>
-                            <button mat-raised-button color="primary" class="px-5 py-3" [routerLink]="['/login']">Login</button>
+                            <button color="primary" [routerLink]="['/login']" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-lg transition">Login</button>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center justify-content-center notab">
-                        <img src="../../assets/logo/logo-nobg.png" style="width: 100%; max-width: 400px;">
+                </div>
+            </nav>
+        </header>
+        <div class="bg-white">
+            <div class="container mx-auto px-4 py-16">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h1 class="text-4xl md:text-5xl font-semibold text-gray-700 mb-4 poppins-semibold">Less stress when sharing expenses with anyone.</h1>
+                        <h4 class="text-xl text-gray-600 mb-8">Keep track of your shared expenses and balances with housemates, trips, groups, friends, and family.</h4>
+                        <div>
+                            <button color="primary" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-sm flex items-center transition duration-150" [routerLink]="['/login']">Login</button>
+                        </div>
+                    </div>
+                    <div class="hidden md:flex items-center justify-center">
+                        <img src="../../assets/logo/new_logo.png" class="w-full max-w-md">
                     </div>
                 </div>
             </div>
         </div>
         <div>
-            <div class="py-5 container">
-                <div class="d-grid grid-11 align-items-center gap-4">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <img src="../../assets/screenshot/create-group.jpg" style="width: 300px" alt="">
+            <div class="py-16 container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-8">
+                    <div class="flex items-center justify-center order-2 md:order-1">
+                        <img src="../../assets/screenshot/create-group.jpg" class="w-full max-w-xs rounded-lg shadow-lg" alt="Create Group Screenshot">
                     </div>
-                    <div>
-                        <h2>Simplify Group Payments with Ease</h2>
-                        <h4>Introducing the convenience of creating custom groups within the "Pay Your Share" application. Say goodbye to the hassle of individually managing payments with friends and family. With just a few clicks, you can effortlessly create a group and invite members to streamline your payment sharing experience.</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="py-5 bg-white">
-                <div class="container d-grid grid-11 align-items-center gap-4">
-                    <div>
-                        <h2>Effortlessly Split Payments in Seconds</h2>
-                        <h4>Experience the simplicity of creating payments and dividing them among group members seamlessly. Our intuitive interface allows you to specify the payment details and instantly split it among your selected group members. No more tedious calculations or manual adjustments – just a smooth and efficient payment sharing process.</h4>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center">
-                        <img src="../../assets/screenshot/create-slip.jpg" style="width: 300px" alt="">
+                    <div class="order-1 md:order-2">
+                        <h2 class="text-3xl font-semibold mb-4 text-gray-800">Simplify Group Payments with Ease</h2>
+                        <p class="text-lg text-gray-600">Introducing the convenience of creating custom groups within the "Pay Your Share" application. Say goodbye to the hassle of individually managing payments with friends and family. With just a few clicks, you can effortlessly create
+                            a group and invite members to streamline your payment sharing experience.</p>
                     </div>
                 </div>
             </div>
-            <div class="py-5 container">
-                <div class="d-grid grid-11 align-items-center gap-4">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <img src="../../assets/screenshot/create-feedback.jpg" style="width: 300px" alt="">
-                    </div>
+            <div class="py-16 bg-gray-50">
+                <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 items-center gap-8">
                     <div>
-                        <h2>Your Feedback Shapes Our Service</h2>
-                        <h4>At "Pay Your Share," we value your input and strive to continuously improve our platform. Share your thoughts, suggestions, and experiences with us through our feedback feature. Your feedback not only helps us enhance our services but also ensures that we meet your evolving needs and expectations.</h4>
+                        <h2 class="text-3xl font-semibold mb-4 text-gray-800">Effortlessly Split Payments in Seconds</h2>
+                        <p class="text-lg text-gray-600">Experience the simplicity of creating payments and dividing them among group members seamlessly. Our intuitive interface allows you to specify the payment details and instantly split it among your selected group members. No more
+                            tedious calculations or manual adjustments – just a smooth and efficient payment sharing process.</p>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <img src="../../assets/screenshot/create-slip.jpg" class="w-full max-w-xs rounded-lg shadow-lg" alt="Create Slip Screenshot">
+                    </div>
+                </div>
+            </div>
+            <div class="py-16 container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-8">
+                    <div class="flex items-center justify-center order-2 md:order-1">
+                        <img src="../../assets/screenshot/create-feedback.jpg" class="w-full max-w-xs rounded-lg shadow-lg" alt="Feedback Screenshot">
+                    </div>
+                    <div class="order-1 md:order-2">
+                        <h2 class="text-3xl font-semibold mb-4 text-gray-800">Your Feedback Shapes Our Service</h2>
+                        <p class="text-lg text-gray-600">At "Pay Your Share," we value your input and strive to continuously improve our platform. Share your thoughts, suggestions, and experiences with us through our feedback feature. Your feedback not only helps us enhance our services
+                            but also ensures that we meet your evolving needs and expectations.</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="py-5 bg-white">
-            <div class="container text-center mb-5">
-                <h2 class="header-text">-- Why Choose PYS? --</h2>
-            </div>
-            <div class="container">
-                <div class="d-grid grid-111 gap-5">
-                    <div class="p-1 text-center rounded">
-                        <div>
-                            <img class="mb-3" src="../../assets/icon/sharing-with-friend.png" width="120px" alt="">
+        <div class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800 inline-block relative">
+                        <span class="px-4">Why Choose PYS?</span>
+                        <div class="absolute w-full h-0.5 bg-gray-300 top-1/2 left-0 -z-10"></div>
+                    </h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex justify-center mb-4">
+                            <img class="w-24 h-24" src="../../assets/icon/sharing-with-friend.png" alt="Sharing icon">
                         </div>
-                        <div class="px-5">
-                            <h2>Asking a friend to return your money can be awkward 🫠</h2>
-                            <h4>Receive your money on time with instant settlements.</h4>
-                        </div>
-                    </div>
-                    <div class="p-1 text-center rounded">
-                        <div>
-                            <img class="mb-3" src="../../assets/icon/pizza.png" width="120px" alt="">
-                        </div>
-                        <div class="px-5">
-                            <h2>Worried about your share when you eat with your friends? 😰</h2>
-                            <h4>Now split bills item-wise for any order you make, online or offline.</h4>
+                        <div class="px-2">
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">Asking a friend to return your money can be awkward 🫠</h3>
+                            <p class="text-gray-600">Receive your money on time with instant settlements.</p>
                         </div>
                     </div>
-                    <div class="p-1 text-center rounded">
-                        <div>
-                            <img class="mb-3" src="../../assets/icon/network.png" width="120px" alt="">
+                    <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex justify-center mb-4">
+                            <img class="w-24 h-24" src="../../assets/icon/pizza.png" alt="Pizza icon">
                         </div>
-                        <div class="px-5">
-                            <h2>Can't keep track of expenses with flatmates? 👬🏻</h2>
-                            <h4>Pay all your home bills on a single platform.</h4>
-                        </div>
-                    </div>
-                    <div class="p-1 text-center rounded">
-                        <div>
-                            <img class="mb-3" src="../../assets/icon/travel-bag.png" width="120px" alt="">
-                        </div>
-                        <div class="px-5">
-                            <h2>Planning a trip? 🌴</h2>
-                            <h4>Leave the hassle of managing all your expenses to us!</h4>
+                        <div class="px-2">
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">Worried about your share when you eat with your friends? 😰</h3>
+                            <p class="text-gray-600">Now split bills item-wise for any order you make, online or offline.</p>
                         </div>
                     </div>
-                    <div class="p-1 text-center rounded">
-                        <div>
-                            <img class="mb-3" src="../../assets/icon/statistics-report.png" width="120px" alt="">
+                    <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex justify-center mb-4">
+                            <img class="w-24 h-24" src="../../assets/icon/network.png" alt="Network icon">
                         </div>
-                        <div class="px-5">
-                            <h2>Don’t know how much you have to collect? 💸</h2>
-                            <h4>Check your Group Payment Summary on the Website.</h4>
+                        <div class="px-2">
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">Can't keep track of expenses with flatmates? 👬🏻</h3>
+                            <p class="text-gray-600">Pay all your home bills on a single platform.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex justify-center mb-4">
+                            <img class="w-24 h-24" src="../../assets/icon/travel-bag.png" alt="Travel bag icon">
+                        </div>
+                        <div class="px-2">
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">Planning a trip? 🌴</h3>
+                            <p class="text-gray-600">Leave the hassle of managing all your expenses to us!</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex justify-center mb-4">
+                            <img class="w-24 h-24" src="../../assets/icon/statistics-report.png" alt="Statistics icon">
+                        </div>
+                        <div class="px-2">
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">Don't know how much you have to collect? 💸</h3>
+                            <p class="text-gray-600">Check your Group Payment Summary on the Website.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <footer class="py-3 bg-dark text-white">
-            <div class="text-center d-flex justify-content-center">
-                <h3 class="mr-4 mb-0">Pay Your Share</h3>
-                <h3 class="mb-0">© 2024 All Copyright Reserved</h3>
-            </div>    
+        <footer class="py-6 bg-gray-800 text-white">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-center items-center text-center md:text-left gap-1 md:gap-4">
+                    <h3 class="text-sm">Pay Your Share</h3>
+                    <h3 class="text-sm">© 2024 All Copyright Reserved</h3>
+                </div>
+            </div>
         </footer>
     </div>
 </div>

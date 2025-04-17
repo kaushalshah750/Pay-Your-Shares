@@ -1,23 +1,31 @@
-<h2 mat-dialog-title>Create new Group</h2>
-<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<div class="p-6 w-full max-w-md mx-auto">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Create new Group</h2>
 
-<mat-dialog-content>
-    <form [formGroup]="createGroupform">
-        <div class="d-flex justify-content-between">
-            <mat-form-field class="mb-0 w-100">
+    <!-- Optional loading bar -->
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+
+    <mat-dialog-content class="p-2">
+        <form [formGroup]="createGroupform" class="space-y-6">
+
+            <!-- Group Name -->
+            <mat-form-field appearance="fill" class="w-full">
                 <mat-label>Group Name</mat-label>
-                <input matInput formControlName="Name">
+                <input matInput formControlName="Name" />
             </mat-form-field>
-        </div>
-        <div class="d-flex justify-content-between">
-            <mat-form-field class="mb-0 w-100">
+
+            <!-- Description -->
+            <mat-form-field appearance="fill" class="w-full">
                 <mat-label>Description</mat-label>
                 <textarea matInput formControlName="Description"></textarea>
             </mat-form-field>
-        </div>
-    </form>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button mat-raised-button color="secondary" [mat-dialog-close]="false">Cancel</button>
-    <button mat-raised-button color="primary" cdkFocusInitial (click)="createGroup()">Create</button>
-</mat-dialog-actions>
+
+        </form>
+    </mat-dialog-content>
+
+    <!-- Footer buttons -->
+    <mat-dialog-actions align="end" class="pt-4 space-x-3">
+        <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+        <button mat-raised-button color="primary" cdkFocusInitial (click)="createGroup()">Create</button>
+    </mat-dialog-actions>
+
+</div>
