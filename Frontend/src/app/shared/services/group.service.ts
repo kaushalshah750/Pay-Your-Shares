@@ -16,39 +16,43 @@ export class GroupService {
     private authservice: AuthapiService
   ) { }
 
-  getGroupByGroupId(groupId:string){
+  getGroupByGroupId(groupId: string) {
     return this.authservice.get<GroupResponseOne>(this.url + "/" + groupId)
   }
 
-  deleteGroup(groupId:number){
+  deleteGroup(groupId: number) {
     return this.authservice.delete<GroupAddResponseOne>(this.url + "/" + groupId + "/delete")
   }
 
-  getGroups(){
+  getGroups() {
     return this.authservice.get<GroupResponse>(this.url)
   }
 
-  getUserInfoByGroup(groupId:string){
+  getUserInfoByGroup(groupId: string) {
     return this.authservice.get<Users[]>(this.url + "/users/" + groupId)
   }
 
-  getAllUserInfoByGroup(groupId:string){
+  getAllUserInfoByGroup(groupId: string) {
     return this.authservice.get<Users[]>(this.url + "/users/all/" + groupId)
   }
 
-  createGroup(group:CreateGroup){
+  createGroup(group: CreateGroup) {
     return this.authservice.post<GroupResponse>(this.url + "/Create", group)
   }
 
-  addMemberinGroup(reference:any){
+  addMemberinGroup(reference: any) {
     return this.authservice.put<GroupAddResponseOne>(this.url + "/add-members", reference)
   }
 
-  removeMemberfromGroup(removeMember:RemoveGroupMember){
+  removeMemberfromGroup(removeMember: RemoveGroupMember) {
     return this.authservice.put<GroupResponseOne>(this.url + "/remove-member", removeMember)
   }
-  
-  sendInvitation(groupId:string, sendInvite:any){
+
+  sendInvitation(groupId: string, sendInvite: any) {
     return this.authservice.post<GroupInvitationResponse>("api/group-invitation/" + groupId + "/invite", sendInvite)
+  }
+
+  getGroupInvitationDetail(groupId: string, sendInvite: any) {
+    return this.authservice.get<GroupInvitationResponse>("unauth/group-invitation/" + sendInvite + "/" + groupId)
   }
 }

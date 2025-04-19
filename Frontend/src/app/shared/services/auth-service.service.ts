@@ -1,4 +1,4 @@
-declare var google:any;
+declare var google: any;
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthapiService } from './authapi.service';
@@ -7,6 +7,7 @@ import { GlobalVarService } from './global-var.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../Dialog/snackbar/snackbar.component';
+import { SnackbarService } from './snackbar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,20 +17,14 @@ export class AuthServiceService {
   constructor(
     private router: Router,
     private globalVar: GlobalVarService,
-    private snackBar: MatSnackBar,
-  ) {}
+    private snackBarService: SnackbarService,
+  ) { }
 
-  signOut(){
-    google.accounts.id.disableAutoSelect();
-    this.router.navigate(['/login']).then(() =>{
-      this.snackBar.openFromComponent(SnackbarComponent, {
-        data: {
-          message: "You have been successfully Logged Out",
-          status: "success"
-        },
-        panelClass: ['success-sb']
-      });
-      localStorage.removeItem(this.globalVar.accessTokenKey)
+  async signOut() {
+    await google.accounts.id.disableAutoSelect();
+    localStorage.removeItem(this.globalVar.accessTokenKey)
+    await this.router.navigate(['/login']).then(() => {
+      this.snackBarService.openSuccessSnackbar("You have been successfully Logged Out")
     })
   }
 
@@ -37,7 +32,7 @@ export class AuthServiceService {
     return localStorage.getItem(this.globalVar.Uid);
   }
 
-  getUserInfo():string | null{
+  getUserInfo(): string | null {
     return JSON.parse(localStorage.getItem("UserInfo")!);
   }
 
@@ -53,9 +48,9 @@ export class AuthServiceService {
     localStorage.removeItem(this.globalVar.accessTokenKey);
   }
 
-  getclaims(token:string | null){
-    let decodedJWT:any = ""
-    if(token){
+  getclaims(token: string | null) {
+    let decodedJWT: any = ""
+    if (token) {
       decodedJWT = JSON.parse(window.atob(token.split('.')[1]));
     }
     return decodedJWT

@@ -15,10 +15,6 @@ export class HomeComponent {
   ) {
     var token = localStorage.getItem("token")
     var refresh_token = localStorage.getItem("refresh_token")
-    console.log(window.location.search.split("&")[0].slice(1, 5))
-    console.log(window.location.search.split("&")[0].slice(1, 5) == "code")
-    console.log(token)
-    console.log(refresh_token)
     if ((!token || !refresh_token) && window.location.search.split("&")[0].slice(1, 5) != "code") {
       window.location.href = window.location.origin + "/login"
     } else {

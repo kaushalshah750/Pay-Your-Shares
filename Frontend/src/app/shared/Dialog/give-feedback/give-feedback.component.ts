@@ -4,9 +4,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { FeedBack, FeedBackResponse } from '../../Models/FeedBack';
 import { FeedbackService } from '../../services/feedback.service';
 import { GlobalVarService } from '../../services/global-var.service';
-import { SnackbarComponent } from '../snackbar/snackbar.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthUser } from '../../Models/AuthUser';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-give-feedback',
@@ -23,7 +22,7 @@ export class GiveFeedbackComponent {
   constructor(
     public dialogRef: MatDialogRef<GiveFeedbackComponent>,
     private globalVarService: GlobalVarService,
-    private snackBar: MatSnackBar,
+    private snackBarService: SnackbarService,
     private feedbackService: FeedbackService,
     private formBuilder: FormBuilder
   ) { }
@@ -43,21 +42,9 @@ export class GiveFeedbackComponent {
       this.isLoading = false
       if (!res.err) {
         this.dialogRef.close(true)
-        this.snackBar.openFromComponent(SnackbarComponent, {
-          data: {
-            message: "We have received your valuable feedback. Thank You",
-            status: "success"
-          },
-          panelClass: ['success-sb']
-        });
+        this.snackBarService.openSuccessSnackbar("We have received your valuable feedback. Thank You")
       } else {
-        this.snackBar.openFromComponent(SnackbarComponent, {
-          data: {
-            message: "We failed to receive your feedback. Please Try Again Later",
-            status: "error"
-          },
-          panelClass: ['error-sb']
-        });
+        this.snackBarService.openErrorSnackbar("We failed to receive your feedback. Please Try Again Later")
       }
     }, (error) => {
       if (error.status == 401) {

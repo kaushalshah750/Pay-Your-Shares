@@ -1,53 +1,62 @@
-<h2 mat-dialog-title>Create new slip</h2>
-<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-<mat-dialog-content>
-    <form [formGroup]="createform">
-        <div class="d-flex justify-content-between">
-            <mat-form-field class="mb-0 w-100">
-                <mat-label>Reason of Expense</mat-label>
-                <input matInput formControlName="name">
-            </mat-form-field>
-        </div>
-        <div class="my-2">
-            <mat-form-field floatLabel="always" class="w-100">
-                <mat-label>Amount</mat-label>
-                <input matInput type="number" class="example-right-align" placeholder="0" formControlName="amount">
-                <span matTextPrefix>₹&nbsp;</span>
-                <span matTextSuffix>.00</span>
-            </mat-form-field>
-        </div>
-        <div class="my-2">
-            <mat-form-field class="w-100">
-                <mat-label>Who Paid?</mat-label>
-                <mat-select formControlName="paidByUserId">
-                  <mat-option value="{{user.User_id}}" *ngFor="let user of data.Members">
-                    <img [src]="user.Picture" class="rounded-circle" style="width: 40px;" alt=""> <span style="margin-left: 20px;">{{user.Name}}</span>
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="mb-2">
-            <mat-form-field class="w-100">
-                <mat-label>TransactionDate</mat-label>
-                <input matInput [matDatepicker]="picker1" formControlName="TransactionDate" [max]="maxDate">
-                <mat-hint>MM/DD/YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field [formGroup]='createform' class="w-100">
-                <mat-label>Slip In</mat-label>
-                <mat-select multiple formControlName="Users" placeholder="Slip In">
-                  <mat-option *ngFor="let user of data.Members" [value]="user.User_id">
-                    <img [src]="user.Picture" class="rounded-circle" style="width: 40px;" alt=""> <span style="margin-left: 20px;">{{ user.Name }}</span>
-                  </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-    </form>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button mat-raised-button color="secondary" [mat-dialog-close]="false">Cancel</button>
-    <button mat-raised-button [disabled]="isLoading || data.Members.length <= 1" color="primary" class="px-3 " cdkFocusInitial (click)="createnewspliptransaction()">Submit</button>
-</mat-dialog-actions>
+<div class="p-6 w-full max-w-md mx-auto bg-white rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold mb-4">Create new slip</h2>
+
+    <!-- Loading Bar -->
+    <div class="w-full h-1 bg-gray-200 relative overflow-hidden mb-4" *ngIf="isLoading">
+        <div class="absolute top-0 h-full bg-blue-600 animate-indeterminate-progress"></div>
+    </div>
+
+    <div class="mt-6">
+        <form [formGroup]="createform" (ngSubmit)="createnewspliptransaction()">
+            <div class="mb-4">
+                <label for="expense-reason" class="block text-sm font-medium text-gray-700 mb-1">Reason of Expense</label>
+                <input type="text" id="expense-reason" formControlName="name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <div class="mb-4">
+                <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">₹</span>
+                    <input type="number" id="amount" formControlName="amount" placeholder="0" class="w-full pl-8 pr-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-right">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">.00</span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="paid-by" class="block text-sm font-medium text-gray-700 mb-1">Who Paid?</label>
+                <select id="paid-by" formControlName="paidByUserId" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <option *ngFor="let user of data.Members" [value]="user.User_id">
+                        <div class="flex items-center">
+                            <img [src]="user.Picture" class="rounded-full w-6 h-6 mr-2" alt="">
+                            {{user.Name}}
+                        </div>
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="transaction-date" class="block text-sm font-medium text-gray-700 mb-1">Transaction Date</label>
+                <input type="date" id="transaction-date" formControlName="TransactionDate" [max]="maxDate | date:'yyyy-MM-dd'" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                <p class="mt-1 text-xs text-gray-500">DD/MM/YYYY</p>
+            </div>
+
+            <div class="mb-4">
+                <label for="slip-in" class="block text-sm font-medium text-gray-700 mb-1">Split In</label>
+                <div class="border border-gray-300 rounded-md p-2 max-h-40 overflow-y-auto">
+                    <div *ngFor="let user of data.Members" class="flex items-center mb-2">
+                        <input type="checkbox" [id]="'user-' + user.User_id" [value]="user.User_id" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" [formArrayName]="'Users'" (change)="onCheckboxChange($event)">
+                        <label [for]="'user-' + user.User_id" class="ml-2 flex items-center">
+                            <img [src]="user.Picture" class="rounded-full w-8 h-8" alt="">
+                            <span class="ml-2">{{ user.Name }}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="flex justify-end space-x-3 mt-6">
+        <button class="px-5 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-gray-500" [mat-dialog-close]="false">Cancel</button>
+        <button [disabled]="isLoading || data.Members.length <= 1" class="px-5 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed" (click)="createnewspliptransaction()">Submit</button>
+    </div>
+</div>

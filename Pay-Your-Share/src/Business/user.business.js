@@ -1,6 +1,6 @@
 import db from '../config/db';
 
-async function loggedInUser(Google_id){
+async function loggedInUser(Google_id) {
     return await getUserbyGoogleId(Google_id)
 }
 
@@ -10,13 +10,13 @@ async function loggedInUser(Google_id){
 //     return await users
 // }
 
-async function getGroupSummary(id, userid){
+async function getGroupSummary(id, userid) {
     var paidbyfrom = 0
     var paidbyto = 0
     var current_user = await getUserbyGoogleId(userid.sub);
     var users = []
     var userBalances = []
-    if(id !== undefined){
+    if (id !== undefined) {
         var group = await getGroupbyId(id)
         users = group.Members.filter(user => user.User_id !== current_user.User_id)
 
@@ -25,7 +25,7 @@ async function getGroupSummary(id, userid){
             WHERE Group_id = ?
         `, [id]);
 
-        
+
         for (const slip of slips) {
             var [SplitBetween] = await db.query(`
                 SELECT u.User_id, u.Name, u.Email, u.Phone, u.Picture FROM Split_Between sb
@@ -42,8 +42,6 @@ async function getGroupSummary(id, userid){
             slip.PaidBy_id = PaidBy[0]
             slip['Split_between'] = SplitBetween
         }
-        console.log(slips)
-
         var [settlements] = await db.query(`
             SELECT Trans_id, Amount, SettleBy_id, SettleTo_id, AddedBy_id, Group_id, Payment_date, Created_on, Updated_on FROM Transaction_Settlement
             WHERE Group_id = ?
@@ -66,11 +64,11 @@ async function getGroupSummary(id, userid){
             settlement.SettleBy_id = SettleBy_id[0]
             settlement.SettleTo_id = SettleTo_id[0]
         }
-    }else{
+    } else {
         var group = await getGroupbyId(id)
         group.forEach((res) => {
             res.members.forEach((member) => {
-                if(users.filter(x => x.User_id == member.User_id) == false && member.User_id != current_user.User_id){
+                if (users.filter(x => x.User_id == member.User_id) == false && member.User_id != current_user.User_id) {
                     users.push(member)
                 }
             })
@@ -78,7 +76,7 @@ async function getGroupSummary(id, userid){
         var [slips] = await db.query(`
             SELECT Slip_id, Name, Amount, PaidBy_id, AddedBy_id, Payment_date FROM Split_Transaction
         `);
-        
+
         for (const slip of slips) {
             var [SplitBetween] = await db.query(`
                 SELECT u.User_id, u.Name, u.Email, u.Phone, u.Picture FROM Split_Between sb
@@ -125,20 +123,20 @@ async function getGroupSummary(id, userid){
         paidbyfrom = 0
         paidbyto = 0
         slips.forEach((ele) => {
-            if(ele.PaidBy_id.User_id == current_user.User_id && ele.Split_between.some((sb) => sb.User_id == user.User_id)){
-                paidbyfrom = paidbyfrom + (ele.Amount/ele.Split_between.length)
+            if (ele.PaidBy_id.User_id == current_user.User_id && ele.Split_between.some((sb) => sb.User_id == user.User_id)) {
+                paidbyfrom = paidbyfrom + (ele.Amount / ele.Split_between.length)
             }
-            if(ele.PaidBy_id.User_id == user.User_id && ele.Split_between.some((sb) => sb.User_id == current_user.User_id)){
-                paidbyto = paidbyto + (ele.Amount/ele.Split_between.length)
+            if (ele.PaidBy_id.User_id == user.User_id && ele.Split_between.some((sb) => sb.User_id == current_user.User_id)) {
+                paidbyto = paidbyto + (ele.Amount / ele.Split_between.length)
             }
         });
         var settleAmountFrom = 0
         var settleAmountTo = 0
         settlements.forEach((set) => {
-            if(set.SettleTo_id.User_id == user.User_id){
+            if (set.SettleTo_id.User_id == user.User_id) {
                 settleAmountFrom = settleAmountFrom + Number(set.Amount)
             }
-            if(set.SettleBy_id.User_id == user.User_id){
+            if (set.SettleBy_id.User_id == user.User_id) {
                 settleAmountTo = settleAmountTo + Number(set.Amount)
             }
         })
@@ -152,11 +150,11 @@ async function getGroupSummary(id, userid){
     return await userBalances
 }
 
-async function checkUser(user){
-    try{
+async function checkUser(user) {
+    try {
         var existUser = await getUserbyGoogleId(user.sub)
-        
-        if(existUser != null){
+
+        if (existUser != null) {
             existUser.Last_login = new Date()
             await db.query(`
                 UPDATE Users
@@ -164,24 +162,24 @@ async function checkUser(user){
                 WHERE User_id = ?
             `, [existUser.Last_login, existUser.User_id])
             return "User Already Exists"
-        }else{
+        } else {
             var [usermax] = await db.query(`
                 select max(User_id) as id from Users;
             `)
-            
+
             await db.query(`
                 INSERT into Users (Name, Email, User_id, Google_id, Phone, Picture, Last_login, Registered_on) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?);
             `, [user.name, user.email, Number(usermax[0].id) + 1, user.sub, "", user.picture, new Date(), new Date()])
             return "New User Created"
         }
-    }catch (error){
+    } catch (error) {
         console.log(error)
         return false;
     }
 }
 
-async function getUserbyGoogleId(Google_id){
+async function getUserbyGoogleId(Google_id) {
     var [user] = await db.query(`
         SELECT User_id, Name, Email, Phone, Picture 
         FROM Users 
@@ -190,7 +188,7 @@ async function getUserbyGoogleId(Google_id){
     return user[0];
 }
 
-async function getUserbyId(User_id){
+async function getUserbyId(User_id) {
     var [user] = await db.query(`
         SELECT User_id, Name, Email, Phone, Picture 
         FROM Users 
@@ -204,7 +202,7 @@ async function getGroupbyId(Group_id) {
         SELECT * FROM Split_Group 
         WHERE Group_id = ?
     `, [Group_id])
-    
+
     var admin = await getUserbyId(group[0].Admin)
 
     var [members] = await db.query(`
@@ -213,14 +211,14 @@ async function getGroupbyId(Group_id) {
         WHERE gu.Group_id = ?
         order by u.Name
     `, [group[0].Group_id])
-    
+
     group[0].Admin = admin[0]
     group[0]['Members'] = members
-    
+
     return await group[0]
 }
 
-async function updateUser(data, user){
+async function updateUser(data, user) {
     var existUser = await getUserbyGoogleId(user.sub)
 
     existUser.Name = data.Name
@@ -235,4 +233,4 @@ async function updateUser(data, user){
     return "User is Updated Successfully"
 }
 
-module.exports = {loggedInUser, getGroupSummary, checkUser, getUserbyGoogleId, getUserbyId, getUserbyGoogleId, updateUser}
+module.exports = { loggedInUser, getGroupSummary, checkUser, getUserbyGoogleId, getUserbyId, getUserbyGoogleId, updateUser }

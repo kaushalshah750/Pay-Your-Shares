@@ -1,12 +1,12 @@
+<!-- Loading bar -->
+<div *ngIf="isLoading" class="h-1 bg-blue-200 w-full overflow-hidden mb-6">
+    <div class="h-full bg-blue-600 animate-pulse"></div>
+</div>
+
 <div class="p-6 w-full max-w-md mx-auto">
     <h2 class="text-xl font-semibold mb-4">
         {{ globalVarService.user.User_id === group.Admin.User_id ? "Invite Members in Group" : "Members in Group" }}
     </h2>
-
-    <!-- Loading Bar -->
-    <div class="w-full h-1 bg-gray-200 relative overflow-hidden mb-4" *ngIf="isLoading">
-        <div class="absolute top-0 h-full bg-blue-600 animate-indeterminate-progress"></div>
-    </div>
 
     <!-- Member List -->
     <div class="space-y-3">
@@ -31,10 +31,8 @@
     <div class="mt-6" *ngIf="globalVarService.user.User_id === group.Admin.User_id">
         <form [formGroup]="addGroupMemberform" (ngSubmit)="inviteMember()">
             <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-
-            <input id="email" type="email" formControlName="Email" placeholder="Enter user email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none transition" [ngClass]="{
-            'border-red-500': addGroupMemberform.get('Email')?.invalid && (addGroupMemberform.get('Email')?.dirty || addGroupMemberform.get('Email')?.touched)
-          }" />
+            <input id="email" type="email" formControlName="Email" placeholder="Enter user email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none transition" [ngClass]="{'border-red-500': addGroupMemberform.get('Email')?.invalid && (addGroupMemberform.get('Email')?.dirty || addGroupMemberform.get('Email')?.touched)}"
+            />
 
             <!-- Error Message -->
             <div *ngIf="addGroupMemberform.get('Email')?.invalid && (addGroupMemberform.get('Email')?.dirty || addGroupMemberform.get('Email')?.touched)" class="mt-1 text-sm text-red-600">
@@ -46,12 +44,7 @@
 
     <!-- Footer Buttons -->
     <div class="flex justify-end space-x-3 mt-6">
-        <button type="button" class="px-5 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition" [mat-dialog-close]="false">
-        Cancel
-      </button>
-
-        <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition disabled:opacity-50" [disabled]="isLoading || addGroupMemberform.invalid" (click)="inviteMember()">
-        Invite
-      </button>
+        <button type="button" class="px-5 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition" [mat-dialog-close]="false">Cancel</button>
+        <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition disabled:opacity-50" [disabled]="isLoading || addGroupMemberform.invalid" (click)="inviteMember()">Invite</button>
     </div>
 </div>

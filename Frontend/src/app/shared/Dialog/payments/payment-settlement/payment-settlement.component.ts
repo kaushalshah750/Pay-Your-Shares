@@ -1,13 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { formatCurrency } from '@angular/common';
 import { Group } from 'src/app/shared/Models/Group';
 import { GroupSummary } from 'src/app/shared/Models/GroupSummary';
 import { TransactionSettlement } from 'src/app/shared/Models/TransactionSettlement';
 import { TransactionSettlementService } from 'src/app/shared/services/transaction-settlement.service';
-import { SnackbarComponent } from '../../snackbar/snackbar.component';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { GlobalVarService } from 'src/app/shared/services/global-var.service';
 import { AuthUser } from 'src/app/shared/Models/AuthUser';

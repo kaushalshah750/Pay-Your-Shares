@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
-import { Users, UsersResponse, UsersResponseOne, UsersResponseString } from '../Models/Users';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../Dialog/snackbar/snackbar.component';
+import { Users, UsersResponseOne, UsersResponseString } from '../Models/Users';
 import { AuthUser } from '../Models/AuthUser';
 import { GlobalVarService } from '../services/global-var.service';
 import { SnackbarService } from '../services/snackbar.service';

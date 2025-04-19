@@ -1,8 +1,17 @@
-<h2 mat-dialog-title>{{data.title}}</h2>
-<mat-dialog-content>
-    <span [innerHTML]="data.description"></span>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button mat-raised-button color="secondary" [mat-dialog-close]="false">Cancel</button>
-    <button mat-raised-button color="primary" class="px-3 " cdkFocusInitial (click)="confirm()">{{data.button}}</button>
-</mat-dialog-actions>
+<div class="bg-white rounded-lg shadow-xl overflow-hidden max-w-md w-full">
+    <!-- Dialog Title -->
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-medium text-gray-900">{{data.title}}</h2>
+    </div>
+
+    <!-- Dialog Content -->
+    <div class="px-6 py-4">
+        <span class="text-gray-600" [innerHTML]="data.description"></span>
+    </div>
+
+    <!-- Dialog Actions -->
+    <div class="px-6 py-3 bg-gray-50 flex justify-end space-x-3 border-t border-gray-200">
+        <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors" (click)="dialogRef.close(false)">Cancel</button>
+        <button class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 transition-colors" (click)="confirm()">{{data.button}}</button>
+    </div>
+</div>

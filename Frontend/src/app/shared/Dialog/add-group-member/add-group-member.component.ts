@@ -5,12 +5,10 @@ import { GroupService } from '../../services/group.service';
 import { Group, GroupResponseOne } from '../../Models/Group';
 import { GlobalVarService } from '../../services/global-var.service';
 import { GroupInvitationResponse } from '../../Models/GroupInvitation';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../snackbar/snackbar.component';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
-import { Users } from '../../Models/Users';
 import { RemoveGroupMember } from '../../Models/RemoveGroupMember';
 import { AuthUser } from '../../Models/AuthUser';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-add-group-member',
@@ -43,7 +41,7 @@ export class AddGroupMemberComponent {
     @Inject(MAT_DIALOG_DATA) public data: string,
     public globalVarService: GlobalVarService,
     private groupService: GroupService,
-    private snackBar: MatSnackBar,
+    private snackBarService: SnackbarService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
   ) { }
@@ -79,22 +77,10 @@ export class AddGroupMemberComponent {
       this.groupService.sendInvitation(this.data, groupInvite).subscribe((res: GroupInvitationResponse) => {
         this.isLoading = false
         if (!res.err) {
-          this.snackBar.openFromComponent(SnackbarComponent, {
-            data: {
-              message: "Invitation Sent Successfully",
-              status: "success"
-            },
-            panelClass: ['success-sb']
-          });
+          this.snackBarService.openSuccessSnackbar("Invitation Sent Successfully")
           this.addGroupMemberform.controls['Email'].setValue('')
         } else {
-          this.snackBar.openFromComponent(SnackbarComponent, {
-            data: {
-              message: "Failed to Send the Invitation Link, Try Again",
-              status: "error"
-            },
-            panelClass: ['error-sb']
-          });
+          this.snackBarService.openErrorSnackbar("Failed to Send the Invitation Link, Try Again")
         }
       }, (error) => {
         if (error.status == 401) {
@@ -131,21 +117,9 @@ export class AddGroupMemberComponent {
           this.isLoading = false
           if (!res.err) {
             this.getGroupInfo()
-            this.snackBar.openFromComponent(SnackbarComponent, {
-              data: {
-                message: "The Member is removed from the Group",
-                status: "success"
-              },
-              panelClass: ['success-sb']
-            });
+            this.snackBarService.openSuccessSnackbar("The Member is removed from the Group")
           } else {
-            this.snackBar.openFromComponent(SnackbarComponent, {
-              data: {
-                message: "The Member is not removed from the Group",
-                status: "error"
-              },
-              panelClass: ['error-sb']
-            });
+            this.snackBarService.openErrorSnackbar("The Member is not removed from the Group")
           }
         }, (error) => {
           if (error.status == 401) {

@@ -5,9 +5,8 @@ import { CreateGroup } from '../../Models/CreateGroup';
 import { MatDialogRef } from '@angular/material/dialog';
 import { GlobalVarService } from '../../services/global-var.service';
 import { GroupResponse } from '../../Models/Group';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../snackbar/snackbar.component';
 import { AuthUser } from '../../Models/AuthUser';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-create-group',
@@ -26,7 +25,7 @@ export class CreateGroupComponent {
     public dialogRef: MatDialogRef<CreateGroupComponent>,
     private groupService: GroupService,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar,
+    private snackBarService: SnackbarService,
     private globalVarService: GlobalVarService
   ) { }
 
@@ -45,13 +44,7 @@ export class CreateGroupComponent {
     this.groupService.createGroup(group).subscribe((group: GroupResponse) => {
       this.isLoading = false
       if (!group.err) {
-        this.snackBar.openFromComponent(SnackbarComponent, {
-          data: {
-            message: "The Group is Created Successfully",
-            status: "success"
-          },
-          panelClass: ['success-sb']
-        });
+        this.snackBarService.openSuccessSnackbar("The Group is Created Successfully")
         this.dialogRef.close(true);
       }
     }, (error) => {

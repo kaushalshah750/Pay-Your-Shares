@@ -1,31 +1,30 @@
-<div class="p-6 w-full max-w-md mx-auto">
+<div class="p-6 w-full max-w-md mx-auto bg-white rounded-lg shadow-md">
     <h2 class="text-xl font-bold text-gray-800 mb-4">Create new Group</h2>
 
-    <!-- Optional loading bar -->
-    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <!-- Loading Bar -->
+    <div class="w-full h-1 bg-gray-200 relative overflow-hidden mb-4" *ngIf="isLoading">
+        <div class="absolute top-0 h-full bg-blue-600 animate-indeterminate-progress"></div>
+    </div>
 
-    <mat-dialog-content class="p-2">
+    <div class="p-2">
         <form [formGroup]="createGroupform" class="space-y-6">
-
             <!-- Group Name -->
-            <mat-form-field appearance="fill" class="w-full">
-                <mat-label>Group Name</mat-label>
-                <input matInput formControlName="Name" />
-            </mat-form-field>
+            <div class="mb-4">
+                <label for="group-name" class="block text-sm font-medium text-gray-700 mb-1">Group Name</label>
+                <input type="text" id="group-name" formControlName="Name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
 
             <!-- Description -->
-            <mat-form-field appearance="fill" class="w-full">
-                <mat-label>Description</mat-label>
-                <textarea matInput formControlName="Description"></textarea>
-            </mat-form-field>
-
+            <div class="mb-4">
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="description" formControlName="Description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+            </div>
         </form>
-    </mat-dialog-content>
+    </div>
 
     <!-- Footer buttons -->
-    <mat-dialog-actions align="end" class="pt-4 space-x-3">
-        <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
-        <button mat-raised-button color="primary" cdkFocusInitial (click)="createGroup()">Create</button>
-    </mat-dialog-actions>
-
+    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+        <button class="px-5 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-gray-500" [mat-dialog-close]="false">Cancel</button>
+        <button class="px-5 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-500" (click)="createGroup()">Create</button>
+    </div>
 </div>

@@ -44,7 +44,6 @@ export class NavMenuComponent {
   ngOnInit() {
     this.user = this.authservice.getclaims(this.globalVarService.getAccessToken())
     this.userinfo = this.authservice.getUserInfo()
-    console.log(this.userinfo)
   }
 
   toggleUserMenu(event?: MouseEvent) {
@@ -91,8 +90,9 @@ export class NavMenuComponent {
     this.isExpanded = !this.isExpanded;
   }
 
-  signOut() {
+  async signOut() {
     this.isUserMenuOpen = false;
-    this.authservice.signOut()
+    localStorage.clear()
+    await this.authservice.signOut()
   }
 }

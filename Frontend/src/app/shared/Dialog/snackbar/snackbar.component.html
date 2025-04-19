@@ -1,8 +1,46 @@
-<div fxLayout="row" class="snack-container d-flex align-items-center">
-    <div class="d-flex">
-      <mat-icon>{{getIcon}}</mat-icon>
+<div class="flex items-center p-3 rounded-lg shadow-lg min-w-[280px] max-w-md animate-fadeIn" [ngClass]="{
+       'bg-green-50 text-green-800 border-l-4 border-green-500': data.status === 'success',
+       'bg-red-50 text-red-800 border-l-4 border-red-500': data.status === 'error',
+       'bg-yellow-50 text-yellow-800 border-l-4 border-yellow-500': data.status === 'warn',
+       'bg-blue-50 text-blue-800 border-l-4 border-blue-500': data.status === 'info'
+     }">
+    <div class="flex-shrink-0">
+        <div class="flex items-center justify-center w-8 h-8 rounded-full" [ngClass]="{
+               'bg-green-100': data.status === 'success',
+               'bg-red-100': data.status === 'error',
+               'bg-yellow-100': data.status === 'warn',
+               'bg-blue-100': data.status === 'info'
+             }">
+            <svg *ngIf="data.status === 'success'" class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <svg *ngIf="data.status === 'error'" class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            <svg *ngIf="data.status === 'warn'" class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+            <svg *ngIf="data.status === 'info'" class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
     </div>
-    <div class="ml-2">
-      <span>{{data.message}}</span>
+    <div class="ml-3 flex-1">
+        <p class="text-sm font-medium">{{data.message}}</p>
+    </div>
+    <div class="ml-auto pl-3">
+        <div class="-mx-1.5 -my-1.5">
+            <button type="button" class="inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors" [ngClass]="{
+                      'text-green-500 hover:bg-green-100 focus:ring-green-600 focus:ring-offset-green-50': data.status === 'success',
+                      'text-red-500 hover:bg-red-100 focus:ring-red-600 focus:ring-offset-red-50': data.status === 'error',
+                      'text-yellow-500 hover:bg-yellow-100 focus:ring-yellow-600 focus:ring-offset-yellow-50': data.status === 'warn',
+                      'text-blue-500 hover:bg-blue-100 focus:ring-blue-600 focus:ring-offset-blue-50': data.status === 'info'
+                    }">
+                <span class="sr-only">Dismiss</span>
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
     </div>
 </div>

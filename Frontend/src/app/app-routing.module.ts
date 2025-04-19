@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { HomeComponent } from './home/home.component';
 import { CreditCardComponent } from './shared/credit-card/credit-card.component';
@@ -11,33 +10,29 @@ import { PaymentSlipComponent } from './shared/payments/payment-slip/payment-sli
 import { PaymentSummaryComponent } from './shared/payments/payment-summary/payment-summary.component';
 import { UsersComponent } from './shared/users/users.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { AuthGuard } from './auth/auth.guard';
+import { LoginGuard } from './auth/login.guard';
 
 const routes: Routes = [
     {
         path: '',
-        component: WelcomeComponent
+        component: WelcomeComponent // This is your root page, no auth required
     },
     {
-        path: 'login/:invite/:groupid/login',
-        component: LoginComponent
+        path: ':invite/:groupid/login',
+        component: LoginComponent,
+        canActivate: [LoginGuard]
     },
     {
         path: 'login',
-        component: LoginComponent
-    },
-    {
-        path: '',
-        pathMatch: 'prefix',
-        redirectTo: 'group',
+        component: LoginComponent,
+        canActivate: [LoginGuard]
     },
     {
         path: '',
         component: HomeComponent,
+        canActivate: [AuthGuard],
         children: [
-            {
-                path: 'my-profile',
-                component: MyProfileComponent
-            },
             {
                 path: 'group',
                 component: GroupListComponent
@@ -55,8 +50,8 @@ const routes: Routes = [
                 component: PaymentSummaryComponent
             },
             {
-                path: 'counter',
-                component: CounterComponent
+                path: 'my-profile',
+                component: MyProfileComponent
             },
             {
                 path: 'summary',
@@ -76,7 +71,12 @@ const routes: Routes = [
             }
         ]
     },
+    {
+        path: '**',
+        redirectTo: ''
+    }
 ];
+
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

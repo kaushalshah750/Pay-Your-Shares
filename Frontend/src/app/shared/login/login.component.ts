@@ -1,16 +1,15 @@
 declare var google: any;
 import { Component } from '@angular/core';
-import { AuthServiceService } from '../services/auth-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { GlobalVarService } from '../services/global-var.service';
 import { environment } from 'src/environments/environment';
-import { UsersResponseOne, UsersResponseString } from '../Models/Users';
+import { UsersResponseString } from '../Models/Users';
 import { GroupService } from '../services/group.service';
 import { GroupAddResponseOne } from '../Models/Group';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../services/user.service';
-import { SnackbarComponent } from '../Dialog/snackbar/snackbar.component';
+import { AuthUser } from '../Models/AuthUser';
+import { SnackbarService } from '../services/snackbar.service';
 
 @Component({
   selector: 'app-login',
@@ -20,8 +19,8 @@ import { SnackbarComponent } from '../Dialog/snackbar/snackbar.component';
 })
 export class LoginComponent {
   createform = this.formBuilder.nonNullable.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]]
+    Email: ['', [Validators.required, Validators.email]],
+    Code: ['', [Validators.required]]
   })
   isLoading: boolean = false
   userInfo: any
@@ -31,13 +30,100 @@ export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthServiceService,
     private route: ActivatedRoute,
     private userService: UserService,
     private groupService: GroupService,
-    private snackBar: MatSnackBar,
-    private globalVar: GlobalVarService,
-  ) { }
+    private snackBarService: SnackbarService,
+    public globalVarService: GlobalVarService,
+  ) {
+
+    this.createform.controls['Email'].disable()
+    this.createform.controls['Code'].disable()
+
+    if (this.groupId != null && this.inviteId != null) {
+      localStorage.setItem("groupId", this.groupId)
+      localStorage.setItem("inviteId", this.inviteId)
+      this.groupService.getGroupInvitationDetail(this.groupId, this.inviteId).subscribe((res: any) => {
+        if (res.data) {
+          this.createform.controls['Email'].setValue(res.data)
+          this.createform.controls['Code'].setValue(this.inviteId)
+          snackBarService.openSuccessSnackbar("Invitation Link is Valid")
+        } else {
+          snackBarService.openErrorSnackbar("Invitation Link is Invalid. Try Again")
+        }
+        console.log(res.data)
+        console.log(this.createform.value)
+      });
+    }
+
+    var token = localStorage.getItem("token")
+    var refresh_token = localStorage.getItem("refresh_token")
+    if ((!token || !refresh_token) && window.location.search.split("&")[0].slice(1, 5) != "code") {
+      // window.location.href = window.location.origin + "/login"
+    } else {
+      if (window.location.search.split("&")[0].slice(1, 5) == "code") {
+        globalVarService.getToken(window.location.search.split("&")[0].slice(6)).subscribe((res: AuthUser) => {
+          localStorage.setItem("token", res.id_token)
+          localStorage.setItem("refresh_token", res.refresh_token)
+          this.groupId = localStorage.getItem("groupId")!
+          this.inviteId = localStorage.getItem("inviteId")!
+          if (this.groupId != null && this.inviteId != null) {
+            console.log("if (this.groupId != null)")
+            var reference = {
+              group: this.groupId,
+              invite: this.inviteId
+            }
+
+            this.userService.checkUser().subscribe((res: UsersResponseString) => {
+              if (!res.err) {
+                this.groupService.addMemberinGroup(reference).subscribe((res: GroupAddResponseOne) => {
+                  this.isLoading = false
+                  if (res.data == "You Already exits in the Group") {
+                    this.navigatetoGroup()
+                    snackBarService.openInfoSnackbar("You Already exits in the Group")
+                    this.router.navigate(['/group'])
+                  } else if (!res.err && res.data != "Invitation Link is Invalid") {
+                    this.navigatetoGroup()
+                    snackBarService.openSuccessSnackbar("You have been Successfully Added to the Group")
+                    this.router.navigate(['/group'])
+                  } else if (res.data == "Invitation Link is Invalid") {
+                    snackBarService.openErrorSnackbar("Invitation Link is Invalid")
+                  }
+                })
+              } else {
+                snackBarService.openErrorSnackbar("There is some issue with the Service. Try Again Later.")
+              }
+            })
+          } else {
+            this.navigatetoGroup()
+            console.log("else (this.groupId != null)")
+            this.isLoading = true
+            this.userService.checkUser().subscribe((res: UsersResponseString) => {
+              this.isLoading = false
+              if (!res.err) {
+                if (res.data == "User Already Exists") {
+                  snackBarService.openSuccessSnackbar("You have Successfully Logged In")
+                } else if (res.data == "New User Created") {
+                  snackBarService.openSuccessSnackbar("You have Successfully Signned In")
+                }
+                this.router.navigate(['/group'])
+              } else {
+                snackBarService.openErrorSnackbar("There is some issue with the Service. Try Again Later.")
+              }
+            })
+          }
+        })
+      }
+    }
+  }
+
+  navigatetoGroup() {
+    this.router.navigate(['/group']).then(() => {
+      var userInfo = this.decodeToken(localStorage.getItem(this.globalVarService.accessTokenKey)!);
+      localStorage.setItem('UserInfo', JSON.stringify(userInfo))
+      this.snackBarService.openSuccessSnackbar("You have been successfully Logged In")
+    })
+  }
 
   ngOnInit() {
     // this.login()
@@ -146,8 +232,7 @@ export class LoginComponent {
   callGoogleUrl() {
     // var scope:string = "https://www.googleapis.com/auth/userinfo.email&https://www.googleapis.com/auth/userinfo.profile&openid"
     var scope: string = "https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile"
-    var url = `https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${window.location.origin}/&prompt=consent&response_type=code&client_id=${environment.google.client_id}&scope=${scope}&access_type=offline`
-    console.log(url)
+    var url = `https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${window.location.origin}/login&prompt=consent&response_type=code&client_id=${environment.google.client_id}&scope=${scope}&access_type=offline`
     window.location.href = url
   }
 

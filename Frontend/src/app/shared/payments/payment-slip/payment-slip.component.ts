@@ -9,7 +9,6 @@ import { Users } from '../../Models/Users';
 import { ActivatedRoute } from '@angular/router';
 import { Group } from '../../Models/Group';
 import { CreateSlipComponent } from '../../Dialog/create-slip/create-slip.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationComponent } from '../../Dialog/confirmation/confirmation.component';
 import { SlipTransactionBody } from '../../Models/SlipTransactionBody';
 import { AuthUser } from '../../Models/AuthUser';
@@ -106,6 +105,7 @@ export class PaymentSlipComponent {
 
   refresh() {
     this.slip = []
+    this.dataSource.data = []
     this.getslippayment()
   }
 

@@ -8,7 +8,6 @@ import { CurrencyPipe } from '@angular/common';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CreditCardComponent } from './shared/credit-card/credit-card.component';
 import { PaymentSummaryComponent } from './shared/payments/payment-summary/payment-summary.component';
@@ -55,7 +54,6 @@ import { AppRoutingModule } from './app-routing.module';
         AppComponent,
         NavMenuComponent,
         HomeComponent,
-        CounterComponent,
         CreditCardComponent,
         PaymentSummaryComponent,
         FetchDataComponent,
@@ -110,7 +108,7 @@ import { AppRoutingModule } from './app-routing.module';
         {
             provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
             useValue: {
-                duration: 2000,
+                duration: 5000,
                 verticalPosition: "top",
                 horizontalPosition: "right"
             }

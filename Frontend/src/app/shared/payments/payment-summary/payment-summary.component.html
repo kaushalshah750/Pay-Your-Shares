@@ -1,4 +1,6 @@
-<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<div *ngIf="isLoading" class="h-1 bg-blue-200 w-full overflow-hidden mb-6">
+    <div class="h-full bg-blue-600 animate-pulse"></div>
+</div>
 
 <div class="py-4 bg-gray-50 min-h-full">
     <div class="container mx-auto px-4">
@@ -14,7 +16,7 @@
         </h3>
     </div>
 
-    <div class="container mx-auto px-4 my-6">
+    <div class="container mx-auto px-4 my-3">
         <div class="mb-8">
             <div class="flex justify-end mb-4">
                 <div class="flex items-center space-x-4 text-sm">

@@ -1,10 +1,17 @@
-import groupInviteModel from '../Controller/group-invitation/group-invitation.model';
 import emailBusiness from './email.business';
 import properties from '../config/properties';
 import db from '../config/db';
 
-async function sendGroupInvitation(data, groupId, userId){
-    try{
+async function getGroupInvitationDetail(inviteCode, groupId) {
+    var [email] = await db.query('SELECT Email FROM Group_Invite WHERE Invite_id = ? and Group_id = ?', [inviteCode, groupId])
+    if (email.length == 0) {
+        return false;
+    }
+    return email[0].Email
+}
+
+async function sendGroupInvitation(data, groupId, userId) {
+    try {
         var [groups] = await db.query(`
             SELECT * FROM Split_Group 
             WHERE Group_id = ?
@@ -20,9 +27,9 @@ async function sendGroupInvitation(data, groupId, userId){
             Group_id: groupId,
             Subject: "Invitation to Join the Group",
             Body: "You have been invited to join the Group Name: <b>" + group.Name + "</b>. Please click on the below " +
-            "link to join the group by logging in using this email. <br><br> " +
-            "Group Link: " + properties.BaseUrl + inviteId + "/" + groupId + "/login " +
-            "<br><br> <b>Best Regards<br>Pay Your Share</b>"
+                "link to join the group by logging in using this email. <br><br> " +
+                "Group Link: " + properties.BaseUrl + inviteId + "/" + groupId + "/login " +
+                "<br><br> <b>Best Regards<br>Pay Your Share</b>"
         }
         await emailBusiness.sendEmail(emailData.Email, emailData.Subject, emailData.Body)
 
@@ -32,13 +39,15 @@ async function sendGroupInvitation(data, groupId, userId){
         `, [emailData.Email, inviteId, emailData.Invited_by, emailData.Group_id, emailData.Subject, emailData.Body])
 
         return true;
-    } catch (error){
+    } catch (error) {
         console.log(error)
         return false;
     }
 }
 
-async function getUserbyGoogleId(Google_id){
+
+
+async function getUserbyGoogleId(Google_id) {
     var [user] = await db.query(`
         SELECT User_id, Name, Email, Phone, Picture 
         FROM Users 
@@ -77,4 +86,4 @@ async function generateUniqueRandomNumber() {
     return finalString;
 }
 
-module.exports = { sendGroupInvitation }
+module.exports = { sendGroupInvitation, getGroupInvitationDetail }

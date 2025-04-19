@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SliptransactionsService } from '../../services/sliptransactions.service';
 import { Users } from '../../Models/Users';
 import { AddSlip } from '../../Models/AddSlip';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { EmailBody, EmailResponse } from '../../Models/EmailBody';
 import { EmailService } from '../../services/email.service';
 import { SlipResponse, SlipTransactionVM } from '../../Models/SlipTransactionVM';
@@ -11,10 +11,10 @@ import { SMSBody } from '../../Models/SMSBody';
 import { CurrencyPipe } from '@angular/common';
 import { GlobalVarService } from '../../services/global-var.service';
 import { Group } from '../../Models/Group';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../snackbar/snackbar.component';
 import { SlipTransactionBody } from '../../Models/SlipTransactionBody';
 import { AuthUser } from '../../Models/AuthUser';
+import { DatePipe } from '@angular/common';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-create-slip',
@@ -31,16 +31,18 @@ export class CreateSlipComponent {
     name: ['', [Validators.required, Validators.minLength(5)]],
     amount: [0, [Validators.required, Validators.min(2)]],
     paidByUserId: [0, [Validators.required, Validators.min(1)]],
-    TransactionDate: [new Date(), Validators.required],
-    Users: [[], [Validators.required]]
+    TransactionDate: [this.datePipe.transform(new Date(Date.now()), 'yyyy-MM-dd'), Validators.required],
+    Users: this.formBuilder.array([], Validators.required)
   })
+  userList: FormArray = this.formBuilder.array([])
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Group,
     public dialogRef: MatDialogRef<CreateSlipComponent>,
     private sliptransactionService: SliptransactionsService,
     private globalVarService: GlobalVarService,
-    private snackBar: MatSnackBar,
+    private snackBarService: SnackbarService,
+    private datePipe: DatePipe,
     private emailService: EmailService,
     private currency: CurrencyPipe,
     private formBuilder: FormBuilder
@@ -60,9 +62,32 @@ export class CreateSlipComponent {
     }
   }
 
+  get usersFormArray(): FormArray {
+    return this.createform.get('Users') as FormArray;
+  }
+
+  onCheckboxChange(event: any) {
+    this.userList = this.usersFormArray;
+
+    if (event.target.checked) {
+      this.userList.push(new FormControl(+event.target.value));
+    } else {
+      const index = this.userList.controls.findIndex(x => x.value === +event.target.value);
+      if (index !== -1) {
+        this.userList.removeAt(index);
+      }
+    }
+  }
+
   createnewspliptransaction() {
-    var newUsers: number[] = this.createform.controls['Users'].value
+    // var newUsers: number[] = this.createform.controls['Users'].value
+    console.log(this.userList.value)
+    console.log("createnewspliptransaction")
+    console.log(this.createform)
+    console.log(this.createform.value)
+    console.log(this.createform.valid)
     if (this.createform.valid) {
+      const newUsers = this.createform.controls['Users'].value;
       if (newUsers.length == 1 ? this.createform.controls['paidByUserId'].value != newUsers[0] : true) {
         this.isLoading = true
         var Slip: AddSlip = {
@@ -71,30 +96,18 @@ export class CreateSlipComponent {
           PaidBy_id: this.createform.controls['paidByUserId'].value,
           AddedBy_id: this.globalVarService.user.User_id,
           Group_id: this.data.Group_id,
-          Split_between: this.createform.controls['Users'].value,
-          Payment_date: this.createform.controls['TransactionDate'].value,
+          Split_between: newUsers.map(Number),
+          Payment_date: this.createform.controls['TransactionDate'].value!,
         }
         this.sliptransactionService.Addslipayment(Slip).subscribe((res) => {
           if (!res.err) {
             this.isLoading = false
             this.dialogRef.close(true);
-            this.snackBar.openFromComponent(SnackbarComponent, {
-              data: {
-                message: "The Transaction is Splitted Successfully",
-                status: "success"
-              },
-              panelClass: ['success-sb']
-            });
+            this.snackBarService.openSuccessSnackbar("The Transaction is Splitted Successfully")
             this.sendEmail(Slip)
           } else {
             this.isLoading = false
-            this.snackBar.openFromComponent(SnackbarComponent, {
-              data: {
-                message: "We are facing some issue creating the Transaction",
-                status: "success"
-              },
-              panelClass: ['success-sb']
-            });
+            this.snackBarService.openErrorSnackbar("We are facing some issue creating the Transaction")
           }
         }, (error) => {
           if (error.status == 401) {
@@ -107,23 +120,11 @@ export class CreateSlipComponent {
           }
         })
       } else {
-        this.snackBar.openFromComponent(SnackbarComponent, {
-          data: {
-            message: "Paid and Split User can not be same",
-            status: "info"
-          },
-          panelClass: ['info-sb']
-        });
+        this.snackBarService.openInfoSnackbar("Paid and Split User can not be same")
       }
     } else {
       this.createform.markAllAsTouched()
-      this.snackBar.openFromComponent(SnackbarComponent, {
-        data: {
-          message: "Please Enter Valid Data",
-          status: "info"
-        },
-        panelClass: ['info-sb']
-      });
+      this.snackBarService.openInfoSnackbar("Please Enter Valid Data")
     }
   }
 

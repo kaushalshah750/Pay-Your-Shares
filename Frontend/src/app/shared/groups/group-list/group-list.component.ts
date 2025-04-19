@@ -5,10 +5,7 @@ import { GlobalVarService } from '../../services/global-var.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateGroupComponent } from '../../Dialog/create-group/create-group.component';
 import { AddGroupMemberComponent } from '../../Dialog/add-group-member/add-group-member.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../../Dialog/snackbar/snackbar.component';
 import { ConfirmationComponent } from '../../Dialog/confirmation/confirmation.component';
-import { AuthapiService } from '../../services/authapi.service';
 import { AuthUser } from '../../Models/AuthUser';
 import { SnackbarService } from '../../services/snackbar.service';
 
@@ -24,7 +21,7 @@ export class GroupListComponent {
 
   constructor(
     private groupService: GroupService,
-    private snackBar: MatSnackBar,
+    private snackBarService: SnackbarService,
     private globalVarService: GlobalVarService,
     private snackbarService: SnackbarService,
     public dialog: MatDialog,
@@ -38,7 +35,6 @@ export class GroupListComponent {
   async getGroups() {
     this.isLoading = true
     await this.groupService.getGroups().subscribe((res: GroupResponse) => {
-      console.log(res)
       if (!res.err) {
         this.isLoading = false
         this.groups = res.data
@@ -81,13 +77,7 @@ export class GroupListComponent {
               this.getGroups()
             } else if (res.data == "You are not Authorized to delete the Group") {
               this.isLoading = false
-              this.snackBar.openFromComponent(SnackbarComponent, {
-                data: {
-                  message: res.data,
-                  status: "info"
-                },
-                panelClass: ['info-sb']
-              });
+              this.snackBarService.openInfoSnackbar(res.data)
             } else {
               this.isLoading = false
               this.snackbarService.openSuccessSnackbar("Group is Already Deleted")
