@@ -2,19 +2,19 @@
 // import properties from './properties';
 import mysql from 'mysql2';
 
-// const pool = mysql.createPool({
-//     host: '127.0.0.1',
-//     user: 'root', //MSI\KAUSHAL
-//     password: 'YpE5o$#@#o5XjRb4',
-//     database: 'PayYourShare'
-// }).promise()
-
 const pool = mysql.createPool({
     host: '127.0.0.1',
     user: 'root', //MSI\KAUSHAL
-    password: 'Kaushal$#@#123',
-    database: 'payyourshare'
+    password: 'NdcpR-34m8hb',
+    database: 'PayYourShare'
 }).promise()
+
+// const pool = mysql.createPool({
+//     host: '127.0.0.1',
+//     user: 'root', //MSI\KAUSHAL
+//     password: 'Kaushal$#@#123',
+//     database: 'payyourshare'
+// }).promise()
 
 export default pool;
 
