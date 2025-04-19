@@ -1,12 +1,14 @@
-<div class="p-6 w-full max-w-md mx-auto bg-white rounded-lg shadow-md">
-    <h2 class="text-xl font-semibold mb-4">Create new slip</h2>
+<div class="bg-white rounded-lg shadow-xl overflow-hidden max-w-md w-full">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-medium text-gray-900">Create new slip</h2>
+    </div>
 
     <!-- Loading Bar -->
     <div class="w-full h-1 bg-gray-200 relative overflow-hidden mb-4" *ngIf="isLoading">
         <div class="absolute top-0 h-full bg-blue-600 animate-indeterminate-progress"></div>
     </div>
 
-    <div class="mt-6">
+    <div class="px-6 py-4">
         <form [formGroup]="createform" (ngSubmit)="createnewspliptransaction()">
             <div class="mb-4">
                 <label for="expense-reason" class="block text-sm font-medium text-gray-700 mb-1">Reason of Expense</label>
@@ -40,7 +42,7 @@
                 <p class="mt-1 text-xs text-gray-500">DD/MM/YYYY</p>
             </div>
 
-            <div class="mb-4">
+            <div>
                 <label for="slip-in" class="block text-sm font-medium text-gray-700 mb-1">Split In</label>
                 <div class="border border-gray-300 rounded-md p-2 max-h-40 overflow-y-auto">
                     <div *ngFor="let user of data.Members" class="flex items-center mb-2">
@@ -55,8 +57,9 @@
         </form>
     </div>
 
-    <div class="flex justify-end space-x-3 mt-6">
-        <button class="px-5 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition focus:outline-none focus:ring-2 focus:ring-gray-500" [mat-dialog-close]="false">Cancel</button>
-        <button [disabled]="isLoading || data.Members.length <= 1" class="px-5 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed" (click)="createnewspliptransaction()">Submit</button>
+    <div class="px-6 py-3 bg-gray-50 flex justify-end space-x-3 border-t border-gray-200">
+        <button type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors" [mat-dialog-close]="false">Cancel</button>
+        <button [disabled]="isLoading || data.Members.length <= 1" type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            (click)="createnewspliptransaction()">Submit</button>
     </div>
 </div>

@@ -1,8 +1,7 @@
-<!-- Loading bar -->
-<div *ngIf="isLoading" class="h-1 bg-blue-200 w-full overflow-hidden mb-6">
+<div *ngIf="isLoading" class="h-1 bg-blue-200 w-full overflow-hidden">
     <div class="h-full bg-blue-600 animate-pulse"></div>
 </div>
-<!-- Main container with subtle background -->
+
 <div class="py-6 bg-gray-50 min-h-screen">
     <div class="container mx-auto px-4">
 
@@ -10,13 +9,13 @@
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
             <h1 class="text-xl font-semibold text-gray-800">My Groups</h1>
             <div class="flex items-center gap-3">
-                <button (click)="createGroup()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-sm flex items-center transition duration-150 flex-grow sm:flex-grow-0">
+                <button (click)="createGroup()" class="px-4 py-2 flex items-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-sm transition duration-150 flex-grow sm:flex-grow-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                     </svg>
                     Create Group
                 </button>
-                <button (click)="refresh()" class="p-2 bg-white hover:bg-gray-50 text-indigo-600 rounded-full shadow-sm flex items-center justify-center transition duration-150 border border-gray-200" title="Refresh">
+                <button class="w-10 h-10 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-full transition" matTooltip="Refresh" (click)="refresh()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
                     </svg>

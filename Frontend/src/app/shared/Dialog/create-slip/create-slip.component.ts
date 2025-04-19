@@ -81,11 +81,6 @@ export class CreateSlipComponent {
 
   createnewspliptransaction() {
     // var newUsers: number[] = this.createform.controls['Users'].value
-    console.log(this.userList.value)
-    console.log("createnewspliptransaction")
-    console.log(this.createform)
-    console.log(this.createform.value)
-    console.log(this.createform.valid)
     if (this.createform.valid) {
       const newUsers = this.createform.controls['Users'].value;
       if (newUsers.length == 1 ? this.createform.controls['paidByUserId'].value != newUsers[0] : true) {

@@ -51,8 +51,6 @@ export class LoginComponent {
         } else {
           snackBarService.openErrorSnackbar("Invitation Link is Invalid. Try Again")
         }
-        console.log(res.data)
-        console.log(this.createform.value)
       });
     }
 
@@ -68,7 +66,6 @@ export class LoginComponent {
           this.groupId = localStorage.getItem("groupId")!
           this.inviteId = localStorage.getItem("inviteId")!
           if (this.groupId != null && this.inviteId != null) {
-            console.log("if (this.groupId != null)")
             var reference = {
               group: this.groupId,
               invite: this.inviteId
@@ -96,7 +93,6 @@ export class LoginComponent {
             })
           } else {
             this.navigatetoGroup()
-            console.log("else (this.groupId != null)")
             this.isLoading = true
             this.userService.checkUser().subscribe((res: UsersResponseString) => {
               this.isLoading = false
@@ -135,8 +131,6 @@ export class LoginComponent {
   //     this.isLoading = true
   //     this.authService.setAccessToken(res.credential)
   //     this.userInfo = this.decodeToken(res.credential);
-  //     console.log(this.userInfo)
-  //     console.log(this.userInfo)
   //     if(this.userInfo){
   //       this.isLoading = true
   //       localStorage.setItem('UId', this.userInfo.sub)
