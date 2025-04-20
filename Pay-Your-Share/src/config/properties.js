@@ -1,5 +1,5 @@
 module.exports = {
-    PORT: 84,
+    PORT: 2003,
     // PORT: 8400,
     DB: "mongodb://localhost:27017/PayYourShare",
     BaseUrl: "https://localhost:4200/",
