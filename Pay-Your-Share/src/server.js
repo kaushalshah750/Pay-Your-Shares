@@ -2,16 +2,32 @@ import express from 'express';
 var app = express();
 import path from 'path';
 import properties from './config/properties';
-// import db from './config/db'
+import sequelize from './config/db'
 import cors from 'cors';
 import indexRoute from './Controller/index.routes'
 import unauthindexRoute from './Controller/unauthindex.routes'
 import { OAuth2Client } from 'google-auth-library';
 
-// db();
+import Feedback from './models/Feedback.model';
+import GroupInvite from './models/group_invite.model';
+import GroupUser from './models/group_user.model';
+import SplitBetween from './models/split_between.model';
+import SplitGroup from './models/split_group.model';
+import Email from './models/split_transaction_email.model';
+import SplitTransaction from './models/split_transaction.model';
+import TransactionSettlement from './models/transaction_settlement.model';
+import User from './models/user.model';
+
+sequelize.sync({ force: false }) // `force: true` will drop existing tables
+    .then(() => {
+        console.log('Database & tables created!');
+    })
+    .catch((err) => {
+        console.error('Error syncing database:', err);
+    });
 
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const CLIENT_ID = '156985885803-62ok5adedqmmg3nr0vj24b9sh5jjtvih.apps.googleusercontent.com'; // Replace with your Google client ID

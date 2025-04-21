@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: "http://localhost:8400/",
+  baseUrl: "http://localhost:2003/",
   microsoft: {
     authUrl: "https://login.microsoftonline.com/f3c36c01-2952-446d-8eae-28e7f02b7baf/oauth2/v2.0/authorize",
     clientId: "3355635b-4a65-47f2-a2b3-8fedfefd3248",
@@ -12,7 +12,7 @@ export const environment = {
   },
   google: {
     client_id: '156985885803-62ok5adedqmmg3nr0vj24b9sh5jjtvih.apps.googleusercontent.com',
-    client_secret: "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"  
+    client_secret: "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"
   },
   sendSMS: false
 };

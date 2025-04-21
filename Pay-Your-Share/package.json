@@ -20,6 +20,7 @@
     "mongodb": "^6.3.0",
     "mongoose": "^8.2.0",
     "mysql2": "^3.9.4",
-    "nodemailer": "^6.9.11"
+    "nodemailer": "^6.9.11",
+    "sequelize": "^6.37.7"
   }
 }

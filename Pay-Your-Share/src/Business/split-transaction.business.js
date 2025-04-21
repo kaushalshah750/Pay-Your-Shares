@@ -7,8 +7,8 @@ import db from '../config/db';
 //         .populate("split_between").sort({created_on: -1});
 // }
 
-async function getSplitTransactions(userGoogleId, transaction){
-    try{
+async function getSplitTransactions(userGoogleId, transaction) {
+    try {
         var [user] = await db.query(`
             SELECT * FROM Users 
             WHERE Google_id = ?
@@ -18,18 +18,18 @@ async function getSplitTransactions(userGoogleId, transaction){
             SELECT * FROM Split_Group 
             WHERE Group_id = ?
         `, [transaction.group])
-        
+
         var [admin] = await db.query(`
             SELECT User_id, Name, Email, Phone, Picture FROM Users 
             WHERE User_id = ?
         `, [group[0].Admin])
-        
+
         var [Members] = await db.query(`
             SELECT u.User_id, u.Name, u.Email, u.Phone, u.Picture FROM Group_User gu
             LEFT JOIN Users u on u.User_id = gu.User_id
             WHERE gu.Group_id = ?
         `, [group[0].Group_id])
-        
+
         var [tranasactions] = await db.query(`
             SELECT distinct st.Slip_id, st.Name, st.Amount, st.PaidBy_id, st.AddedBy_id, st.Payment_date, st.Updated_on FROM Split_Transaction st
             LEFT JOIN Split_Between sb on sb.Slip_id = st.Slip_id
@@ -43,13 +43,13 @@ async function getSplitTransactions(userGoogleId, transaction){
                 FROM Users 
                 WHERE User_id = ?
             `, [tranasaction.AddedBy_id])
-            
+
             var [PaidBy] = await db.query(`
                 SELECT User_id, Name, Email, Phone, Picture 
                 FROM Users 
                 WHERE User_id = ?
             `, [tranasaction.PaidBy_id])
-            
+
             var [SplitBetween] = await db.query(`
                 SELECT u.User_id, u.Name, u.Email, u.Phone, u.Picture FROM Split_Between sb
                 LEFT JOIN Users u on u.User_id = sb.User_id
@@ -60,44 +60,44 @@ async function getSplitTransactions(userGoogleId, transaction){
             tranasaction.AddedBy_id = AddedBy[0]
             tranasaction.PaidBy_id = PaidBy[0]
         }
-        
+
         group[0].Admin = admin[0]
         group[0]['Members'] = Members
-        
+
         var payment = {
             Group: group[0],
             Transaction: tranasactions
         }
-        return payment    
+        return payment
 
-    }catch(error){
+    } catch (error) {
         console.log(error)
         return false;
     }
 }
 
-async function createSplitTransaction(transaction){
-    try{
+async function createSplitTransaction(transaction) {
+    try {
         var [split] = await db.query(`
             INSERT INTO Split_Transaction (Name, Amount, PaidBy_id, AddedBy_id, Group_id, Payment_date, Created_on, Updated_on) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `, [transaction.Name, transaction.Amount, transaction.PaidBy_id, transaction.AddedBy_id, transaction.Group_id, new Date(transaction.Payment_date), new Date(), new Date()])
-        
-        for (const sb of transaction.Split_between){
+
+        for (const sb of transaction.Split_between) {
             await db.query(`
                 INSERT INTO Split_Between (Slip_id, User_id) 
                 VALUES (?, ?)
             `, [split.insertId, sb])
         }
         return true;
-    }catch(error){
+    } catch (error) {
         console.log(error)
         return false;
     }
 }
 
-async function deleteSplitTransaction(Slip_id){
-    try{
+async function deleteSplitTransaction(Slip_id) {
+    try {
         await db.query(`
             DELETE FROM Split_Between 
             WHERE Slip_id = ?
@@ -109,10 +109,10 @@ async function deleteSplitTransaction(Slip_id){
         `, [Number(Slip_id)])
 
         return true;
-    }catch(error){
+    } catch (error) {
         console.log(error)
         return false;
     }
 }
 
-module.exports = {createSplitTransaction, getSplitTransactions, deleteSplitTransaction}
+module.exports = { createSplitTransaction, getSplitTransactions, deleteSplitTransaction }

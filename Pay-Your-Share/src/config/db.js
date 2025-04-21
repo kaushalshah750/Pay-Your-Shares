@@ -1,24 +1,24 @@
-// import mongoose from 'mongoose';
-// import properties from './properties';
-import mysql from 'mysql2';
+import { Sequelize } from 'sequelize';
 
-const pool = mysql.createPool({
-    host: '127.0.0.1',
-    user: 'root', //MSI\KAUSHAL
-    password: 'NdcpR-34m8hb',
-    database: 'PayYourShare'
-}).promise()
-
-// const pool = mysql.createPool({
+// const sequelize = new Sequelize('PayYourShare', 'root', 'NdcpR-34m8hb', {
 //     host: '127.0.0.1',
-//     user: 'root', //MSI\KAUSHAL
-//     password: 'Kaushal$#@#123',
-//     database: 'payyourshare'
-// }).promise()
+//     dialect: 'mysql',
+//     logging: false // Disable logging
+// });
 
-export default pool;
+const sequelize = new Sequelize('PayYourShare', 'root', 'Kaushal$#@#123', {
+    host: '127.0.0.1',
+    dialect: 'mysql',
+    logging: false
+});
 
-// module.exports = function(){
-//     var dbUrl = properties.DB
-//     mongoose.connect(dbUrl);
-// }
+(async() => {
+    try {
+        await sequelize.authenticate();
+        console.log('✅ Database connected successfully!');
+    } catch (error) {
+        console.error('❌ Database connection failed:', error);
+    }
+})();
+
+export default sequelize;
